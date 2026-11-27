@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  shortLabel  String
+  slug        String    @unique
+  description String
+  sortOrder   Int       @default(0)
+  isActive    Boolean   @default(true)
+  packages    Package[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Package {
+  id               String   @id @default(cuid())
+  categoryId       String
+  category         Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  name             String
+  slug             String   @unique
+  badge            String?
+  shortDescription String
+  studentCondition String
+  outputs          String   // JSON string array of output bullet points
+  price            Int
+  discountPrice    Int?
+  durationLabel    String?
+  isFeatured       Boolean  @default(false)
+  isActive         Boolean  @default(true)
+  sortOrder        Int      @default(0)
+  orders           Order[]
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Order {
+  id                   String   @id @default(cuid())
+  orderCode            String   @unique
+  packageId            String?
+  package              Package? @relation(fields: [packageId], references: [id], onDelete: SetNull)
+  categoryNameSnapshot String
+  packageNameSnapshot  String
+  priceSnapshot        Int
+  campusType           String   @default("TELKOM_FKS") // TELKOM_FKS | NON_TELKOM
+  campusName           String   @default("Telkom University (FKS)")
+  studentName          String
+  major                String
+  whatsapp             String
+  researchType         String
+  topicOrTitle         String
+  notes                String?
+  status               String   @default("PENDING") // PENDING | WAITING_CONFIRMATION | IN_PROGRESS | COMPLETED | CANCELLED
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
