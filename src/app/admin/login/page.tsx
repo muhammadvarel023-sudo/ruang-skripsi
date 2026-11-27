@@ -8,7 +8,7 @@ import { BookOpen, Lock, ArrowRight, Loader2, ArrowLeft } from "lucide-react";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("admin@ruangskripsi.id");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -122,13 +122,6 @@ export default function AdminLoginPage() {
               )}
             </button>
           </form>
-
-          <div className="mt-5 rounded-xl border border-slate-200/80 bg-[#FAF9F6] p-3.5 text-[11px] text-slate-600">
-            <p className="font-semibold text-slate-700">Akun Demo Lokal:</p>
-            <p className="mt-0.5 font-mono">
-              Email: admin@ruangskripsi.id &bull; Pass: admin123
-            </p>
-          </div>
         </div>
       </motion.div>
     </div>
