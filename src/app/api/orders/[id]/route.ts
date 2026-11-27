@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getAdminSession } from "@/lib/auth";
+import { getSiteSettings } from "@/lib/data";
+import { ORDER_STATUS_META, PAYMENT_STATUS_META } from "@/lib/format";
 
 const VALID_STATUSES = [
   "PENDING",
@@ -49,6 +51,32 @@ export async function PATCH(
       where: { id },
       data,
     });
+
+    // Sync status changes to Google Sheets webhook in real-time
+    const settings = await getSiteSettings();
+    if (settings.google_sheet_webhook_url?.startsWith("http")) {
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 4500);
+        await fetch(settings.google_sheet_webhook_url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          signal: controller.signal,
+          body: JSON.stringify({
+            action: "update",
+            orderCode: updated.orderCode,
+            paymentStatus:
+              PAYMENT_STATUS_META[updated.paymentStatus]?.label ??
+              updated.paymentStatus,
+            orderStatus:
+              ORDER_STATUS_META[updated.status]?.label ?? updated.status,
+          }),
+        });
+        clearTimeout(timeout);
+      } catch (sheetErr) {
+        console.warn("Google Sheets status sync skipped/failed:", sheetErr);
+      }
+    }
 
     return NextResponse.json({ order: updated });
   } catch {
