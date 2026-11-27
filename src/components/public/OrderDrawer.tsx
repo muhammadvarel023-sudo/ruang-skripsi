@@ -80,6 +80,7 @@ export function OrderDrawer({
   const [researchType, setResearchType] = useState(QUALITATIVE_APPROACHES[0]);
   const [topicOrTitle, setTopicOrTitle] = useState("");
   const [notes, setNotes] = useState("");
+  const [agreedTerms, setAgreedTerms] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [createdOrder, setCreatedOrder] = useState<OrderDTO | null>(null);
@@ -90,6 +91,7 @@ export function OrderDrawer({
     if (selected) {
       setCampusType(initialCampusType);
       setPaymentPlan("DP_50");
+      setAgreedTerms(false);
       setError(null);
       setCreatedOrder(null);
       setCopiedKey(null);
@@ -468,11 +470,30 @@ export function OrderDrawer({
                       />
                     </div>
 
-                    <div className="pt-2">
+                    {/* Mandatory Terms & Refund Policy Checkbox */}
+                    <label className="flex items-start gap-2.5 rounded-xl border border-slate-200 bg-white p-3.5 text-[11px] leading-relaxed text-slate-600 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        required
+                        checked={agreedTerms}
+                        onChange={(e) => setAgreedTerms(e.target.checked)}
+                        className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 accent-[#090E1A]"
+                      />
+                      <span>
+                        Saya memahami bahwa layanan ini adalah{" "}
+                        <strong className="text-[#090E1A]">pendampingan akademik (bukan joki)</strong>,
+                        keputusan ACC berada di tangan dosen pembimbing, reschedule gratis maks. H-1
+                        (1x), dan pembayaran untuk sesi yang sudah berjalan bersifat{" "}
+                        <strong className="text-[#090E1A]">non-refundable</strong> (untuk paket DP
+                        50%, kamu bebas tidak melanjutkan sesi berikutnya tanpa melunasi sisa).
+                      </span>
+                    </label>
+
+                    <div className="pt-1">
                       <button
                         type="submit"
-                        disabled={submitting}
-                        className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#F97316] px-5 py-3.5 text-sm font-bold text-white shadow-[0_6px_18px_-6px_rgba(249,115,22,0.55)] transition-all hover:bg-[#EA580C] disabled:opacity-60 cursor-pointer"
+                        disabled={submitting || !agreedTerms}
+                        className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#F97316] px-5 py-3.5 text-sm font-bold text-white shadow-[0_6px_18px_-6px_rgba(249,115,22,0.55)] transition-all hover:bg-[#EA580C] disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
                       >
                         {submitting ? (
                           <>

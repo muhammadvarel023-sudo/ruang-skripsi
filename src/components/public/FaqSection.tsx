@@ -32,6 +32,10 @@ export function FaqSection({
       a: "Tidak perlu. Sistem paket kami dibuat modular per bab. Kamu bisa memilih hanya Bab 1, Bab 2, atau Bab 3 sesuai titik progres skripsimu saat ini.",
     },
     {
+      q: "Bagaimana ketentuan pembatalan, reschedule, dan pengembalian dana (refund)?",
+      a: "Reschedule jadwal gratis 1x jika diinformasikan minimal H-1 (24 jam sebelumnya). Pembatalan sepihak sebelum sesi dimulai membuat DP 50% hangus sebagai kompensasi slot & persiapan (atau refund maks. 50% jika sudah bayar lunas). Untuk sesi yang sudah berjalan, dana tidak dapat dikembalikan (non-refundable)—namun jika mengambil skema DP 50% dan merasa tidak cocok setelah Sesi 1, kamu bebas tidak melanjutkan Sesi 2 tanpa perlu melunasi sisa 50%. Jika pembatalan berasal dari pihak mentor tanpa jadwal pengganti, dana dikembalikan 100%.",
+    },
+    {
       q: "Kapan saya harus melakukan pembayaran?",
       a: "Tidak ada pembayaran langsung saat mengirim formulir di website. Setelah kamu mengirim permintaan dan melakukan konfirmasi via Telegram atau LINE, admin akan memastikan kecocokan paket dan jadwal sesi terlebih dahulu.",
     },
