@@ -42,6 +42,19 @@ interface OrderDrawerProps {
   onClose: () => void;
 }
 
+const BANDUNG_PRIVATE_CAMPUSES = [
+  "Universitas Islam Bandung (UNISBA)",
+  "Universitas Pasundan (UNPAS)",
+  "Universitas Komputer Indonesia (UNIKOM)",
+  "Universitas Widyatama (UTama)",
+  "Universitas Katolik Parahyangan (UNPAR)",
+  "Universitas Kristen Maranatha",
+  "Universitas Sangga Buana (USB YPKP)",
+  "Universitas ARS Bandung",
+  "Universitas Muhammadiyah Bandung (UM Bandung)",
+  "Universitas Bale Bandung (UNIBBA)",
+];
+
 const QUALITATIVE_APPROACHES = [
   "Studi Kasus",
   "Fenomenologi",
@@ -60,7 +73,7 @@ export function OrderDrawer({
 }: OrderDrawerProps) {
   const [campusType, setCampusType] = useState<CampusType>(initialCampusType);
   const [paymentPlan, setPaymentPlan] = useState<PaymentPlan>("DP_50");
-  const [campusName, setCampusName] = useState("");
+  const [campusName, setCampusName] = useState(BANDUNG_PRIVATE_CAMPUSES[0]);
   const [studentName, setStudentName] = useState("");
   const [major, setMajor] = useState("");
   const [contactHandle, setContactHandle] = useState("");
@@ -278,7 +291,7 @@ export function OrderDrawer({
                           }`}
                         >
                           <Building2 className="h-3.5 w-3.5" />
-                          Luar Tel-U (+{formatRupiah(settings.non_telkom_surcharge)})
+                          PTS Bandung (+{formatRupiah(settings.non_telkom_surcharge)})
                         </button>
                       </div>
                     </div>
@@ -286,16 +299,24 @@ export function OrderDrawer({
                     {campusType === "NON_TELKOM" && (
                       <div>
                         <label className="mb-1.5 block text-xs font-bold text-slate-700">
-                          Nama Universitas Asal <span className="text-rose-500">*</span>
+                          Pilih Kampus Swasta Wilayah Bandung <span className="text-rose-500">*</span>
                         </label>
-                        <input
-                          type="text"
+                        <select
                           required
                           value={campusName}
                           onChange={(e) => setCampusName(e.target.value)}
-                          placeholder="Contoh: Universitas Padjadjaran"
                           className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-[#090E1A] outline-none focus:border-[#2563EB]"
-                        />
+                        >
+                          {BANDUNG_PRIVATE_CAMPUSES.map((campus) => (
+                            <option key={campus} value={campus}>
+                              {campus}
+                            </option>
+                          ))}
+                        </select>
+                        <p className="mt-1 text-[11px] text-slate-500">
+                          Saat ini layanan di luar Telkom University hanya tersedia untuk kampus
+                          swasta wilayah Bandung dengan jurusan relevan (Komunikasi / Sosial).
+                        </p>
                       </div>
                     )}
 

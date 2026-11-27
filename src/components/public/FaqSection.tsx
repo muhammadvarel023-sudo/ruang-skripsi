@@ -18,10 +18,10 @@ export function FaqSection({
       a: "Saat ini RuangSkripsi berfokus khusus pada rumpun Ilmu Komunikasi (PR, Marketing Communication, Media, Broadcasting, Komunikasi Digital, dsb.) dan khusus menggunakan metode penelitian Kualitatif (studi kasus, fenomenologi, semiotika, analisis wacana, etnografi/netnografi). Kami tidak menerima penelitian kuantitatif/olah statistik agar pendampingan tetap tajam.",
     },
     {
-      q: "Kenapa ada perbedaan tarif antara Telkom University (FKS) dan kampus lain?",
-      a: `Layanan ini utamanya dirancang sesuai konteks dan standar penulisan Fakultas Komunikasi & Ilmu Sosial (FKS) Telkom University sehingga mahasiswa FKS Tel-U mendapatkan tarif khusus. Mahasiswa dari universitas lain tetap sangat boleh berkonsultasi dengan sedikit penyesuaian tarif sebesar +${formatRupiah(
+      q: "Kampus mana saja yang dilayani dan kenapa ada perbedaan tarif?",
+      a: `Layanan utama kami dirancang khusus untuk mahasiswa Fakultas Komunikasi & Ilmu Sosial (FKS) Telkom University dengan tarif khusus + bonus 1x pertemuan follow-up. Untuk di luar Tel-U, saat ini kami hanya melayani mahasiswa kampus swasta wilayah Bandung yang jurusannya relevan (UNISBA, UNPAS, UNIKOM, Widyatama, UNPAR, Maranatha, USB YPKP, ARS, UM Bandung, dsb.) dengan penyesuaian tarif +${formatRupiah(
         nonTelkomSurcharge
-      )} per paket untuk adaptasi pedoman kampus masing-masing.`,
+      )} per paket.`,
     },
     {
       q: "Apakah RuangSkripsi menerima jasa pembuatan skripsi penuh (joki)?",

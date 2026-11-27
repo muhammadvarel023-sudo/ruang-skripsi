@@ -134,7 +134,7 @@ export function PackageCatalog({
               <p className="text-sm font-bold text-[#090E1A]">
                 {campusType === "TELKOM_FKS"
                   ? "Menampilkan Tarif Khusus Mahasiswa Telkom University (FKS)"
-                  : `Menampilkan Tarif Umum Luar Tel-U (+${formatRupiah(nonTelkomSurcharge)})`}
+                  : `Menampilkan Tarif Kampus Swasta Bandung (+${formatRupiah(nonTelkomSurcharge)})`}
               </p>
             </div>
           </div>
@@ -176,7 +176,7 @@ export function PackageCatalog({
               )}
               <Building2 className="relative z-10 h-3.5 w-3.5" />
               <span className="relative z-10">
-                Luar Tel-U (+{formatRupiah(nonTelkomSurcharge)})
+                PTS Bandung (+{formatRupiah(nonTelkomSurcharge)})
               </span>
             </button>
           </div>
@@ -369,16 +369,25 @@ export function PackageCatalog({
                             : "border-slate-200/80 bg-slate-50 text-slate-600"
                         }`}
                       >
-                        <p className="font-semibold">
-                          <span className={isDarkCard ? "text-emerald-400" : "text-[#059669]"}>
-                            + Bonus 1x follow-up revisi ringan
-                          </span>{" "}
-                          via chat (14 hari).
-                        </p>
+                        {campusType === "TELKOM_FKS" ? (
+                          <p className="font-semibold">
+                            <span className={isDarkCard ? "text-emerald-400" : "text-[#059669]"}>
+                              + Bonus 1x pertemuan follow-up
+                            </span>{" "}
+                            (khusus Tel-U FKS, bukan via chat berkepanjangan).
+                          </p>
+                        ) : (
+                          <p className="font-semibold">
+                            <span className={isDarkCard ? "text-orange-300" : "text-[#C2410C]"}>
+                              Khusus PTS wilayah Bandung
+                            </span>{" "}
+                            (jurusan Komunikasi/Sosial — Kualitatif).
+                          </p>
+                        )}
                         <p className="mt-0.5">
-                          Butuh sesi lanjutan di luar kuota paket? Cukup{" "}
+                          Sesi bimbingan lanjutan di luar kuota paket:{" "}
                           <strong className={isDarkCard ? "text-white" : "text-[#090E1A]"}>
-                            +{formatRupiah(addonSessionPrice)}/sesi
+                            +{formatRupiah(addonSessionPrice)}/pertemuan
                           </strong>
                           .
                         </p>
@@ -420,7 +429,7 @@ export function PackageCatalog({
                       <p className="mt-0.5 text-[11px] font-medium text-slate-400">
                         {campusType === "TELKOM_FKS"
                           ? "Tarif khusus Telkom University (FKS)"
-                          : `Termasuk penyesuaian luar Tel-U (+${formatRupiah(nonTelkomSurcharge)})`}
+                          : `Tarif PTS wilayah Bandung (+${formatRupiah(nonTelkomSurcharge)})`}
                       </p>
 
                       <button
