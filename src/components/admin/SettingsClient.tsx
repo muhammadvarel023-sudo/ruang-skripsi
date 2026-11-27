@@ -33,6 +33,9 @@ export function SettingsClient({
   const [bankAccountHolder, setBankAccountHolder] = useState(
     initialSettings.bank_account_holder
   );
+  const [googleSheetWebhookUrl, setGoogleSheetWebhookUrl] = useState(
+    initialSettings.google_sheet_webhook_url
+  );
   const [waTemplate, setWaTemplate] = useState(initialSettings.wa_template);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -74,6 +77,7 @@ export function SettingsClient({
           bank_name: bankName,
           bank_account_number: bankAccountNumber,
           bank_account_holder: bankAccountHolder,
+          google_sheet_webhook_url: googleSheetWebhookUrl.trim(),
           wa_template: waTemplate,
         }),
       });
@@ -334,6 +338,29 @@ export function SettingsClient({
                 </span>
               ))}
             </div>
+          </div>
+        </div>
+
+        {/* Google Sheets Auto-Sync Webhook */}
+        <div className="space-y-3 border-t border-slate-100 pt-5">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            4. Backup Otomatis ke Google Sheets (Opsional)
+          </h2>
+          <div>
+            <label className="mb-1.5 block text-xs font-bold text-slate-700">
+              URL Webhook Google Apps Script
+            </label>
+            <input
+              type="url"
+              value={googleSheetWebhookUrl}
+              onChange={(e) => setGoogleSheetWebhookUrl(e.target.value)}
+              placeholder="https://script.google.com/macros/s/....../exec"
+              className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 font-mono text-xs text-[#090E1A] outline-none focus:border-[#059669]"
+            />
+            <p className="mt-1 text-[11px] text-slate-500">
+              Jika diisi, setiap pesanan baru otomatis tersalin sebagai baris baru di Google
+              Sheets-mu secara real-time.
+            </p>
           </div>
         </div>
 

@@ -60,6 +60,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     bank_name: map.bank_name || "",
     bank_account_number: map.bank_account_number || "",
     bank_account_holder: map.bank_account_holder || "",
+    google_sheet_webhook_url: map.google_sheet_webhook_url || "",
     wa_template:
       map.wa_template ||
       "Halo Admin RuangSkripsi, saya ingin konfirmasi & kirim bukti pembayaran:\nKode: {{orderCode}}\nNama: {{studentName}}\nKampus: {{campusName}}\nPaket: {{packageName}}\nSkema Bayar: {{paymentPlan}} ({{amountDueNow}})",

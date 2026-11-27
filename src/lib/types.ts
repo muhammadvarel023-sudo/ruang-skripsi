@@ -63,5 +63,6 @@ export interface SiteSettings {
   bank_name: string;
   bank_account_number: string;
   bank_account_holder: string;
+  google_sheet_webhook_url: string;
   wa_template: string;
 }

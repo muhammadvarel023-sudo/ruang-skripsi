@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getAdminSession } from "@/lib/auth";
-import { generateOrderCode } from "@/lib/format";
+import { formatPaymentPlanLabel, formatRupiah, generateOrderCode } from "@/lib/format";
 import { getSiteSettings } from "@/lib/data";
 
 export async function GET() {
@@ -104,6 +104,42 @@ export async function POST(request: Request) {
         status: "PENDING",
       },
     });
+
+    // Optional non-blocking sync to Google Sheets Apps Script Webhook
+    if (settings.google_sheet_webhook_url?.startsWith("http")) {
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 4500);
+        await fetch(settings.google_sheet_webhook_url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          signal: controller.signal,
+          body: JSON.stringify({
+            tanggal: new Date(order.createdAt).toLocaleString("id-ID", {
+              timeZone: "Asia/Jakarta",
+            }),
+            orderCode: order.orderCode,
+            studentName: order.studentName,
+            campusName: order.campusName,
+            major: order.major,
+            contact: order.whatsapp,
+            category: order.categoryNameSnapshot,
+            packageName: order.packageNameSnapshot,
+            totalPrice: formatRupiah(order.priceSnapshot),
+            paymentPlan: formatPaymentPlanLabel(order.paymentPlan),
+            amountDueNow: formatRupiah(order.amountDueNow),
+            paymentStatus: "Belum Dibayar",
+            orderStatus: "Pending",
+            researchType: order.researchType,
+            topicOrTitle: order.topicOrTitle,
+            notes: order.notes || "",
+          }),
+        });
+        clearTimeout(timeout);
+      } catch (sheetErr) {
+        console.warn("Google Sheets webhook sync skipped/failed:", sheetErr);
+      }
+    }
 
     return NextResponse.json({ order }, { status: 201 });
   } catch (err) {

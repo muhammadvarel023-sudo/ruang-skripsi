@@ -30,6 +30,7 @@ export async function PATCH(request: Request) {
       "bank_name",
       "bank_account_number",
       "bank_account_holder",
+      "google_sheet_webhook_url",
       "wa_template",
     ];
 

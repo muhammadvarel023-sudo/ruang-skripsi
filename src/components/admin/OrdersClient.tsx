@@ -9,6 +9,7 @@ import {
   Trash2,
   Eye,
   Loader2,
+  Download,
 } from "lucide-react";
 import type { OrderDTO } from "@/lib/types";
 import {
@@ -106,15 +107,83 @@ export function OrdersClient({ initialOrders }: { initialOrders: OrderDTO[] }) {
     }
   }
 
+  function handleExportCsv() {
+    const headers = [
+      "Tanggal",
+      "Kode Pesanan",
+      "Nama Mahasiswa",
+      "Asal Kampus",
+      "Prodi",
+      "Telegram/LINE",
+      "Kategori",
+      "Paket",
+      "Total Harga",
+      "Skema Bayar",
+      "Tagihan Awal",
+      "Status Pembayaran",
+      "Status Pesanan",
+      "Pendekatan Kualitatif",
+      "Topik/Judul",
+      "Catatan",
+    ];
+
+    const escapeCsv = (val: unknown) => {
+      const s = String(val ?? "").replaceAll('"', '""');
+      return `"${s}"`;
+    };
+
+    const rows = filtered.map((o) => [
+      new Date(o.createdAt).toLocaleString("id-ID"),
+      o.orderCode,
+      o.studentName,
+      o.campusName,
+      o.major,
+      o.whatsapp,
+      o.categoryNameSnapshot,
+      o.packageNameSnapshot,
+      o.priceSnapshot,
+      formatPaymentPlanLabel(o.paymentPlan),
+      o.amountDueNow > 0 ? o.amountDueNow : o.priceSnapshot,
+      PAYMENT_STATUS_META[o.paymentStatus]?.label ?? o.paymentStatus,
+      ORDER_STATUS_META[o.status]?.label ?? o.status,
+      o.researchType,
+      o.topicOrTitle,
+      o.notes ?? "",
+    ]);
+
+    const csv =
+      "\uFEFF" +
+      [headers, ...rows].map((r) => r.map(escapeCsv).join(",")).join("\n");
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `ruangskripsi-pesanan-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
   return (
     <div className="space-y-6">
-      <div>
-        <p className="font-mono text-xs uppercase tracking-wider text-slate-400">
-          Manajemen Pesanan
-        </p>
-        <h1 className="mt-1 text-2xl font-semibold tracking-tight text-[#0F172A]">
-          Daftar Permintaan Layanan
-        </h1>
+      <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+        <div>
+          <p className="font-mono text-xs uppercase tracking-wider text-slate-400">
+            Manajemen Pesanan
+          </p>
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-[#0F172A]">
+            Daftar Permintaan Layanan
+          </h1>
+        </div>
+        <button
+          type="button"
+          onClick={handleExportCsv}
+          disabled={filtered.length === 0}
+          className="inline-flex items-center gap-2 self-start rounded-xl border border-emerald-600/30 bg-emerald-50 px-4 py-2 text-xs font-bold text-emerald-800 transition-colors hover:bg-emerald-100 disabled:opacity-50 sm:self-auto cursor-pointer"
+        >
+          <Download className="h-3.5 w-3.5" />
+          Download Excel / Sheets (.CSV)
+        </button>
       </div>
 
       {/* Filter & Search Bar */}
