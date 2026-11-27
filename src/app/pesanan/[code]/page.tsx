@@ -6,8 +6,10 @@ import {
   buildContactMessage,
   buildLineUrl,
   buildTelegramUrl,
+  formatPaymentPlanLabel,
   formatRupiah,
   ORDER_STATUS_META,
+  PAYMENT_STATUS_META,
 } from "@/lib/format";
 import {
   ArrowLeft,
@@ -36,6 +38,11 @@ export default async function OrderSummaryPage({
 
   const statusMeta =
     ORDER_STATUS_META[order.status] ?? ORDER_STATUS_META.PENDING;
+  const payMeta =
+    PAYMENT_STATUS_META[order.paymentStatus] ?? PAYMENT_STATUS_META.UNPAID;
+
+  const amountDueNow =
+    order.amountDueNow > 0 ? order.amountDueNow : order.priceSnapshot;
 
   const message = buildContactMessage(settings.wa_template, {
     orderCode: order.orderCode,
@@ -45,6 +52,8 @@ export default async function OrderSummaryPage({
     categoryName: order.categoryNameSnapshot,
     packageName: order.packageNameSnapshot,
     price: order.priceSnapshot,
+    paymentPlan: order.paymentPlan,
+    amountDueNow,
     researchType: order.researchType,
     topicOrTitle: order.topicOrTitle,
   });
@@ -79,12 +88,18 @@ export default async function OrderSummaryPage({
               <CheckCircle2 className="h-6 w-6" />
             </div>
             <p className="mt-3 font-mono text-xs font-bold tracking-wider text-blue-300">
-              KODE PESANAN
+              INVOICE &amp; KODE PESANAN
             </p>
             <h1 className="mt-1 font-mono text-2xl font-bold text-white">
               {order.orderCode}
             </h1>
-            <div className="mt-3 flex justify-center">
+            <div className="mt-3 flex flex-wrap justify-center gap-2">
+              <span
+                className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold ${payMeta.bg} ${payMeta.text}`}
+              >
+                <span className={`h-1.5 w-1.5 rounded-full ${payMeta.dot}`} />
+                Pembayaran: {payMeta.label}
+              </span>
               <span
                 className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold ${statusMeta.bg} ${statusMeta.text}`}
               >
@@ -94,7 +109,7 @@ export default async function OrderSummaryPage({
             </div>
           </div>
 
-          <div className="p-6 space-y-4 text-sm">
+          <div className="p-6 space-y-5 text-sm">
             <div className="rounded-xl border border-slate-200 bg-[#F8FAFC] p-4">
               <p className="font-mono text-[11px] font-bold text-[#2563EB]">
                 {order.categoryNameSnapshot}
@@ -107,7 +122,66 @@ export default async function OrderSummaryPage({
                   {formatRupiah(order.priceSnapshot)}
                 </p>
               </div>
+              <div className="mt-2.5 flex items-center justify-between border-t border-slate-200/80 pt-2.5 text-xs">
+                <span className="font-medium text-slate-600">
+                  {formatPaymentPlanLabel(order.paymentPlan)}
+                </span>
+                <span className="font-mono text-sm font-bold text-[#EA580C]">
+                  Tagihan Awal: {formatRupiah(amountDueNow)}
+                </span>
+              </div>
             </div>
+
+            {/* Payment Instructions */}
+            {order.paymentStatus !== "PAID" && (
+              <div className="rounded-xl border border-slate-200 bg-white p-4 space-y-3">
+                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                  Instruksi Pembayaran
+                </p>
+
+                {settings.qris_image_url && (
+                  <div className="text-center border-b border-slate-100 pb-3">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={settings.qris_image_url}
+                      alt="QRIS RuangSkripsi"
+                      className="mx-auto max-h-56 rounded-lg border border-slate-200 p-1.5 object-contain"
+                    />
+                    {settings.qris_merchant_name && (
+                      <p className="mt-2 text-xs font-semibold text-[#090E1A]">
+                        QRIS resmi a.n.{" "}
+                        <span className="text-[#2563EB]">
+                          {settings.qris_merchant_name}
+                        </span>
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                {settings.bank_account_number && (
+                  <div className="space-y-1.5 rounded-lg bg-[#F8FAFC] p-3 text-xs">
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Bank / E-Wallet</span>
+                      <span className="font-bold text-[#090E1A]">
+                        {settings.bank_name}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">No. Rekening</span>
+                      <span className="font-mono font-bold text-[#090E1A]">
+                        {settings.bank_account_number}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Atas Nama</span>
+                      <span className="font-semibold text-[#090E1A]">
+                        {settings.bank_account_holder}
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
 
             <dl className="space-y-2.5 text-xs">
               <div className="flex justify-between gap-4">
@@ -136,17 +210,9 @@ export default async function OrderSummaryPage({
                   {order.topicOrTitle}
                 </dd>
               </div>
-              {order.notes && (
-                <div>
-                  <dt className="text-slate-500">Catatan Tambahan</dt>
-                  <dd className="mt-1 rounded-lg bg-[#F8FAFC] p-3 text-slate-700">
-                    {order.notes}
-                  </dd>
-                </div>
-              )}
             </dl>
 
-            <div className="space-y-2.5 pt-4">
+            <div className="space-y-2.5 pt-2">
               {telegramUrl && (
                 <a
                   href={telegramUrl}
@@ -155,7 +221,7 @@ export default async function OrderSummaryPage({
                   className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#0284C7] px-5 py-3.5 text-sm font-bold text-white transition-all hover:bg-[#0369A1]"
                 >
                   <Send className="h-4 w-4" />
-                  Konfirmasi via Telegram
+                  Konfirmasi &amp; Kirim Bukti via Telegram
                 </a>
               )}
               {lineUrl && (

@@ -23,6 +23,7 @@ export async function POST(request: Request) {
       packageId,
       campusType,
       campusName,
+      paymentPlan,
       studentName,
       major,
       whatsapp,
@@ -51,6 +52,8 @@ export async function POST(request: Request) {
         ? "Telkom University (FKS)"
         : String(campusName || "").trim() || "Di Luar Telkom University";
 
+    const normalizedPlan = paymentPlan === "DP_50" ? "DP_50" : "FULL";
+
     const [pkg, settings] = await Promise.all([
       prisma.package.findUnique({
         where: { id: String(packageId) },
@@ -71,6 +74,8 @@ export async function POST(request: Request) {
     const surcharge =
       normalizedCampusType === "NON_TELKOM" ? settings.non_telkom_surcharge : 0;
     const finalPrice = basePrice + surcharge;
+    const amountDueNow =
+      normalizedPlan === "DP_50" ? Math.ceil(finalPrice / 2) : finalPrice;
 
     let orderCode = generateOrderCode();
     const existing = await prisma.order.findUnique({ where: { orderCode } });
@@ -85,6 +90,9 @@ export async function POST(request: Request) {
         categoryNameSnapshot: pkg.category.name,
         packageNameSnapshot: pkg.name,
         priceSnapshot: finalPrice,
+        paymentPlan: normalizedPlan,
+        amountDueNow,
+        paymentStatus: "UNPAID",
         campusType: normalizedCampusType,
         campusName: resolvedCampusName,
         studentName: String(studentName).trim(),

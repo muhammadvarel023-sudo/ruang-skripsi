@@ -19,6 +19,7 @@ interface PackageCatalogProps {
   activeCategoryId: string;
   campusType: CampusType;
   nonTelkomSurcharge: number;
+  addonSessionPrice: number;
   highlightedPackageId: string | null;
   onChangeCampusType: (type: CampusType) => void;
   onSelectCategory: (id: string) => void;
@@ -67,6 +68,7 @@ export function PackageCatalog({
   activeCategoryId,
   campusType,
   nonTelkomSurcharge,
+  addonSessionPrice,
   highlightedPackageId,
   onChangeCampusType,
   onSelectCategory,
@@ -358,6 +360,28 @@ export function PackageCatalog({
                             </li>
                           ))}
                         </ul>
+                      </div>
+                      {/* Transparent Session & Follow-up Policy Box */}
+                      <div
+                        className={`mt-4 rounded-xl border px-3.5 py-2.5 text-[11px] leading-relaxed ${
+                          isDarkCard
+                            ? "border-white/15 bg-white/[0.06] text-slate-300"
+                            : "border-slate-200/80 bg-slate-50 text-slate-600"
+                        }`}
+                      >
+                        <p className="font-semibold">
+                          <span className={isDarkCard ? "text-emerald-400" : "text-[#059669]"}>
+                            + Bonus 1x follow-up revisi ringan
+                          </span>{" "}
+                          via chat (14 hari).
+                        </p>
+                        <p className="mt-0.5">
+                          Butuh sesi lanjutan di luar kuota paket? Cukup{" "}
+                          <strong className={isDarkCard ? "text-white" : "text-[#090E1A]"}>
+                            +{formatRupiah(addonSessionPrice)}/sesi
+                          </strong>
+                          .
+                        </p>
                       </div>
                     </div>
 

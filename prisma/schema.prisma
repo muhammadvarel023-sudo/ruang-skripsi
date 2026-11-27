@@ -49,6 +49,9 @@ model Order {
   categoryNameSnapshot String
   packageNameSnapshot  String
   priceSnapshot        Int
+  paymentPlan          String   @default("DP_50") // DP_50 | FULL
+  amountDueNow         Int      @default(0)
+  paymentStatus        String   @default("UNPAID") // UNPAID | DP_PAID | PAID
   campusType           String   @default("TELKOM_FKS") // TELKOM_FKS | NON_TELKOM
   campusName           String   @default("Telkom University (FKS)")
   studentName          String

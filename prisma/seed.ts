@@ -9,10 +9,16 @@ async function main() {
     { key: "admin_telegram", value: "ruangskripsi" },
     { key: "admin_line", value: "ruangskripsi" },
     { key: "non_telkom_surcharge", value: "50000" },
+    { key: "addon_session_price", value: "60000" },
+    { key: "qris_image_url", value: "" },
+    { key: "qris_merchant_name", value: "" },
+    { key: "bank_name", value: "BCA / SeaBank / DANA (Atur di Admin)" },
+    { key: "bank_account_number", value: "Atur di Dashboard Admin" },
+    { key: "bank_account_holder", value: "RuangSkripsi" },
     {
       key: "wa_template",
       value:
-        "Halo Admin RuangSkripsi, saya ingin konfirmasi permintaan konsultasi skripsi (Komunikasi — Kualitatif):\n\nKode Pesanan: {{orderCode}}\nNama: {{studentName}}\nAsal Kampus: {{campusName}}\nProdi: {{major}}\nPaket: {{categoryName}} — {{packageName}}\nEstimasi Biaya: {{price}}\nPendekatan Kualitatif: {{researchType}}\nTopik/Judul: {{topicOrTitle}}\n\nMohon info jadwal sesi konsultasinya. Terima kasih!",
+        "Halo Admin RuangSkripsi, saya ingin konfirmasi & kirim bukti pembayaran konsultasi skripsi (Komunikasi — Kualitatif):\n\nKode Pesanan: {{orderCode}}\nNama: {{studentName}}\nAsal Kampus: {{campusName}}\nProdi: {{major}}\nPaket: {{categoryName}} — {{packageName}}\nTotal Paket: {{price}}\nSkema Bayar: {{paymentPlan}} ({{amountDueNow}})\nPendekatan Kualitatif: {{researchType}}\nTopik/Judul: {{topicOrTitle}}\n\nBerikut saya lampirkan bukti transfernya. Mohon info jadwal sesinya ya!",
     },
   ];
 

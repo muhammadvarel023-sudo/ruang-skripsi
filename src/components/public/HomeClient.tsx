@@ -63,6 +63,7 @@ export function HomeClient({ categories, settings }: HomeClientProps) {
           activeCategoryId={activeCategoryId}
           campusType={campusType}
           nonTelkomSurcharge={settings.non_telkom_surcharge}
+          addonSessionPrice={settings.addon_session_price}
           highlightedPackageId={highlightedPackageId}
           onChangeCampusType={setCampusType}
           onSelectCategory={(id) => {

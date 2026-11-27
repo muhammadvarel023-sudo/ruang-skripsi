@@ -37,8 +37,14 @@ export interface ContactTemplateVars {
   categoryName: string;
   packageName: string;
   price: number;
+  paymentPlan: string;
+  amountDueNow: number;
   researchType: string;
   topicOrTitle: string;
+}
+
+export function formatPaymentPlanLabel(plan: string): string {
+  return plan === "DP_50" ? "DP 50% (Lock Jadwal)" : "Bayar Lunas 100%";
 }
 
 export function buildContactMessage(
@@ -53,6 +59,8 @@ export function buildContactMessage(
     .replaceAll("{{categoryName}}", vars.categoryName)
     .replaceAll("{{packageName}}", vars.packageName)
     .replaceAll("{{price}}", formatRupiah(vars.price))
+    .replaceAll("{{paymentPlan}}", formatPaymentPlanLabel(vars.paymentPlan))
+    .replaceAll("{{amountDueNow}}", formatRupiah(vars.amountDueNow))
     .replaceAll("{{researchType}}", vars.researchType)
     .replaceAll("{{topicOrTitle}}", vars.topicOrTitle);
 }
@@ -102,6 +110,30 @@ export const ORDER_STATUS_META: Record<
     bg: "bg-rose-50 border-rose-200",
     text: "text-rose-800",
     dot: "bg-rose-500",
+  },
+};
+
+export const PAYMENT_STATUS_META: Record<
+  string,
+  { label: string; bg: string; text: string; dot: string }
+> = {
+  UNPAID: {
+    label: "Belum Dibayar",
+    bg: "bg-rose-50 border-rose-200",
+    text: "text-rose-700",
+    dot: "bg-rose-500",
+  },
+  DP_PAID: {
+    label: "DP 50% Masuk",
+    bg: "bg-amber-50 border-amber-200",
+    text: "text-amber-800",
+    dot: "bg-amber-500",
+  },
+  PAID: {
+    label: "Lunas",
+    bg: "bg-emerald-50 border-emerald-200",
+    text: "text-emerald-800",
+    dot: "bg-emerald-500",
   },
 };
 

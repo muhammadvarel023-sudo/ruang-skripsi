@@ -24,6 +24,12 @@ export async function PATCH(request: Request) {
       "admin_telegram",
       "admin_line",
       "non_telkom_surcharge",
+      "addon_session_price",
+      "qris_image_url",
+      "qris_merchant_name",
+      "bank_name",
+      "bank_account_number",
+      "bank_account_holder",
       "wa_template",
     ];
 

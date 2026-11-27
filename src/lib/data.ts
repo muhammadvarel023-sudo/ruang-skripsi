@@ -48,13 +48,20 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     map[r.key] = r.value;
   }
   const parsedSurcharge = Number(map.non_telkom_surcharge);
+  const parsedAddon = Number(map.addon_session_price);
   return {
     brand_name: map.brand_name || "RuangSkripsi",
     admin_telegram: map.admin_telegram ?? "ruangskripsi",
     admin_line: map.admin_line ?? "ruangskripsi",
     non_telkom_surcharge: Number.isNaN(parsedSurcharge) ? 50000 : parsedSurcharge,
+    addon_session_price: Number.isNaN(parsedAddon) ? 60000 : parsedAddon,
+    qris_image_url: map.qris_image_url || "",
+    qris_merchant_name: map.qris_merchant_name || "",
+    bank_name: map.bank_name || "",
+    bank_account_number: map.bank_account_number || "",
+    bank_account_holder: map.bank_account_holder || "",
     wa_template:
       map.wa_template ||
-      "Halo Admin RuangSkripsi, saya ingin konfirmasi permintaan konsultasi:\nKode: {{orderCode}}\nNama: {{studentName}}\nKampus: {{campusName}}\nPaket: {{packageName}}\nEstimasi: {{price}}",
+      "Halo Admin RuangSkripsi, saya ingin konfirmasi & kirim bukti pembayaran:\nKode: {{orderCode}}\nNama: {{studentName}}\nKampus: {{campusName}}\nPaket: {{packageName}}\nSkema Bayar: {{paymentPlan}} ({{amountDueNow}})",
   };
 }

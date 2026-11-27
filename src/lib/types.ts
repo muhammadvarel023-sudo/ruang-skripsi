@@ -1,4 +1,5 @@
 export type CampusType = "TELKOM_FKS" | "NON_TELKOM";
+export type PaymentPlan = "DP_50" | "FULL";
 
 export interface PackageDTO {
   id: string;
@@ -35,6 +36,9 @@ export interface OrderDTO {
   categoryNameSnapshot: string;
   packageNameSnapshot: string;
   priceSnapshot: number;
+  paymentPlan: string;
+  amountDueNow: number;
+  paymentStatus: string;
   campusType: string;
   campusName: string;
   studentName: string;
@@ -53,5 +57,11 @@ export interface SiteSettings {
   admin_telegram: string;
   admin_line: string;
   non_telkom_surcharge: number;
+  addon_session_price: number;
+  qris_image_url: string;
+  qris_merchant_name: string;
+  bank_name: string;
+  bank_account_number: string;
+  bank_account_holder: string;
   wa_template: string;
 }
