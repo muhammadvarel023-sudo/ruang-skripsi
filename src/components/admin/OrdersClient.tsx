@@ -13,7 +13,6 @@ import {
 import type { OrderDTO } from "@/lib/types";
 import {
   formatRupiah,
-  normalizeWhatsAppNumber,
   ORDER_STATUS_META,
 } from "@/lib/format";
 
@@ -309,7 +308,7 @@ export function OrdersClient({ initialOrders }: { initialOrders: OrderDTO[] }) {
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-500">WhatsApp</span>
+                    <span className="text-slate-500">Telegram / LINE</span>
                     <span className="font-mono text-[#0F172A]">
                       {activeOrder.whatsapp}
                     </span>
@@ -347,17 +346,15 @@ export function OrdersClient({ initialOrders }: { initialOrders: OrderDTO[] }) {
 
               <div className="flex items-center gap-2 border-t border-slate-200 bg-white p-4">
                 <a
-                  href={`https://wa.me/${normalizeWhatsAppNumber(
-                    activeOrder.whatsapp
-                  )}?text=${encodeURIComponent(
-                    `Halo ${activeOrder.studentName}, saya dari RuangSkripsi menindaklanjuti pesanan ${activeOrder.orderCode} (${activeOrder.packageNameSnapshot}).`
+                  href={`https://t.me/${encodeURIComponent(
+                    activeOrder.whatsapp.trim().replace(/^@+/, "")
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#0F766E] px-4 py-2.5 text-xs font-semibold text-white hover:bg-[#115E59]"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#0284C7] px-4 py-2.5 text-xs font-semibold text-white hover:bg-[#0369A1]"
                 >
                   <MessageCircle className="h-4 w-4" />
-                  Chat Mahasiswa via WA
+                  Buka Telegram ({activeOrder.whatsapp})
                 </a>
                 <button
                   type="button"

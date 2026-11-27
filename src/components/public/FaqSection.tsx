@@ -33,7 +33,7 @@ export function FaqSection({
     },
     {
       q: "Kapan saya harus melakukan pembayaran?",
-      a: "Tidak ada pembayaran langsung saat mengirim formulir di website. Setelah kamu mengirim permintaan dan melakukan konfirmasi via WhatsApp, admin akan memastikan kecocokan paket dan jadwal sesi terlebih dahulu.",
+      a: "Tidak ada pembayaran langsung saat mengirim formulir di website. Setelah kamu mengirim permintaan dan melakukan konfirmasi via Telegram atau LINE, admin akan memastikan kecocokan paket dan jadwal sesi terlebih dahulu.",
     },
   ];
 

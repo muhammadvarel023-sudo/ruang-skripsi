@@ -6,7 +6,8 @@ async function main() {
   // Default settings (idempotent: never overwrite admin edits)
   const defaultSettings = [
     { key: "brand_name", value: "RuangSkripsi" },
-    { key: "admin_whatsapp", value: "6281234567890" },
+    { key: "admin_telegram", value: "ruangskripsi" },
+    { key: "admin_line", value: "ruangskripsi" },
     { key: "non_telkom_surcharge", value: "50000" },
     {
       key: "wa_template",

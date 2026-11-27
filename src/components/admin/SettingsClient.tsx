@@ -10,9 +10,10 @@ export function SettingsClient({
   initialSettings: SiteSettings;
 }) {
   const [brandName, setBrandName] = useState(initialSettings.brand_name);
-  const [adminWhatsapp, setAdminWhatsapp] = useState(
-    initialSettings.admin_whatsapp
+  const [adminTelegram, setAdminTelegram] = useState(
+    initialSettings.admin_telegram
   );
+  const [adminLine, setAdminLine] = useState(initialSettings.admin_line);
   const [nonTelkomSurcharge, setNonTelkomSurcharge] = useState(
     String(initialSettings.non_telkom_surcharge)
   );
@@ -30,7 +31,8 @@ export function SettingsClient({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           brand_name: brandName,
-          admin_whatsapp: adminWhatsapp,
+          admin_telegram: adminTelegram,
+          admin_line: adminLine,
           non_telkom_surcharge: Number(nonTelkomSurcharge) || 0,
           wa_template: waTemplate,
         }),
@@ -51,7 +53,7 @@ export function SettingsClient({
           Konfigurasi Platform
         </p>
         <h1 className="mt-1 text-2xl font-bold tracking-tight text-[#090E1A]">
-          Pengaturan Tarif Kampus &amp; WhatsApp
+          Pengaturan Tarif Kampus, Telegram &amp; LINE
         </h1>
       </div>
 
@@ -86,29 +88,49 @@ export function SettingsClient({
             className="w-full rounded-xl border border-orange-300 bg-white px-3.5 py-2.5 font-mono text-sm font-bold text-[#090E1A] outline-none focus:border-[#EA580C]"
           />
           <p className="mt-1.5 text-[11px] text-slate-600">
-            Harga dasar paket otomatis berlaku untuk mahasiswa <strong>Telkom University (FKS)</strong>.
-            Nominal di atas akan otomatis ditambahkan ketika mahasiswa di luar Telkom University
-            memilih paket.
+            Harga dasar paket berlaku untuk mahasiswa{" "}
+            <strong>Telkom University (FKS)</strong>. Nominal ini otomatis ditambahkan untuk
+            mahasiswa di luar Telkom University.
           </p>
         </div>
 
-        <div>
-          <label className="mb-1.5 block text-xs font-bold text-slate-700">
-            Nomor WhatsApp Tujuan (Format 628xxx)
-          </label>
-          <input
-            type="text"
-            required
-            value={adminWhatsapp}
-            onChange={(e) => setAdminWhatsapp(e.target.value)}
-            placeholder="6281234567890"
-            className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 font-mono text-sm text-[#090E1A] outline-none focus:border-[#2563EB]"
-          />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label className="mb-1.5 block text-xs font-bold text-slate-700">
+              Username Telegram Admin (Tanpa @)
+            </label>
+            <input
+              type="text"
+              value={adminTelegram}
+              onChange={(e) => setAdminTelegram(e.target.value)}
+              placeholder="cth: ruangskripsi"
+              className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 font-mono text-sm text-[#090E1A] outline-none focus:border-[#0284C7]"
+            />
+            <p className="mt-1 text-[11px] text-slate-500">
+              Kosongkan jika tidak ingin menampilkan tombol Telegram.
+            </p>
+          </div>
+
+          <div>
+            <label className="mb-1.5 block text-xs font-bold text-slate-700">
+              ID LINE Admin
+            </label>
+            <input
+              type="text"
+              value={adminLine}
+              onChange={(e) => setAdminLine(e.target.value)}
+              placeholder="cth: ruangskripsi"
+              className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 font-mono text-sm text-[#090E1A] outline-none focus:border-[#06C755]"
+            />
+            <p className="mt-1 text-[11px] text-slate-500">
+              Kosongkan jika tidak ingin menampilkan tombol LINE.
+            </p>
+          </div>
         </div>
 
         <div>
           <label className="mb-1.5 block text-xs font-bold text-slate-700">
-            Template Pesan Otomatis WhatsApp
+            Template Pesan Otomatis Konfirmasi (Telegram &amp; Salin untuk LINE)
           </label>
           <textarea
             rows={7}

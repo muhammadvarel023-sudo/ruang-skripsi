@@ -50,7 +50,8 @@ export interface OrderDTO {
 
 export interface SiteSettings {
   brand_name: string;
-  admin_whatsapp: string;
+  admin_telegram: string;
+  admin_line: string;
   non_telkom_surcharge: number;
   wa_template: string;
 }

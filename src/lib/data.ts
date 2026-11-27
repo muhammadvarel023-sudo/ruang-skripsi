@@ -50,7 +50,8 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   const parsedSurcharge = Number(map.non_telkom_surcharge);
   return {
     brand_name: map.brand_name || "RuangSkripsi",
-    admin_whatsapp: map.admin_whatsapp || "6281234567890",
+    admin_telegram: map.admin_telegram ?? "ruangskripsi",
+    admin_line: map.admin_line ?? "ruangskripsi",
     non_telkom_surcharge: Number.isNaN(parsedSurcharge) ? 50000 : parsedSurcharge,
     wa_template:
       map.wa_template ||

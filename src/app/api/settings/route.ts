@@ -21,7 +21,8 @@ export async function PATCH(request: Request) {
     const body = await request.json();
     const allowedKeys = [
       "brand_name",
-      "admin_whatsapp",
+      "admin_telegram",
+      "admin_line",
       "non_telkom_surcharge",
       "wa_template",
     ];

@@ -29,34 +29,23 @@ export function parseOutputs(raw: string): string[] {
   }
 }
 
-export function normalizeWhatsAppNumber(input: string): string {
-  const digits = input.replace(/\D/g, "");
-  if (digits.startsWith("0")) {
-    return "62" + digits.slice(1);
-  }
-  if (digits.startsWith("8")) {
-    return "62" + digits;
-  }
-  return digits;
+export interface ContactTemplateVars {
+  orderCode: string;
+  studentName: string;
+  campusName: string;
+  major: string;
+  categoryName: string;
+  packageName: string;
+  price: number;
+  researchType: string;
+  topicOrTitle: string;
 }
 
-export function buildWhatsAppUrl(
-  adminPhone: string,
+export function buildContactMessage(
   template: string,
-  vars: {
-    orderCode: string;
-    studentName: string;
-    campusName: string;
-    major: string;
-    categoryName: string;
-    packageName: string;
-    price: number;
-    researchType: string;
-    topicOrTitle: string;
-  }
+  vars: ContactTemplateVars
 ): string {
-  const phone = normalizeWhatsAppNumber(adminPhone || "6281234567890");
-  const message = template
+  return template
     .replaceAll("{{orderCode}}", vars.orderCode)
     .replaceAll("{{studentName}}", vars.studentName)
     .replaceAll("{{campusName}}", vars.campusName)
@@ -66,8 +55,18 @@ export function buildWhatsAppUrl(
     .replaceAll("{{price}}", formatRupiah(vars.price))
     .replaceAll("{{researchType}}", vars.researchType)
     .replaceAll("{{topicOrTitle}}", vars.topicOrTitle);
+}
 
-  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+export function buildTelegramUrl(username: string, message: string): string {
+  const clean = username.trim().replace(/^@+/, "");
+  return `https://t.me/${encodeURIComponent(clean)}?text=${encodeURIComponent(
+    message
+  )}`;
+}
+
+export function buildLineUrl(lineId: string): string {
+  const clean = lineId.trim().replace(/^@+/, "");
+  return `https://line.me/ti/p/~${encodeURIComponent(clean)}`;
 }
 
 export const ORDER_STATUS_META: Record<

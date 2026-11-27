@@ -7,6 +7,7 @@ import {
   X,
   ArrowRight,
   CheckCircle2,
+  Send,
   MessageCircle,
   Loader2,
   Copy,
@@ -22,7 +23,12 @@ import type {
   PackageDTO,
   SiteSettings,
 } from "@/lib/types";
-import { buildWhatsAppUrl, formatRupiah } from "@/lib/format";
+import {
+  buildContactMessage,
+  buildLineUrl,
+  buildTelegramUrl,
+  formatRupiah,
+} from "@/lib/format";
 
 interface OrderDrawerProps {
   selected: { pkg: PackageDTO; category: CategoryDTO } | null;
@@ -51,21 +57,23 @@ export function OrderDrawer({
   const [campusName, setCampusName] = useState("");
   const [studentName, setStudentName] = useState("");
   const [major, setMajor] = useState("");
-  const [whatsapp, setWhatsapp] = useState("");
+  const [contactHandle, setContactHandle] = useState("");
   const [researchType, setResearchType] = useState(QUALITATIVE_APPROACHES[0]);
   const [topicOrTitle, setTopicOrTitle] = useState("");
   const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [createdOrder, setCreatedOrder] = useState<OrderDTO | null>(null);
-  const [copied, setCopied] = useState(false);
+  const [copiedCode, setCopiedCode] = useState(false);
+  const [copiedMsg, setCopiedMsg] = useState(false);
 
   useEffect(() => {
     if (selected) {
       setCampusType(initialCampusType);
       setError(null);
       setCreatedOrder(null);
-      setCopied(false);
+      setCopiedCode(false);
+      setCopiedMsg(false);
     }
   }, [selected, initialCampusType]);
 
@@ -102,7 +110,7 @@ export function OrderDrawer({
               : campusName.trim(),
           studentName,
           major,
-          whatsapp,
+          whatsapp: contactHandle,
           researchType,
           topicOrTitle,
           notes,
@@ -121,8 +129,8 @@ export function OrderDrawer({
     }
   }
 
-  const waUrl = createdOrder
-    ? buildWhatsAppUrl(settings.admin_whatsapp, settings.wa_template, {
+  const formattedMessage = createdOrder
+    ? buildContactMessage(settings.wa_template, {
         orderCode: createdOrder.orderCode,
         studentName: createdOrder.studentName,
         campusName: createdOrder.campusName,
@@ -133,13 +141,30 @@ export function OrderDrawer({
         researchType: createdOrder.researchType,
         topicOrTitle: createdOrder.topicOrTitle,
       })
-    : "#";
+    : "";
+
+  const telegramUrl =
+    createdOrder && settings.admin_telegram.trim()
+      ? buildTelegramUrl(settings.admin_telegram, formattedMessage)
+      : null;
+
+  const lineUrl =
+    createdOrder && settings.admin_line.trim()
+      ? buildLineUrl(settings.admin_line)
+      : null;
 
   const handleCopyCode = () => {
     if (!createdOrder) return;
     navigator.clipboard.writeText(createdOrder.orderCode);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setCopiedCode(true);
+    setTimeout(() => setCopiedCode(false), 2000);
+  };
+
+  const handleCopyMessage = () => {
+    if (!formattedMessage) return;
+    navigator.clipboard.writeText(formattedMessage);
+    setCopiedMsg(true);
+    setTimeout(() => setCopiedMsg(false), 2500);
   };
 
   return (
@@ -195,7 +220,6 @@ export function OrderDrawer({
                     onSubmit={handleSubmit}
                     className="space-y-4"
                   >
-                    {/* Selected package + dynamic price summary box */}
                     <div className="rounded-xl border-2 border-[#090E1A] bg-white p-4">
                       <div className="flex items-start justify-between gap-3">
                         <div>
@@ -219,7 +243,6 @@ export function OrderDrawer({
                       </div>
                     </div>
 
-                    {/* Campus Type Selector inside drawer */}
                     <div>
                       <label className="mb-1.5 block text-xs font-bold text-slate-700">
                         Asal Kampus <span className="text-rose-500">*</span>
@@ -306,14 +329,14 @@ export function OrderDrawer({
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div>
                         <label className="mb-1.5 block text-xs font-bold text-slate-700">
-                          Nomor WhatsApp <span className="text-rose-500">*</span>
+                          Username Telegram / ID LINE <span className="text-rose-500">*</span>
                         </label>
                         <input
-                          type="tel"
+                          type="text"
                           required
-                          value={whatsapp}
-                          onChange={(e) => setWhatsapp(e.target.value)}
-                          placeholder="0812xxxxxxxx"
+                          value={contactHandle}
+                          onChange={(e) => setContactHandle(e.target.value)}
+                          placeholder="Cth: @nadiakartika (TG/LINE)"
                           className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-[#090E1A] outline-none focus:border-[#2563EB]"
                         />
                       </div>
@@ -381,8 +404,8 @@ export function OrderDrawer({
                         )}
                       </button>
                       <p className="mt-2.5 text-center text-[11px] text-slate-500">
-                        Khusus penelitian kualitatif bidang Komunikasi. Tidak ada pembayaran langsung
-                        sebelum konfirmasi jadwal via WhatsApp.
+                        Privasi terjaga — komunikasi lanjutan dilakukan lewat Telegram / LINE tanpa
+                        perlu nomor telepon.
                       </p>
                     </div>
                   </motion.form>
@@ -402,8 +425,8 @@ export function OrderDrawer({
                         Permintaan Berhasil Dicatat
                       </h4>
                       <p className="mt-1 text-xs leading-relaxed text-slate-600">
-                        Simpan kode pesanan di bawah ini lalu klik tombol WhatsApp untuk
-                        konfirmasi jadwal sesi pendampingan.
+                        Simpan kode pesanan di bawah ini lalu konfirmasi jadwal sesi lewat
+                        Telegram atau LINE admin.
                       </p>
 
                       <div className="mt-4 inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2">
@@ -416,7 +439,7 @@ export function OrderDrawer({
                           className="text-slate-400 hover:text-[#090E1A] cursor-pointer"
                           title="Salin kode pesanan"
                         >
-                          {copied ? (
+                          {copiedCode ? (
                             <Check className="h-4 w-4 text-[#10B981]" />
                           ) : (
                             <Copy className="h-4 w-4" />
@@ -476,19 +499,51 @@ export function OrderDrawer({
                     </div>
 
                     <div className="space-y-2.5">
-                      <a
-                        href={waUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#059669] px-5 py-3.5 text-sm font-bold text-white transition-all hover:bg-[#047857]"
+                      {telegramUrl && (
+                        <a
+                          href={telegramUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#0284C7] px-5 py-3.5 text-sm font-bold text-white transition-all hover:bg-[#0369A1]"
+                        >
+                          <Send className="h-4 w-4" />
+                          Konfirmasi via Telegram
+                        </a>
+                      )}
+
+                      {lineUrl && (
+                        <a
+                          href={lineUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#06C755] px-5 py-3.5 text-sm font-bold text-white transition-all hover:bg-[#05B34C]"
+                        >
+                          <MessageCircle className="h-4 w-4" />
+                          Konfirmasi via LINE ({settings.admin_line})
+                        </a>
+                      )}
+
+                      <button
+                        type="button"
+                        onClick={handleCopyMessage}
+                        className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-50 cursor-pointer"
                       >
-                        <MessageCircle className="h-4 w-4" />
-                        Konfirmasi via WhatsApp
-                      </a>
+                        {copiedMsg ? (
+                          <>
+                            <Check className="h-3.5 w-3.5 text-[#10B981]" />
+                            Format Pesan Tersalin! Tinggal Paste di LINE / Telegram
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="h-3.5 w-3.5" />
+                            Salin Format Pesan Konfirmasi
+                          </>
+                        )}
+                      </button>
 
                       <Link
                         href={`/pesanan/${createdOrder.orderCode}`}
-                        className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-50"
+                        className="flex w-full items-center justify-center gap-1.5 rounded-xl px-5 py-2 text-xs font-semibold text-slate-500 hover:text-[#090E1A]"
                       >
                         Buka Halaman Ringkasan Pesanan
                         <ExternalLink className="h-3.5 w-3.5" />

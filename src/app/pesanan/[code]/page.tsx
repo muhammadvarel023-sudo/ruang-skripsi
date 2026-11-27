@@ -3,11 +3,19 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getSiteSettings } from "@/lib/data";
 import {
-  buildWhatsAppUrl,
+  buildContactMessage,
+  buildLineUrl,
+  buildTelegramUrl,
   formatRupiah,
   ORDER_STATUS_META,
 } from "@/lib/format";
-import { ArrowLeft, BookOpen, CheckCircle2, MessageCircle } from "lucide-react";
+import {
+  ArrowLeft,
+  BookOpen,
+  CheckCircle2,
+  MessageCircle,
+  Send,
+} from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -29,7 +37,7 @@ export default async function OrderSummaryPage({
   const statusMeta =
     ORDER_STATUS_META[order.status] ?? ORDER_STATUS_META.PENDING;
 
-  const waUrl = buildWhatsAppUrl(settings.admin_whatsapp, settings.wa_template, {
+  const message = buildContactMessage(settings.wa_template, {
     orderCode: order.orderCode,
     studentName: order.studentName,
     campusName: order.campusName,
@@ -40,6 +48,13 @@ export default async function OrderSummaryPage({
     researchType: order.researchType,
     topicOrTitle: order.topicOrTitle,
   });
+
+  const telegramUrl = settings.admin_telegram.trim()
+    ? buildTelegramUrl(settings.admin_telegram, message)
+    : null;
+  const lineUrl = settings.admin_line.trim()
+    ? buildLineUrl(settings.admin_line)
+    : null;
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] px-4 py-12 sm:px-6 paper-grid">
@@ -108,7 +123,7 @@ export default async function OrderSummaryPage({
                 <dd className="font-medium text-[#090E1A]">{order.major}</dd>
               </div>
               <div className="flex justify-between gap-4">
-                <dt className="text-slate-500">WhatsApp</dt>
+                <dt className="text-slate-500">Telegram / LINE</dt>
                 <dd className="font-mono text-[#090E1A]">{order.whatsapp}</dd>
               </div>
               <div className="flex justify-between gap-4">
@@ -131,16 +146,29 @@ export default async function OrderSummaryPage({
               )}
             </dl>
 
-            <div className="pt-4">
-              <a
-                href={waUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#059669] px-5 py-3.5 text-sm font-bold text-white transition-all hover:bg-[#047857]"
-              >
-                <MessageCircle className="h-4 w-4" />
-                Konfirmasi via WhatsApp
-              </a>
+            <div className="space-y-2.5 pt-4">
+              {telegramUrl && (
+                <a
+                  href={telegramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#0284C7] px-5 py-3.5 text-sm font-bold text-white transition-all hover:bg-[#0369A1]"
+                >
+                  <Send className="h-4 w-4" />
+                  Konfirmasi via Telegram
+                </a>
+              )}
+              {lineUrl && (
+                <a
+                  href={lineUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#06C755] px-5 py-3.5 text-sm font-bold text-white transition-all hover:bg-[#05B34C]"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  Konfirmasi via LINE ({settings.admin_line})
+                </a>
+              )}
             </div>
           </div>
         </div>

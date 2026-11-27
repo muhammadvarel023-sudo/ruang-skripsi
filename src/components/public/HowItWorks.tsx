@@ -20,8 +20,8 @@ const STEPS = [
   },
   {
     num: "03",
-    title: "Konfirmasi Terarah via WhatsApp",
-    desc: "Sistem otomatis membuat kode pesanan dan pesan ringkasan—kamu tinggal klik konfirmasi tanpa menjelaskan ulang.",
+    title: "Konfirmasi Terarah via Telegram / LINE",
+    desc: "Sistem otomatis membuat kode pesanan dan format pesan—tinggal klik Telegram atau LINE tanpa perlu nomor HP.",
     badge: "bg-[#EA580C] text-white",
     border: "border-t-[#EA580C]",
   },
