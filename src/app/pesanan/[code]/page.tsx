@@ -71,7 +71,7 @@ export default async function OrderSummaryPage({
         <div className="mb-6 flex items-center justify-between">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-2 transition-colors duration-200 hover:text-accent"
+            className="inline-flex items-center gap-1.5 text-sm font-bold text-ink-2 transition-colors duration-200 hover:text-accent"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             Kembali ke {settings.brand_name}
@@ -82,30 +82,30 @@ export default async function OrderSummaryPage({
           </span>
         </div>
 
-        <div className="well-solstice overflow-hidden">
-          <div className="band-ink border-b border-paper/15 px-6 py-7 text-center">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gold text-ink">
+        <div className="surface-card overflow-hidden">
+          <div className="bg-paper-3 px-6 py-7 text-center text-ink">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-accent text-accent-ink">
               <CheckCircle2 className="h-6 w-6" aria-hidden="true" />
             </div>
-            <p className="mt-3 text-xs font-semibold text-gold-2">
+            <p className="mt-3 text-xs font-bold text-accent">
               Invoice &amp; Kode Pesanan
             </p>
-            <h1 className="num mx-auto mt-1 font-display text-2xl text-paper">
+            <h1 className="num mx-auto mt-1 font-display text-2xl text-ink">
               {order.orderCode}
             </h1>
             <div className="mt-4 flex flex-wrap justify-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-paper/25 bg-paper/10 px-3 py-1 text-xs font-semibold text-paper">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-paper-2 px-3 py-1 text-xs font-bold text-ink">
                 Pembayaran: {payMeta.label}
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-paper/25 bg-paper/10 px-3 py-1 text-xs font-semibold text-gold-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-xs font-bold text-accent-ink">
                 {statusMeta.label}
               </span>
             </div>
           </div>
 
           <div className="space-y-5 p-6 text-sm">
-            <div className="border-l-2 border-accent bg-paper p-4">
-              <p className="text-xs font-semibold text-accent">
+            <div className="rounded-2xl bg-paper p-4 text-ink">
+              <p className="text-xs font-bold text-accent">
                 {order.categoryNameSnapshot}
               </p>
               <div className="mt-1 flex items-baseline justify-between gap-4">
@@ -120,32 +120,32 @@ export default async function OrderSummaryPage({
                 <span className="font-medium text-ink-2">
                   {formatPaymentPlanLabel(order.paymentPlan)}
                 </span>
-                <span className="num font-semibold text-accent">
+                <span className="num font-bold text-accent">
                   Tagihan Awal: {formatRupiah(amountDueNow)}
                 </span>
               </div>
             </div>
 
             {order.paymentStatus !== "PAID" && (
-              <div className="space-y-3 border border-rule bg-paper p-4">
-                <p className="text-xs font-semibold text-ink">
+              <div className="space-y-3 rounded-2xl border border-[var(--color-card-rule)] bg-white p-4">
+                <p className="text-xs font-bold text-card-ink">
                   Instruksi Pembayaran
                 </p>
 
                 {settings.qris_image_url && (
-                  <div className="border-b border-rule pb-3 text-center">
+                  <div className="border-b border-[var(--color-card-rule)] pb-3 text-center">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={settings.qris_image_url}
                       alt="QRIS TelisikRiset"
                       width={224}
                       height={224}
-                      className="mx-auto max-h-56 border border-rule bg-paper-2 p-1.5 object-contain"
+                      className="mx-auto max-h-56 rounded-xl border border-[var(--color-card-rule)] bg-white p-1.5 object-contain"
                     />
                     {settings.qris_merchant_name && (
-                      <p className="mt-2 text-xs font-semibold text-ink">
+                      <p className="mt-2 text-xs font-bold text-card-ink">
                         QRIS resmi a.n.{" "}
-                        <span className="text-accent">
+                        <span className="text-paper">
                           {settings.qris_merchant_name}
                         </span>
                       </p>
@@ -154,22 +154,22 @@ export default async function OrderSummaryPage({
                 )}
 
                 {settings.bank_account_number && (
-                  <div className="space-y-1.5 bg-paper-2 p-3 text-xs">
+                  <div className="space-y-1.5 rounded-xl bg-card p-3 text-xs">
                     <div className="flex justify-between">
-                      <span className="text-muted">Bank / E-Wallet</span>
-                      <span className="font-semibold text-ink">
+                      <span className="text-[var(--color-card-muted)]">Bank / E-Wallet</span>
+                      <span className="font-bold text-card-ink">
                         {settings.bank_name}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted">No. Rekening</span>
-                      <span className="num font-semibold text-ink">
+                      <span className="text-[var(--color-card-muted)]">No. Rekening</span>
+                      <span className="num font-bold text-card-ink">
                         {settings.bank_account_number}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted">Atas Nama</span>
-                      <span className="font-semibold text-ink">
+                      <span className="text-[var(--color-card-muted)]">Atas Nama</span>
+                      <span className="font-bold text-card-ink">
                         {settings.bank_account_holder}
                       </span>
                     </div>
@@ -178,30 +178,30 @@ export default async function OrderSummaryPage({
               </div>
             )}
 
-            <dl className="divide-y divide-rule border-y border-rule text-xs">
+            <dl className="divide-y divide-[var(--color-card-rule)] border-y border-[var(--color-card-rule)] text-xs">
               <div className="flex justify-between gap-4 py-2.5">
-                <dt className="text-muted">Nama Mahasiswa</dt>
-                <dd className="font-semibold text-ink">{order.studentName}</dd>
+                <dt className="text-[var(--color-card-muted)]">Nama Mahasiswa</dt>
+                <dd className="font-bold text-card-ink">{order.studentName}</dd>
               </div>
               <div className="flex justify-between gap-4 py-2.5">
-                <dt className="text-muted">Asal Kampus</dt>
-                <dd className="font-semibold text-accent">{order.campusName}</dd>
+                <dt className="text-[var(--color-card-muted)]">Asal Kampus</dt>
+                <dd className="font-bold text-paper">{order.campusName}</dd>
               </div>
               <div className="flex justify-between gap-4 py-2.5">
-                <dt className="text-muted">Program Studi</dt>
-                <dd className="font-medium text-ink">{order.major}</dd>
+                <dt className="text-[var(--color-card-muted)]">Program Studi</dt>
+                <dd className="font-medium text-card-ink">{order.major}</dd>
               </div>
               <div className="flex justify-between gap-4 py-2.5">
-                <dt className="text-muted">Telegram / LINE</dt>
-                <dd className="font-medium text-ink">{order.whatsapp}</dd>
+                <dt className="text-[var(--color-card-muted)]">Telegram / LINE</dt>
+                <dd className="font-medium text-card-ink">{order.whatsapp}</dd>
               </div>
               <div className="flex justify-between gap-4 py-2.5">
-                <dt className="text-muted">Pendekatan Kualitatif</dt>
-                <dd className="font-medium text-ink">{order.researchType}</dd>
+                <dt className="text-[var(--color-card-muted)]">Pendekatan Kualitatif</dt>
+                <dd className="font-medium text-card-ink">{order.researchType}</dd>
               </div>
               <div className="py-3">
-                <dt className="text-muted">Topik / Judul</dt>
-                <dd className="mt-1.5 bg-paper p-3 font-medium text-ink">
+                <dt className="text-[var(--color-card-muted)]">Topik / Judul</dt>
+                <dd className="mt-1.5 rounded-xl bg-white p-3 font-medium text-card-ink">
                   {order.topicOrTitle}
                 </dd>
               </div>
@@ -216,7 +216,7 @@ export default async function OrderSummaryPage({
                   className="btn-primary w-full justify-center"
                 >
                   <Send className="h-4 w-4" aria-hidden="true" />
-                  Konfirmasi &amp; Kirim Bukti via Telegram
+                  Konfirmasi via Telegram
                 </a>
               )}
               {lineUrl && (
@@ -224,7 +224,7 @@ export default async function OrderSummaryPage({
                   href={lineUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-quiet w-full justify-center"
+                  className="btn-dark-ink w-full justify-center"
                 >
                   <MessageCircle className="h-4 w-4" aria-hidden="true" />
                   Konfirmasi via LINE ({settings.admin_line})

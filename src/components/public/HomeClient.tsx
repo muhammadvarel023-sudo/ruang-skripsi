@@ -5,6 +5,7 @@ import { MotionConfig } from "framer-motion";
 import type { CampusType, CategoryDTO, PackageDTO, SiteSettings } from "@/lib/types";
 import { Navbar } from "./Navbar";
 import { Hero } from "./Hero";
+import { ThesisFlowDiagram } from "./ThesisFlowDiagram";
 import { PackageCatalog } from "./PackageCatalog";
 import { ChapterShowcase } from "./ChapterShowcase";
 import { HowItWorks } from "./HowItWorks";
@@ -69,10 +70,16 @@ export function HomeClient({ categories, settings }: HomeClientProps) {
 
         <main id="main-content" className="flex-1">
           <Hero
+            categories={categories}
             totalPackages={totalPackages}
+            campusType={campusType}
+            nonTelkomSurcharge={settings.non_telkom_surcharge}
+            onChangeCampusType={setCampusType}
             onOpenMatcher={() => setMatcherOpen(true)}
             onSelectChapterFromHero={jumpToChapter}
           />
+
+          <ThesisFlowDiagram onJumpToChapter={jumpToChapter} />
 
           <PackageCatalog
             categories={categories}

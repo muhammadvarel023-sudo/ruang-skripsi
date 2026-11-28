@@ -23,35 +23,35 @@ export function BrandLogo({
     >
       <path
         d="M5 19C5 10.716 11.716 4 20 4C28.284 4 35 10.716 35 19V33C35 34.657 33.657 36 32 36H8C6.343 36 5 34.657 5 33V19Z"
-        fill={isLight ? "var(--color-paper)" : "var(--color-ink)"}
+        fill={isLight ? "var(--color-card)" : "var(--color-paper-3)"}
       />
       <path
         d="M7.5 19C7.5 12.096 13.096 6.5 20 6.5C26.904 6.5 32.5 12.096 32.5 19V32.5C32.5 33.052 32.052 33.5 31.5 33.5H8.5C7.948 33.5 7.5 33.052 7.5 32.5V19Z"
-        stroke="var(--color-gold)"
-        strokeOpacity={isLight ? "0.8" : "0.55"}
-        strokeWidth="1"
+        stroke="var(--color-accent)"
+        strokeOpacity={isLight ? "0.9" : "0.7"}
+        strokeWidth="1.2"
       />
       <path
         d="M12.5 14H27.5"
-        stroke={isLight ? "var(--color-ink)" : "var(--color-paper)"}
-        strokeWidth="2.2"
+        stroke={isLight ? "var(--color-card-ink)" : "var(--color-ink)"}
+        strokeWidth="2.4"
         strokeLinecap="round"
       />
       <path
         d="M20 14V29.5"
-        stroke={isLight ? "var(--color-ink)" : "var(--color-paper)"}
-        strokeWidth="2.2"
+        stroke={isLight ? "var(--color-card-ink)" : "var(--color-ink)"}
+        strokeWidth="2.4"
         strokeLinecap="round"
       />
       <circle
         cx="20"
         cy="21.5"
         r="5.2"
-        fill={isLight ? "var(--color-paper)" : "var(--color-ink)"}
-        stroke="var(--color-gold)"
-        strokeWidth="1.5"
+        fill={isLight ? "var(--color-card)" : "var(--color-paper-3)"}
+        stroke="var(--color-accent)"
+        strokeWidth="1.6"
       />
-      <circle cx="20" cy="21.5" r="2.3" fill="var(--color-accent)" />
+      <circle cx="20" cy="21.5" r="2.4" fill="var(--color-accent-2)" />
     </svg>
   );
 }

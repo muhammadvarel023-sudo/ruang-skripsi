@@ -15,44 +15,44 @@ interface QuickMatcherModalProps {
 const DIAGNOSTIC_OPTIONS = [
   {
     id: "idea-title",
-    title: "Masih bingung topik atau judul dan butuh pegangan ACC dosen",
-    desc: "Dapat brainstorming, 2 opsi judul kualitatif, rumusan masalah, + Mini Outline 1 halaman.",
+    title: "Belum punya judul dan butuh pegangan ACC",
+    desc: "2 opsi judul kualitatif + rumusan masalah + mini outline.",
     targetSlug: "bab-1-pondasi-judul-rumusan",
   },
   {
     id: "bab1-full",
-    title: "Ingin menyusun Bab 1 secara utuh dan runtut sampai siap bimbingan",
-    desc: "Butuh pendampingan alur latar belakang, arah data, fokus, sampai manfaat + review draft.",
+    title: "Menyusun Bab 1 utuh sampai siap bimbingan",
+    desc: "Alur latar belakang, fokus riset, dan review draft.",
     targetSlug: "bab-1-pendahuluan-terstruktur",
   },
   {
     id: "bab2-review",
-    title: "Sudah punya teori dan kerangka, butuh review",
-    desc: "Ingin mengecek relevansi teori, penelitian terdahulu, dan keterhubungan konsep.",
+    title: "Sudah punya teori, butuh review Bab 2",
+    desc: "Cek relevansi teori, riset terdahulu, dan alur konsep.",
     targetSlug: "bab-2-basic-research-framework",
   },
   {
     id: "bab2-develop",
-    title: "Sudah punya grand theory, belum ada research gap dan kerangka",
-    desc: "Butuh pemetaan penelitian terdahulu dan penyusunan kerangka pemikiran.",
+    title: "Sudah ada grand theory, belum ada research gap",
+    desc: "Matriks penelitian terdahulu dan bagan kerangka pemikiran.",
     targetSlug: "bab-2-theory-development",
   },
   {
     id: "bab2-from-zero",
-    title: "Belum punya teori, referensi, maupun kerangka Bab 2",
-    desc: "Butuh pendampingan bertahap dari pemetaan konsep hingga kurasi literatur.",
+    title: "Belum punya teori maupun kerangka Bab 2",
+    desc: "Pemetaan konsep bertahap hingga kurasi literatur.",
     targetSlug: "bab-2-comprehensive-literature-research",
   },
   {
     id: "bab3-review",
-    title: "Sudah punya rancangan metodologi, ingin diaudit",
-    desc: "Ingin memastikan metode dan teknik analisis cocok dengan rumusan masalah.",
+    title: "Sudah ada draft metodologi, ingin diaudit",
+    desc: "Sinkronisasi metode analisis dengan rumusan masalah.",
     targetSlug: "bab-3-methodology-review",
   },
   {
     id: "bab3-develop",
-    title: "Masih bingung menentukan metode dan analisis data",
-    desc: "Butuh bantuan merancang desain penelitian kualitatif dari awal.",
+    title: "Bingung menentukan metode kualitatif Bab 3",
+    desc: "Merancang desain studi, informan, dan triangulasi.",
     targetSlug: "bab-3-methodology-development",
   },
 ];
@@ -86,7 +86,7 @@ export function QuickMatcherModal({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.24, ease: APPLE_EASE }}
             onClick={onClose}
-            className="fixed inset-0 bg-ink/50"
+            className="fixed inset-0 bg-black/55"
           />
 
           <motion.div
@@ -96,49 +96,49 @@ export function QuickMatcherModal({
             initial={{ opacity: 0, scale: 0.97, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.97, y: 8 }}
-            transition={{ duration: 0.34, ease: APPLE_EASE }}
-            className="well-solstice relative z-10 flex max-h-[85vh] w-full max-w-2xl flex-col overflow-hidden"
+            transition={{ duration: 0.32, ease: APPLE_EASE }}
+            className="surface-card relative z-10 flex max-h-[85vh] w-full max-w-2xl flex-col overflow-hidden"
           >
-            <div className="flex items-start justify-between border-b border-rule bg-paper px-6 py-5">
+            <div className="flex items-start justify-between bg-paper-3 px-6 py-5 text-ink">
               <div className="flex items-center gap-3">
                 <Compass className="h-5 w-5 shrink-0 text-accent" aria-hidden="true" />
                 <div>
                   <h3 id="matcher-title" className="font-display text-xl text-ink">
-                    Bantu Pilih Paket yang Tepat
+                    Cocokkan Kondisi Skripsimu
                   </h3>
-                  <p className="mt-0.5 text-sm text-ink-2">
-                    Pilih satu kondisi yang paling menggambarkan progres skripsimu saat ini.
+                  <p className="mt-0.5 text-xs text-ink-2">
+                    Pilih satu kartu yang paling pas dengan kondisimu saat ini.
                   </p>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={onClose}
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-ink-2 transition-colors duration-200 hover:bg-paper-3 hover:text-ink active:translate-y-px cursor-pointer"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-paper-2 text-ink transition-colors duration-200 hover:bg-accent hover:text-accent-ink active:translate-y-px cursor-pointer"
                 aria-label="Tutup"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
-            <div className="overflow-y-auto bg-paper-2 p-5 sm:p-6">
+            <div className="overflow-y-auto p-5 sm:p-6">
               <div className="grid gap-3 sm:grid-cols-2">
                 {DIAGNOSTIC_OPTIONS.map((opt) => (
                   <button
                     key={opt.id}
                     type="button"
                     onClick={() => handlePick(opt.targetSlug)}
-                    className="group flex flex-col justify-between border border-rule bg-paper p-4 text-left transition-colors duration-200 hover:border-ink active:translate-y-px cursor-pointer"
+                    className="group flex flex-col justify-between rounded-2xl border-2 border-[var(--color-card-rule)] bg-white/80 p-4 text-left transition-colors duration-200 hover:border-paper active:translate-y-px cursor-pointer"
                   >
                     <div>
-                      <p className="font-display text-base leading-snug text-ink transition-colors duration-200 group-hover:text-accent">
+                      <p className="font-display text-base leading-snug text-card-ink transition-colors duration-200 group-hover:text-paper">
                         {opt.title}
                       </p>
-                      <p className="mt-1.5 text-xs leading-relaxed text-ink-2">
+                      <p className="mt-1.5 text-xs leading-relaxed text-[var(--color-card-muted)]">
                         {opt.desc}
                       </p>
                     </div>
-                    <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-accent">
+                    <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-paper">
                       Lihat rekomendasi
                       <ArrowRight
                         className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5"

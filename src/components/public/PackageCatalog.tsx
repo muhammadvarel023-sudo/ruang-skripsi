@@ -46,168 +46,147 @@ export function PackageCatalog({
   return (
     <section
       id="layanan"
-      className="scroll-mt-20 border-t border-rule bg-paper-2 py-20 sm:py-24"
+      className="scroll-mt-20 border-t border-rule bg-paper py-16 sm:py-24"
     >
       <div className="container">
-        {/* Section header: editorial left-aligned with action on right */}
-        <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
-          <div className="max-w-2xl">
-            <h2 className="font-display text-ink">
-              Pilih bagian skripsi yang sedang dikerjakan.
-            </h2>
-            <p className="lead mt-4 text-ink-2">
-              Tentukan asal kampus untuk melihat tarif yang berlaku, lalu pilih paket Bab 1,
-              Bab 2, atau Bab 3 sesuai progres penelitian kualitatifmu.
+        {/* Compact header */}
+        <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
+          <div>
+            <h2 className="font-display text-ink">Pilih paket sesuai babmu.</h2>
+            <p className="mt-2 max-w-[40ch] text-base text-ink-2">
+              Atur asal kampus dan pilih bab untuk melihat tarif transparan.
             </p>
           </div>
 
           <button
             type="button"
             onClick={onOpenMatcher}
-            className="btn-quiet self-start whitespace-nowrap lg:self-auto"
+            className="btn-quiet self-start whitespace-nowrap md:self-auto"
           >
             <Compass className="h-4 w-4 text-accent" aria-hidden="true" />
             Cocokkan Paket
           </button>
         </div>
 
-        {/* Interactive Campus Switcher */}
-        <div className="mt-10 flex flex-col items-start justify-between gap-4 border-y border-rule py-5 sm:flex-row sm:items-center">
-          <div>
-            <p className="text-sm font-semibold text-ink">
-              Kategori tarif berdasarkan kampus
-            </p>
-            <p className="mt-0.5 text-sm text-ink-2">
-              {campusType === "TELKOM_FKS"
-                ? "Menampilkan tarif khusus mahasiswa Telkom University (FKS)"
-                : `Menampilkan tarif PTS Bandung (+${formatRupiah(nonTelkomSurcharge)})`}
-            </p>
-          </div>
-
-          <div
-            role="group"
-            aria-label="Pilih kategori kampus"
-            className="flex w-full gap-1 rounded-full border border-rule bg-paper p-1 sm:w-auto"
-          >
-            <button
-              type="button"
-              onClick={() => onChangeCampusType("TELKOM_FKS")}
-              aria-pressed={campusType === "TELKOM_FKS"}
-              className={`relative flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition-colors duration-200 sm:flex-initial cursor-pointer ${
-                campusType === "TELKOM_FKS"
-                  ? "text-accent-ink"
-                  : "text-ink-2 hover:text-ink"
-              }`}
+        {/* Interactive Switchers Bar */}
+        <div className="mt-8 grid gap-4 lg:grid-cols-12">
+          {/* Campus toggle tile */}
+          <div className="tile-green flex flex-col justify-between gap-3 p-4 lg:col-span-5 sm:flex-row sm:items-center">
+            <span className="text-sm font-bold text-ink">Kampus:</span>
+            <div
+              role="group"
+              aria-label="Pilih kategori kampus"
+              className="flex gap-1.5 rounded-2xl bg-paper-3 p-1"
             >
-              {campusType === "TELKOM_FKS" && (
-                <motion.span
-                  layoutId="campusTogglePill"
-                  transition={APPLE_SPRING}
-                  className="absolute inset-0 rounded-full bg-ink"
-                />
-              )}
-              <GraduationCap className="relative z-10 h-4 w-4 shrink-0" aria-hidden="true" />
-              <span className="relative z-10 whitespace-nowrap">Telkom Univ (FKS)</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => onChangeCampusType("NON_TELKOM")}
-              aria-pressed={campusType === "NON_TELKOM"}
-              className={`relative flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition-colors duration-200 sm:flex-initial cursor-pointer ${
-                campusType === "NON_TELKOM"
-                  ? "text-accent-ink"
-                  : "text-ink-2 hover:text-ink"
-              }`}
-            >
-              {campusType === "NON_TELKOM" && (
-                <motion.span
-                  layoutId="campusTogglePill"
-                  transition={APPLE_SPRING}
-                  className="absolute inset-0 rounded-full bg-accent"
-                />
-              )}
-              <Building2 className="relative z-10 h-4 w-4 shrink-0" aria-hidden="true" />
-              <span className="relative z-10 whitespace-nowrap">
-                PTS Bandung (+{formatRupiah(nonTelkomSurcharge)})
-              </span>
-            </button>
-          </div>
-        </div>
-
-        {/* Interactive Chapter Tabs */}
-        <div
-          role="tablist"
-          aria-label="Pilih bab pendampingan"
-          className="mt-8 grid gap-2 sm:grid-cols-3"
-        >
-          {categories.map((cat) => {
-            const isActive = cat.id === activeCategory.id;
-            return (
               <button
-                key={cat.id}
                 type="button"
-                role="tab"
-                aria-selected={isActive}
-                onClick={() => onSelectCategory(cat.id)}
-                className={`relative flex items-center justify-between gap-3 border px-5 py-4 text-left transition-colors duration-200 cursor-pointer ${
-                  isActive
-                    ? "border-ink text-paper"
-                    : "border-rule bg-paper text-ink hover:border-ink/50"
+                onClick={() => onChangeCampusType("TELKOM_FKS")}
+                aria-pressed={campusType === "TELKOM_FKS"}
+                className={`relative flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-bold transition-colors duration-200 cursor-pointer ${
+                  campusType === "TELKOM_FKS"
+                    ? "text-accent-ink"
+                    : "text-ink-2 hover:text-ink"
                 }`}
               >
-                {isActive && (
+                {campusType === "TELKOM_FKS" && (
                   <motion.span
-                    layoutId="activeChapterTab"
+                    layoutId="campusTogglePill"
                     transition={APPLE_SPRING}
-                    className="absolute inset-0 bg-ink"
+                    className="absolute inset-0 rounded-xl bg-accent"
                   />
                 )}
-                <div className="relative z-10 min-w-0">
-                  <span
-                    className={`block text-xs font-semibold ${
-                      isActive ? "text-gold-2" : "text-muted"
-                    }`}
-                  >
-                    {cat.shortLabel}
-                  </span>
-                  <span className="mt-0.5 block truncate font-display text-lg">
-                    {cat.name.replace(/^BAB\s*\d+\.\s*/i, "")}
-                  </span>
-                </div>
-                <span
-                  className={`num relative z-10 shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${
-                    isActive
-                      ? "bg-paper/15 text-paper"
-                      : "bg-paper-3 text-ink"
-                  }`}
-                >
-                  {cat.packages.length} paket
+                <GraduationCap className="relative z-10 h-3.5 w-3.5" aria-hidden="true" />
+                <span className="relative z-10 whitespace-nowrap">Tel-U FKS</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => onChangeCampusType("NON_TELKOM")}
+                aria-pressed={campusType === "NON_TELKOM"}
+                className={`relative flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-bold transition-colors duration-200 cursor-pointer ${
+                  campusType === "NON_TELKOM"
+                    ? "text-accent-ink"
+                    : "text-ink-2 hover:text-ink"
+                }`}
+              >
+                {campusType === "NON_TELKOM" && (
+                  <motion.span
+                    layoutId="campusTogglePill"
+                    transition={APPLE_SPRING}
+                    className="absolute inset-0 rounded-xl bg-accent"
+                  />
+                )}
+                <Building2 className="relative z-10 h-3.5 w-3.5" aria-hidden="true" />
+                <span className="relative z-10 whitespace-nowrap">
+                  PTS Bandung (+{formatRupiah(nonTelkomSurcharge)})
                 </span>
               </button>
-            );
-          })}
+            </div>
+          </div>
+
+          {/* Chapter tabs */}
+          <div
+            role="tablist"
+            aria-label="Pilih bab pendampingan"
+            className="tile-green grid grid-cols-3 gap-1.5 p-1.5 lg:col-span-7"
+          >
+            {categories.map((cat) => {
+              const isActive = cat.id === activeCategory.id;
+              return (
+                <button
+                  key={cat.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  onClick={() => onSelectCategory(cat.id)}
+                  className={`relative flex items-center justify-between gap-2 rounded-2xl px-4 py-3 text-left transition-colors duration-200 cursor-pointer ${
+                    isActive
+                      ? "text-card-ink"
+                      : "text-ink-2 hover:text-ink"
+                  }`}
+                >
+                  {isActive && (
+                    <motion.span
+                      layoutId="activeChapterTab"
+                      transition={APPLE_SPRING}
+                      className="absolute inset-0 rounded-2xl bg-card shadow-sm"
+                    />
+                  )}
+                  <div className="relative z-10 min-w-0">
+                    <span className="block text-xs font-bold opacity-75">
+                      {cat.shortLabel}
+                    </span>
+                    <span className="block truncate font-display text-base">
+                      {cat.name.replace(/^BAB\s*\d+\.\s*/i, "")}
+                    </span>
+                  </div>
+                  <span
+                    className={`num relative z-10 hidden rounded-full px-2.5 py-0.5 text-xs font-bold sm:inline-block ${
+                      isActive
+                        ? "bg-paper text-ink"
+                        : "bg-paper-3 text-ink"
+                    }`}
+                  >
+                    {cat.packages.length}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Active Chapter Intro + Packages */}
+        {/* Active Chapter Packages */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeCategory.id}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.34, ease: APPLE_EASE }}
+            transition={{ duration: 0.32, ease: APPLE_EASE }}
             className="mt-8"
           >
-            <div className="mb-8 border-l-2 border-accent pl-5 py-1">
-              <h3 className="font-display text-2xl text-ink">{activeCategory.name}</h3>
-              <p className="mt-1.5 max-w-3xl text-base text-ink-2">
-                {activeCategory.description}
-              </p>
-            </div>
-
             <div
-              className={`grid gap-8 ${
+              className={`grid gap-6 ${
                 activeCategory.packages.length === 2
                   ? "md:grid-cols-2"
                   : "md:grid-cols-2 lg:grid-cols-3"
@@ -220,7 +199,7 @@ export function PackageCatalog({
                 const finalPrice = basePrice + surcharge;
                 const originalWithSurcharge = pkg.price + surcharge;
                 const isHighlighted = highlightedPackageId === pkg.id;
-                const isDarkCard = pkg.isFeatured && !isHighlighted;
+                const isCreamCard = pkg.isFeatured || isHighlighted;
 
                 return (
                   <motion.article
@@ -228,34 +207,34 @@ export function PackageCatalog({
                     initial={false}
                     animate={{ y: 0 }}
                     whileHover={{ y: -3 }}
-                    transition={{ duration: 0.28, ease: APPLE_EASE }}
+                    transition={{ duration: 0.26, ease: APPLE_EASE }}
                     className={`flex flex-col justify-between p-7 transition-colors duration-200 ${
                       isHighlighted
-                        ? "well-solstice ring-2 ring-accent"
-                        : isDarkCard
-                          ? "border-2 border-ink bg-ink text-paper"
-                          : "border border-rule bg-paper text-ink hover:border-ink/60"
+                        ? "surface-card ring-4 ring-accent"
+                        : isCreamCard
+                          ? "surface-card"
+                          : "tile-green hover:bg-paper-2/90"
                     }`}
                   >
                     <div>
-                      <div className="flex items-center justify-between gap-2 border-b pb-4 border-current/15">
+                      <div className="flex items-center justify-between gap-2">
                         <span
-                          className={`num text-sm font-semibold ${
-                            isDarkCard ? "text-gold-2" : "text-muted"
+                          className={`num text-xs font-bold ${
+                            isCreamCard ? "text-[var(--color-card-muted)]" : "text-muted"
                           }`}
                         >
                           Paket 0{idx + 1}
                         </span>
                         {isHighlighted ? (
-                          <span className="inline-flex items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-xs font-semibold text-accent-ink">
+                          <span className="inline-flex items-center gap-1 rounded-full bg-accent px-3 py-1 text-xs font-bold text-accent-ink">
                             <Sparkles className="h-3 w-3" aria-hidden="true" />
-                            Rekomendasi Untukmu
+                            Rekomendasi
                           </span>
                         ) : pkg.badge ? (
                           <span
-                            className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                              isDarkCard
-                                ? "bg-gold text-ink"
+                            className={`rounded-full px-3 py-1 text-xs font-bold ${
+                              isCreamCard
+                                ? "bg-accent text-accent-ink"
                                 : "bg-paper-3 text-ink"
                             }`}
                           >
@@ -264,138 +243,102 @@ export function PackageCatalog({
                         ) : null}
                       </div>
 
-                      <h4
-                        className={`mt-5 font-display text-2xl leading-snug ${
-                          isDarkCard ? "text-paper" : "text-ink"
+                      <h3
+                        className={`mt-3 font-display text-2xl leading-snug ${
+                          isCreamCard ? "text-card-ink" : "text-ink"
                         }`}
                       >
                         {pkg.name}
-                      </h4>
+                      </h3>
                       <p
-                        className={`mt-2.5 text-sm leading-relaxed ${
-                          isDarkCard ? "text-paper/85" : "text-ink-2"
+                        className={`mt-2 max-w-[34ch] text-sm leading-relaxed ${
+                          isCreamCard ? "text-[var(--color-card-muted)]" : "text-ink-2"
                         }`}
                       >
                         {pkg.shortDescription}
                       </p>
 
-                      {/* Left-ruled student condition note (no card inside card) */}
+                      {/* Compact student fit tag */}
                       <div
-                        className={`mt-5 border-l-2 pl-3.5 ${
-                          isDarkCard ? "border-gold" : "border-accent"
+                        className={`mt-4 rounded-2xl p-3.5 text-xs leading-relaxed ${
+                          isCreamCard
+                            ? "bg-paper/10 text-card-ink"
+                            : "bg-paper-3 text-ink-2"
                         }`}
                       >
-                        <p
-                          className={`text-xs font-semibold ${
-                            isDarkCard ? "text-gold-2" : "text-accent"
-                          }`}
+                        <strong
+                          className={
+                            isCreamCard ? "text-paper" : "text-accent"
+                          }
                         >
-                          Cocok jika kamu…
-                        </p>
-                        <p
-                          className={`mt-1 text-sm leading-relaxed ${
-                            isDarkCard ? "text-paper/90" : "text-ink-2"
-                          }`}
-                        >
-                          {pkg.studentCondition}
-                        </p>
+                          Cocok jika:
+                        </strong>{" "}
+                        {pkg.studentCondition}
                       </div>
 
-                      <div className="mt-6">
-                        <p
-                          className={`text-xs font-semibold ${
-                            isDarkCard ? "text-paper/75" : "text-muted"
-                          }`}
-                        >
-                          Output yang diterima
-                        </p>
-                        <ul className="mt-3 space-y-2.5">
-                          {pkg.outputs.map((output, i) => (
-                            <li
-                              key={i}
-                              className={`flex items-start gap-2.5 text-sm leading-snug ${
-                                isDarkCard ? "text-paper" : "text-ink"
+                      <ul className="mt-5 space-y-2">
+                        {pkg.outputs.map((output, i) => (
+                          <li
+                            key={i}
+                            className={`flex items-start gap-2.5 text-sm leading-snug ${
+                              isCreamCard ? "text-card-ink" : "text-ink"
+                            }`}
+                          >
+                            <Check
+                              className={`mt-0.5 h-4 w-4 shrink-0 ${
+                                isCreamCard ? "text-paper" : "text-accent"
                               }`}
-                            >
-                              <Check
-                                className={`mt-0.5 h-4 w-4 shrink-0 ${
-                                  isDarkCard ? "text-gold" : "text-accent"
-                                }`}
-                                strokeWidth={2.5}
-                                aria-hidden="true"
-                              />
-                              <span>{output}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      {/* Transparent Session & Follow-up Policy line */}
-                      <div
-                        className={`mt-6 border-t pt-4 text-xs leading-relaxed ${
-                          isDarkCard
-                            ? "border-paper/15 text-paper/80"
-                            : "border-rule text-ink-2"
-                        }`}
-                      >
-                        {campusType === "TELKOM_FKS" ? (
-                          <p>
-                            <strong
-                              className={
-                                isDarkCard ? "text-gold-2" : "text-ink"
-                              }
-                            >
-                              Bonus 1x pertemuan follow-up
-                            </strong>{" "}
-                            khusus Tel-U FKS (bukan chat berkepanjangan).
-                          </p>
-                        ) : (
-                          <p>
-                            <strong
-                              className={
-                                isDarkCard ? "text-gold-2" : "text-accent"
-                              }
-                            >
-                              Khusus PTS wilayah Bandung
-                            </strong>{" "}
-                            (jurusan Komunikasi atau Sosial kualitatif).
-                          </p>
-                        )}
-                        <p className="mt-1">
-                          Sesi lanjutan di luar kuota:{" "}
-                          <strong className={isDarkCard ? "text-paper" : "text-ink"}>
-                            +{formatRupiah(addonSessionPrice)}/pertemuan
-                          </strong>
-                          .
-                        </p>
-                      </div>
+                              strokeWidth={2.5}
+                              aria-hidden="true"
+                            />
+                            <span>{output}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
 
-                    {/* Footer: dynamic campus price & CTA */}
+                    {/* Price + Policy + CTA */}
                     <div
-                      className={`mt-7 border-t pt-5 ${
-                        isDarkCard ? "border-paper/20" : "border-rule"
+                      className={`mt-6 border-t pt-5 ${
+                        isCreamCard
+                          ? "border-[var(--color-card-rule)]"
+                          : "border-rule"
                       }`}
                     >
-                      {pkg.durationLabel && (
-                        <div
-                          className={`mb-3 flex items-center gap-1.5 text-xs font-medium ${
-                            isDarkCard ? "text-paper/75" : "text-muted"
-                          }`}
+                      <div className="flex items-center justify-between gap-2 text-xs font-bold">
+                        <span
+                          className={
+                            isCreamCard
+                              ? "text-paper"
+                              : "text-accent"
+                          }
                         >
-                          <Clock className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                          <span>{pkg.durationLabel}</span>
-                        </div>
-                      )}
+                          {campusType === "TELKOM_FKS"
+                            ? "+ Bonus 1x follow-up (FKS)"
+                            : `PTS Bandung (+${formatRupiah(addonSessionPrice)}/sesi)`}
+                        </span>
+                        {pkg.durationLabel && (
+                          <span
+                            className={`inline-flex items-center gap-1 ${
+                              isCreamCard
+                                ? "text-[var(--color-card-muted)]"
+                                : "text-muted"
+                            }`}
+                          >
+                            <Clock className="h-3.5 w-3.5" aria-hidden="true" />
+                            {pkg.durationLabel}
+                          </span>
+                        )}
+                      </div>
 
-                      <div className="flex items-baseline gap-2.5">
+                      <div className="mt-3 flex items-baseline gap-2.5">
                         <motion.span
                           key={`${pkg.id}-${campusType}`}
                           initial={{ opacity: 0, y: 4 }}
                           animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.24, ease: APPLE_EASE }}
+                          transition={{ duration: 0.22, ease: APPLE_EASE }}
                           className={`num font-display text-3xl ${
-                            isDarkCard ? "text-paper" : "text-ink"
+                            isCreamCard ? "text-card-ink" : "text-ink"
                           }`}
                         >
                           {formatRupiah(finalPrice)}
@@ -403,7 +346,9 @@ export function PackageCatalog({
                         {hasDiscount && (
                           <span
                             className={`num text-sm line-through ${
-                              isDarkCard ? "text-paper/55" : "text-muted"
+                              isCreamCard
+                                ? "text-[var(--color-card-muted)]"
+                                : "text-muted"
                             }`}
                           >
                             {formatRupiah(originalWithSurcharge)}
@@ -411,23 +356,11 @@ export function PackageCatalog({
                         )}
                       </div>
 
-                      <p
-                        className={`mt-1 text-xs ${
-                          isDarkCard ? "text-paper/75" : "text-muted"
-                        }`}
-                      >
-                        {campusType === "TELKOM_FKS"
-                          ? "Tarif khusus Telkom University (FKS)"
-                          : `Tarif PTS wilayah Bandung (+${formatRupiah(nonTelkomSurcharge)})`}
-                      </p>
-
                       <button
                         type="button"
                         onClick={() => onSelectPackage(pkg, activeCategory)}
-                        className={`mt-5 flex w-full items-center justify-center gap-2 rounded-full min-h-[48px] px-5 text-sm font-semibold transition-colors duration-200 active:translate-y-px cursor-pointer ${
-                          isHighlighted || isDarkCard
-                            ? "bg-accent text-accent-ink hover:bg-accent/90"
-                            : "border border-ink bg-transparent text-ink hover:bg-ink hover:text-paper"
+                        className={`mt-4 w-full justify-center ${
+                          isCreamCard ? "btn-primary" : "btn-quiet"
                         }`}
                       >
                         Pilih Paket Ini

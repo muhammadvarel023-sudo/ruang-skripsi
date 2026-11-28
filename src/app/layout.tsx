@@ -1,33 +1,26 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Archivo, Archivo_Narrow, Yeseva_One } from "next/font/google";
+import { Gabarito, Manrope } from "next/font/google";
 import "./globals.css";
 
-const yesevaOne = Yeseva_One({
+const gabarito = Gabarito({
   subsets: ["latin"],
-  variable: "--font-yeseva",
-  weight: ["400"],
+  variable: "--font-gabarito",
+  weight: ["700", "800"],
   display: "swap",
 });
 
-const archivo = Archivo({
+const manrope = Manrope({
   subsets: ["latin"],
-  variable: "--font-archivo",
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-const archivoNarrow = Archivo_Narrow({
-  subsets: ["latin"],
-  variable: "--font-archivo-narrow",
-  weight: ["500", "600", "700"],
+  variable: "--font-manrope",
+  weight: ["400", "500", "700"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "TelisikRiset: Pendampingan Skripsi Komunikasi Kualitatif",
   description:
-    "Pendampingan akademik 1-on-1 untuk mahasiswa Ilmu Komunikasi Telkom University FKS dan PTS Bandung, dari penajaman Bab 1 hingga metodologi Bab 3.",
+    "Mentoring 1-on-1 skripsi Ilmu Komunikasi untuk Telkom University FKS dan PTS Bandung, terstruktur dari Bab 1 sampai Bab 3.",
 };
 
 export default function RootLayout({
@@ -38,12 +31,12 @@ export default function RootLayout({
   return (
     <html
       lang="id"
-      className={`${yesevaOne.variable} ${archivo.variable} ${archivoNarrow.variable}`}
+      className={`${gabarito.variable} ${manrope.variable}`}
     >
       <body className="bg-paper text-ink font-body antialiased">
         <a
           href="#main-content"
-          className="fixed left-4 -top-24 z-[500] rounded-full bg-ink px-4 py-2 text-sm font-semibold text-paper transition-transform duration-200 focus:top-4"
+          className="fixed left-4 -top-24 z-[500] rounded-full bg-accent px-4 py-2 text-sm font-bold text-accent-ink transition-transform duration-200 focus:top-4"
         >
           Lewati ke konten utama
         </a>

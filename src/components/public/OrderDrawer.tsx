@@ -197,7 +197,7 @@ export function OrderDrawer({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.24, ease: APPLE_EASE }}
             onClick={onClose}
-            className="fixed inset-0 bg-ink/50"
+            className="fixed inset-0 bg-black/55"
           />
 
           <motion.aside
@@ -208,24 +208,24 @@ export function OrderDrawer({
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={APPLE_SPRING}
-            className="relative z-10 flex h-full w-full max-w-lg flex-col border-l-2 border-ink bg-paper"
+            className="relative z-10 flex h-full w-full max-w-lg flex-col bg-card text-card-ink shadow-2xl"
           >
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-paper/15 bg-ink px-6 py-4 text-paper">
+            <div className="flex items-center justify-between bg-paper-3 px-6 py-4 text-ink">
               <div>
-                <p className="text-xs font-semibold text-gold-2">
+                <p className="text-xs font-bold text-accent">
                   {createdOrder
                     ? "Langkah 2 dari 2: Pembayaran & Konfirmasi"
                     : "Langkah 1 dari 2: Biodata & Skema Bayar"}
                 </p>
-                <h3 id="drawer-package-title" className="mt-0.5 font-display text-lg text-paper">
+                <h3 id="drawer-package-title" className="mt-0.5 font-display text-lg text-ink">
                   {selected.pkg.name}
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={onClose}
-                className="flex h-10 w-10 items-center justify-center rounded-full text-paper/75 transition-colors duration-200 hover:bg-paper/10 hover:text-paper active:translate-y-px cursor-pointer"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-paper-2 text-ink transition-colors duration-200 hover:bg-accent hover:text-accent-ink active:translate-y-px cursor-pointer"
                 aria-label="Tutup panel"
               >
                 <X className="h-5 w-5" />
@@ -241,15 +241,15 @@ export function OrderDrawer({
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.26, ease: APPLE_EASE }}
+                    transition={{ duration: 0.24, ease: APPLE_EASE }}
                     onSubmit={handleSubmit}
                     className="space-y-4"
                   >
                     {/* Package & Total Box */}
-                    <div className="well-solstice p-4">
+                    <div className="rounded-2xl bg-paper p-4 text-ink">
                       <div className="flex items-start justify-between gap-3">
                         <div>
-                          <span className="text-xs font-semibold text-accent">
+                          <span className="text-xs font-bold text-accent">
                             {selected.category.name}
                           </span>
                           <p className="mt-0.5 font-display text-base text-ink">
@@ -261,7 +261,7 @@ export function OrderDrawer({
                             {formatRupiah(totalPrice)}
                           </span>
                           {campusType === "NON_TELKOM" && (
-                            <p className="num text-xs text-accent">
+                            <p className="num text-xs font-bold text-accent">
                               Dasar {formatRupiah(basePrice)} + {formatRupiah(surcharge)}
                             </p>
                           )}
@@ -271,17 +271,17 @@ export function OrderDrawer({
 
                     {/* Campus selector */}
                     <div>
-                      <span className="mb-1.5 block text-xs font-semibold text-ink">
+                      <span className="mb-1.5 block text-xs font-bold text-card-ink">
                         Asal Kampus <span className="text-error">*</span>
                       </span>
                       <div className="grid grid-cols-2 gap-2">
                         <button
                           type="button"
                           onClick={() => setCampusType("TELKOM_FKS")}
-                          className={`flex min-h-[44px] items-center justify-center gap-1.5 border px-3 py-2 text-xs font-semibold transition-colors duration-200 active:translate-y-px cursor-pointer ${
+                          className={`flex min-h-[44px] items-center justify-center gap-1.5 rounded-2xl border-2 px-3 py-2 text-xs font-bold transition-colors duration-200 active:translate-y-px cursor-pointer ${
                             campusType === "TELKOM_FKS"
-                              ? "border-ink bg-ink text-paper"
-                              : "border-rule bg-paper-2 text-ink-2 hover:border-ink"
+                              ? "border-paper bg-paper text-ink"
+                              : "border-[var(--color-card-rule)] bg-white text-card-ink hover:border-paper"
                           }`}
                         >
                           <GraduationCap className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
@@ -290,10 +290,10 @@ export function OrderDrawer({
                         <button
                           type="button"
                           onClick={() => setCampusType("NON_TELKOM")}
-                          className={`flex min-h-[44px] items-center justify-center gap-1.5 border px-3 py-2 text-xs font-semibold transition-colors duration-200 active:translate-y-px cursor-pointer ${
+                          className={`flex min-h-[44px] items-center justify-center gap-1.5 rounded-2xl border-2 px-3 py-2 text-xs font-bold transition-colors duration-200 active:translate-y-px cursor-pointer ${
                             campusType === "NON_TELKOM"
                               ? "border-accent bg-accent text-accent-ink"
-                              : "border-rule bg-paper-2 text-ink-2 hover:border-ink"
+                              : "border-[var(--color-card-rule)] bg-white text-card-ink hover:border-paper"
                           }`}
                         >
                           <Building2 className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
@@ -308,16 +308,16 @@ export function OrderDrawer({
                       <div>
                         <label
                           htmlFor="order-campus-name"
-                          className="mb-1.5 block text-xs font-semibold text-ink"
+                          className="mb-1.5 block text-xs font-bold text-card-ink"
                         >
-                          Pilih Kampus Swasta Wilayah Bandung <span className="text-error">*</span>
+                          Kampus Swasta Bandung <span className="text-error">*</span>
                         </label>
                         <select
                           id="order-campus-name"
                           required
                           value={campusName}
                           onChange={(e) => setCampusName(e.target.value)}
-                          className="min-h-[46px] w-full border border-muted bg-paper-2 px-3.5 text-sm text-ink transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-focus"
+                          className="min-h-[46px] w-full rounded-2xl border border-[var(--color-card-rule)] bg-white px-3.5 text-sm text-card-ink focus-visible:outline-2 focus-visible:outline-paper"
                         >
                           {BANDUNG_PRIVATE_CAMPUSES.map((campus) => (
                             <option key={campus} value={campus}>
@@ -325,38 +325,32 @@ export function OrderDrawer({
                             </option>
                           ))}
                         </select>
-                        <p className="mt-1 text-xs text-ink-2">
-                          Saat ini layanan di luar Telkom University tersedia untuk kampus
-                          swasta wilayah Bandung dengan jurusan relevan.
-                        </p>
                       </div>
                     )}
 
                     {/* Payment Plan Selector */}
                     <div>
-                      <span className="mb-1.5 block text-xs font-semibold text-ink">
+                      <span className="mb-1.5 block text-xs font-bold text-card-ink">
                         Skema Pembayaran <span className="text-error">*</span>
                       </span>
                       <div className="grid grid-cols-2 gap-2">
                         <button
                           type="button"
                           onClick={() => setPaymentPlan("DP_50")}
-                          className={`whitespace-nowrap border p-3 text-left transition-colors duration-200 active:translate-y-px cursor-pointer ${
+                          className={`whitespace-nowrap rounded-2xl border-2 p-3 text-left transition-colors duration-200 active:translate-y-px cursor-pointer ${
                             paymentPlan === "DP_50"
-                              ? "border-ink bg-paper-2 ring-1 ring-ink"
-                              : "border-rule bg-paper-2/60 hover:border-ink/50"
+                              ? "border-paper bg-paper text-ink"
+                              : "border-[var(--color-card-rule)] bg-white text-card-ink hover:border-paper/60"
                           }`}
                         >
                           <span className="flex items-center justify-between">
-                            <span className="text-xs font-semibold text-ink">
-                              DP 50% Dulu
-                            </span>
+                            <span className="text-xs font-bold">DP 50% Dulu</span>
                             <Wallet className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
                           </span>
-                          <span className="num mt-1 block font-display text-base text-accent">
+                          <span className="num mt-1 block font-display text-lg">
                             {formatRupiah(Math.ceil(totalPrice / 2))}
                           </span>
-                          <span className="mt-0.5 block text-xs text-muted">
+                          <span className="mt-0.5 block text-xs opacity-75">
                             Lock jadwal sesi 1
                           </span>
                         </button>
@@ -364,22 +358,20 @@ export function OrderDrawer({
                         <button
                           type="button"
                           onClick={() => setPaymentPlan("FULL")}
-                          className={`whitespace-nowrap border p-3 text-left transition-colors duration-200 active:translate-y-px cursor-pointer ${
+                          className={`whitespace-nowrap rounded-2xl border-2 p-3 text-left transition-colors duration-200 active:translate-y-px cursor-pointer ${
                             paymentPlan === "FULL"
-                              ? "border-ink bg-paper-2 ring-1 ring-ink"
-                              : "border-rule bg-paper-2/60 hover:border-ink/50"
+                              ? "border-paper bg-paper text-ink"
+                              : "border-[var(--color-card-rule)] bg-white text-card-ink hover:border-paper/60"
                           }`}
                         >
                           <span className="flex items-center justify-between">
-                            <span className="text-xs font-semibold text-ink">
-                              Bayar Lunas
-                            </span>
-                            <CheckCircle2 className="h-3.5 w-3.5 text-success" aria-hidden="true" />
+                            <span className="text-xs font-bold">Bayar Lunas</span>
+                            <CheckCircle2 className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
                           </span>
-                          <span className="num mt-1 block font-display text-base text-ink">
+                          <span className="num mt-1 block font-display text-lg">
                             {formatRupiah(totalPrice)}
                           </span>
-                          <span className="mt-0.5 block text-xs text-muted">
+                          <span className="mt-0.5 block text-xs opacity-75">
                             Sekali bayar beres
                           </span>
                         </button>
@@ -389,17 +381,17 @@ export function OrderDrawer({
                     {error && (
                       <div
                         role="alert"
-                        className="border border-error bg-error/10 px-4 py-3 text-xs font-semibold text-error"
+                        className="rounded-2xl border border-error bg-error/10 px-4 py-3 text-xs font-bold text-error"
                       >
                         {error}
                       </div>
                     )}
 
-                    <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="grid gap-3.5 sm:grid-cols-2">
                       <div>
                         <label
                           htmlFor="order-student-name"
-                          className="mb-1.5 block text-xs font-semibold text-ink"
+                          className="mb-1.5 block text-xs font-bold text-card-ink"
                         >
                           Nama Lengkap <span className="text-error">*</span>
                         </label>
@@ -411,13 +403,13 @@ export function OrderDrawer({
                           value={studentName}
                           onChange={(e) => setStudentName(e.target.value)}
                           placeholder="Contoh: Nadia Kartika"
-                          className="min-h-[46px] w-full border border-muted bg-paper-2 px-3.5 text-sm text-ink placeholder:text-muted focus-visible:outline-2 focus-visible:outline-focus"
+                          className="min-h-[46px] w-full rounded-2xl border border-[var(--color-card-rule)] bg-white px-3.5 text-sm text-card-ink placeholder:text-[var(--color-card-muted)] focus-visible:outline-2 focus-visible:outline-paper"
                         />
                       </div>
                       <div>
                         <label
                           htmlFor="order-major"
-                          className="mb-1.5 block text-xs font-semibold text-ink"
+                          className="mb-1.5 block text-xs font-bold text-card-ink"
                         >
                           Prodi / Konsentrasi <span className="text-error">*</span>
                         </label>
@@ -427,19 +419,19 @@ export function OrderDrawer({
                           required
                           value={major}
                           onChange={(e) => setMajor(e.target.value)}
-                          placeholder="Cth: Ilmu Komunikasi / Digital PR"
-                          className="min-h-[46px] w-full border border-muted bg-paper-2 px-3.5 text-sm text-ink placeholder:text-muted focus-visible:outline-2 focus-visible:outline-focus"
+                          placeholder="Cth: Ilmu Komunikasi / PR"
+                          className="min-h-[46px] w-full rounded-2xl border border-[var(--color-card-rule)] bg-white px-3.5 text-sm text-card-ink placeholder:text-[var(--color-card-muted)] focus-visible:outline-2 focus-visible:outline-paper"
                         />
                       </div>
                     </div>
 
-                    <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="grid gap-3.5 sm:grid-cols-2">
                       <div>
                         <label
                           htmlFor="order-contact"
-                          className="mb-1.5 block text-xs font-semibold text-ink"
+                          className="mb-1.5 block text-xs font-bold text-card-ink"
                         >
-                          Username Telegram / ID LINE <span className="text-error">*</span>
+                          Telegram / ID LINE <span className="text-error">*</span>
                         </label>
                         <input
                           id="order-contact"
@@ -448,13 +440,13 @@ export function OrderDrawer({
                           value={contactHandle}
                           onChange={(e) => setContactHandle(e.target.value)}
                           placeholder="Cth: @nadiakartika"
-                          className="min-h-[46px] w-full border border-muted bg-paper-2 px-3.5 text-sm text-ink placeholder:text-muted focus-visible:outline-2 focus-visible:outline-focus"
+                          className="min-h-[46px] w-full rounded-2xl border border-[var(--color-card-rule)] bg-white px-3.5 text-sm text-card-ink placeholder:text-[var(--color-card-muted)] focus-visible:outline-2 focus-visible:outline-paper"
                         />
                       </div>
                       <div>
                         <label
                           htmlFor="order-research-type"
-                          className="mb-1.5 block text-xs font-semibold text-ink"
+                          className="mb-1.5 block text-xs font-bold text-card-ink"
                         >
                           Pendekatan Kualitatif
                         </label>
@@ -462,7 +454,7 @@ export function OrderDrawer({
                           id="order-research-type"
                           value={researchType}
                           onChange={(e) => setResearchType(e.target.value)}
-                          className="min-h-[46px] w-full border border-muted bg-paper-2 px-3.5 text-sm text-ink focus-visible:outline-2 focus-visible:outline-focus"
+                          className="min-h-[46px] w-full rounded-2xl border border-[var(--color-card-rule)] bg-white px-3.5 text-sm text-card-ink focus-visible:outline-2 focus-visible:outline-paper"
                         >
                           {QUALITATIVE_APPROACHES.map((opt) => (
                             <option key={opt} value={opt}>
@@ -476,9 +468,9 @@ export function OrderDrawer({
                     <div>
                       <label
                         htmlFor="order-topic"
-                        className="mb-1.5 block text-xs font-semibold text-ink"
+                        className="mb-1.5 block text-xs font-bold text-card-ink"
                       >
-                        Topik atau Rancangan Judul Komunikasi <span className="text-error">*</span>
+                        Topik / Rancangan Judul <span className="text-error">*</span>
                       </label>
                       <input
                         id="order-topic"
@@ -486,66 +478,61 @@ export function OrderDrawer({
                         required
                         value={topicOrTitle}
                         onChange={(e) => setTopicOrTitle(e.target.value)}
-                        placeholder="Tulis fenomena komunikasi atau judul sementaramu"
-                        className="min-h-[46px] w-full border border-muted bg-paper-2 px-3.5 text-sm text-ink placeholder:text-muted focus-visible:outline-2 focus-visible:outline-focus"
+                        placeholder="Tulis fenomena atau judul sementaramu"
+                        className="min-h-[46px] w-full rounded-2xl border border-[var(--color-card-rule)] bg-white px-3.5 text-sm text-card-ink placeholder:text-[var(--color-card-muted)] focus-visible:outline-2 focus-visible:outline-paper"
                       />
                     </div>
 
                     <div>
                       <label
                         htmlFor="order-notes"
-                        className="mb-1.5 block text-xs font-semibold text-ink"
+                        className="mb-1.5 block text-xs font-bold text-card-ink"
                       >
-                        Kendala atau Catatan Tambahan (Opsional)
+                        Catatan Tambahan (Opsional)
                       </label>
                       <textarea
                         id="order-notes"
                         rows={2}
                         value={notes}
                         onChange={(e) => setNotes(e.target.value)}
-                        placeholder="Ceritakan singkat progres atau revisi dari dosen pembimbing…"
-                        className="w-full resize-none border border-muted bg-paper-2 px-3.5 py-2.5 text-sm text-ink placeholder:text-muted focus-visible:outline-2 focus-visible:outline-focus"
+                        placeholder="Progres atau revisi singkat dari dosen…"
+                        className="w-full resize-none rounded-2xl border border-[var(--color-card-rule)] bg-white px-3.5 py-2.5 text-sm text-card-ink placeholder:text-[var(--color-card-muted)] focus-visible:outline-2 focus-visible:outline-paper"
                       />
                     </div>
 
-                    {/* Mandatory Terms & Refund Policy Checkbox */}
-                    <label className="flex items-start gap-2.5 border border-rule bg-paper-2 p-3.5 text-xs leading-relaxed text-ink-2 cursor-pointer">
+                    <label className="flex items-start gap-2.5 rounded-2xl border border-[var(--color-card-rule)] bg-white/80 p-3.5 text-xs leading-relaxed text-[var(--color-card-muted)] cursor-pointer">
                       <input
                         type="checkbox"
                         required
                         checked={agreedTerms}
                         onChange={(e) => setAgreedTerms(e.target.checked)}
-                        className="mt-0.5 h-4 w-4 shrink-0 accent-accent"
+                        className="mt-0.5 h-4 w-4 shrink-0 accent-paper"
                       />
                       <span>
-                        Saya memahami bahwa layanan ini adalah{" "}
-                        <strong className="text-ink">pendampingan akademik (bukan joki)</strong>,
-                        keputusan ACC berada di tangan dosen pembimbing, reschedule gratis maks. H-1
-                        (1x), dan pembayaran untuk sesi yang sudah berjalan bersifat{" "}
-                        <strong className="text-ink">non-refundable</strong> (untuk paket DP
-                        50%, kamu bebas tidak melanjutkan sesi berikutnya tanpa melunasi sisa).
+                        Saya paham ini adalah{" "}
+                        <strong className="text-card-ink">mentoring akademik (bukan joki)</strong>,
+                        reschedule gratis maks. H-1 (1x), dan sesi yang sudah berjalan
+                        bersifat <strong className="text-card-ink">non-refundable</strong>.
                       </span>
                     </label>
 
-                    <div className="pt-1">
-                      <button
-                        type="submit"
-                        disabled={submitting || !agreedTerms}
-                        className="btn-primary w-full justify-center whitespace-nowrap"
-                      >
-                        {submitting ? (
-                          <>
-                            <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-                            <span>Menyiapkan Pembayaran…</span>
-                          </>
-                        ) : (
-                          <>
-                            <span>Bayar Sekarang ({formatRupiah(dueNow)})</span>
-                            <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                          </>
-                        )}
-                      </button>
-                    </div>
+                    <button
+                      type="submit"
+                      disabled={submitting || !agreedTerms}
+                      className="btn-primary w-full justify-center whitespace-nowrap"
+                    >
+                      {submitting ? (
+                        <>
+                          <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                          <span>Menyiapkan Pembayaran…</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>Bayar Sekarang ({formatRupiah(dueNow)})</span>
+                          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                        </>
+                      )}
+                    </button>
                   </motion.form>
                 ) : (
                   <motion.div
@@ -555,32 +542,31 @@ export function OrderDrawer({
                     transition={{ duration: 0.34, ease: APPLE_EASE }}
                     className="space-y-4"
                   >
-                    {/* Order Code & Amount Due Banner */}
-                    <div className="band-ink border border-ink p-5">
+                    <div className="rounded-2xl bg-paper p-5 text-ink">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-xs font-semibold text-gold-2">
+                        <span className="text-xs font-bold text-accent">
                           Kode Pesanan
                         </span>
                         <button
                           type="button"
                           onClick={() => copyText("code", createdOrder.orderCode)}
-                          className="inline-flex items-center gap-1.5 rounded-full bg-paper/15 px-3 py-1 text-xs font-semibold text-paper transition-colors duration-200 hover:bg-paper/25 active:translate-y-px cursor-pointer"
+                          className="inline-flex items-center gap-1.5 rounded-full bg-paper-2 px-3 py-1 text-xs font-bold text-ink transition-colors duration-200 hover:bg-accent hover:text-accent-ink active:translate-y-px cursor-pointer"
                         >
                           <span className="num">{createdOrder.orderCode}</span>
                           {copiedKey === "code" ? (
-                            <Check className="h-3.5 w-3.5 text-gold-2" />
+                            <Check className="h-3.5 w-3.5" />
                           ) : (
                             <Copy className="h-3.5 w-3.5" />
                           )}
                         </button>
                       </div>
 
-                      <div className="mt-4 border-t border-paper/15 pt-4">
-                        <p className="text-xs text-paper/80">
+                      <div className="mt-4 border-t border-rule pt-4">
+                        <p className="text-xs text-ink-2">
                           {formatPaymentPlanLabel(createdOrder.paymentPlan)}
                         </p>
                         <div className="mt-1 flex items-center justify-between gap-3">
-                          <span className="num font-display text-2xl text-gold-2">
+                          <span className="num font-display text-2xl text-accent">
                             {formatRupiah(createdOrder.amountDueNow)}
                           </span>
                           <button
@@ -588,11 +574,11 @@ export function OrderDrawer({
                             onClick={() =>
                               copyText("amount", String(createdOrder.amountDueNow))
                             }
-                            className="inline-flex items-center gap-1 rounded-full bg-paper/15 px-3 py-1.5 text-xs font-semibold text-paper transition-colors duration-200 hover:bg-paper/25 active:translate-y-px cursor-pointer"
+                            className="inline-flex items-center gap-1 rounded-full bg-paper-2 px-3 py-1.5 text-xs font-bold text-ink transition-colors duration-200 hover:bg-accent hover:text-accent-ink active:translate-y-px cursor-pointer"
                           >
                             {copiedKey === "amount" ? (
                               <>
-                                <Check className="h-3 w-3 text-gold-2" />
+                                <Check className="h-3 w-3" />
                                 <span>Tersalin</span>
                               </>
                             ) : (
@@ -603,25 +589,18 @@ export function OrderDrawer({
                             )}
                           </button>
                         </div>
-                        {createdOrder.paymentPlan === "DP_50" && (
-                          <p className="mt-1.5 text-xs text-paper/75">
-                            Total paket {formatRupiah(createdOrder.priceSnapshot)} (pelunasan
-                            sisa 50% sebelum sesi lanjutan).
-                          </p>
-                        )}
                       </div>
                     </div>
 
-                    {/* Payment Method Box: QRIS & Transfer Bank */}
-                    <div className="border border-rule bg-paper-2 p-4">
-                      <div className="grid grid-cols-2 gap-1.5 rounded-full bg-paper p-1">
+                    <div className="rounded-2xl border border-[var(--color-card-rule)] bg-white p-4">
+                      <div className="grid grid-cols-2 gap-1.5 rounded-xl bg-black/5 p-1">
                         <button
                           type="button"
                           onClick={() => setPayMethodTab("QRIS")}
-                          className={`flex min-h-[40px] items-center justify-center gap-1.5 rounded-full text-xs font-semibold transition-colors duration-200 cursor-pointer ${
+                          className={`flex min-h-[40px] items-center justify-center gap-1.5 rounded-lg text-xs font-bold transition-colors duration-200 cursor-pointer ${
                             payMethodTab === "QRIS"
-                              ? "bg-ink text-paper"
-                              : "text-ink-2 hover:text-ink"
+                              ? "bg-paper text-ink"
+                              : "text-[var(--color-card-muted)] hover:text-card-ink"
                           }`}
                         >
                           <QrCode className="h-3.5 w-3.5" aria-hidden="true" />
@@ -630,10 +609,10 @@ export function OrderDrawer({
                         <button
                           type="button"
                           onClick={() => setPayMethodTab("TRANSFER")}
-                          className={`flex min-h-[40px] items-center justify-center gap-1.5 rounded-full text-xs font-semibold transition-colors duration-200 cursor-pointer ${
+                          className={`flex min-h-[40px] items-center justify-center gap-1.5 rounded-lg text-xs font-bold transition-colors duration-200 cursor-pointer ${
                             payMethodTab === "TRANSFER"
-                              ? "bg-ink text-paper"
-                              : "text-ink-2 hover:text-ink"
+                              ? "bg-paper text-ink"
+                              : "text-[var(--color-card-muted)] hover:text-card-ink"
                           }`}
                         >
                           <Landmark className="h-3.5 w-3.5" aria-hidden="true" />
@@ -645,7 +624,7 @@ export function OrderDrawer({
                         <div className="mt-4 text-center">
                           {settings.qris_image_url ? (
                             <>
-                              <div className="mx-auto inline-block border border-rule bg-paper-2 p-2">
+                              <div className="mx-auto inline-block rounded-xl border border-[var(--color-card-rule)] bg-white p-2">
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
                                   src={settings.qris_image_url}
@@ -656,38 +635,33 @@ export function OrderDrawer({
                                 />
                               </div>
                               {settings.qris_merchant_name && (
-                                <p className="mt-2.5 text-xs font-semibold text-ink">
+                                <p className="mt-2.5 text-xs font-bold text-card-ink">
                                   QRIS resmi a.n.{" "}
-                                  <span className="text-accent">
+                                  <span className="text-paper">
                                     {settings.qris_merchant_name}
                                   </span>
                                 </p>
                               )}
-                              <p className="mt-1 text-xs text-ink-2">
-                                Scan via m-Banking, GoPay, DANA, OVO, atau ShopeePay, lalu
-                                kirim bukti bayar lewat tombol di bawah.
-                              </p>
                             </>
                           ) : (
-                            <div className="border border-dashed border-muted bg-paper px-4 py-6 text-xs text-ink-2">
-                              Gambar QRIS belum diunggah admin. Silakan pilih tab{" "}
-                              <strong>Transfer / E-Wallet</strong> atau konfirmasi langsung
-                              via Telegram / LINE di bawah.
+                            <div className="rounded-xl border border-dashed border-[var(--color-card-rule)] bg-card px-4 py-6 text-xs text-[var(--color-card-muted)]">
+                              QRIS belum diunggah admin. Pilih tab{" "}
+                              <strong>Transfer / E-Wallet</strong> atau konfirmasi via chat.
                             </div>
                           )}
                         </div>
                       ) : (
-                        <div className="mt-4 space-y-2.5 bg-paper p-4 text-xs">
+                        <div className="mt-4 space-y-2 rounded-xl bg-card p-4 text-xs">
                           <div className="flex justify-between gap-3">
-                            <span className="text-muted">Bank / E-Wallet</span>
-                            <span className="font-semibold text-ink">
-                              {settings.bank_name || "Konfirmasi via Telegram / LINE"}
+                            <span className="text-[var(--color-card-muted)]">Bank / E-Wallet</span>
+                            <span className="font-bold text-card-ink">
+                              {settings.bank_name || "Konfirmasi via chat"}
                             </span>
                           </div>
                           <div className="flex items-center justify-between gap-3">
-                            <span className="text-muted">No. Rekening / ID</span>
+                            <span className="text-[var(--color-card-muted)]">No. Rekening</span>
                             <div className="flex items-center gap-1.5">
-                              <span className="num font-semibold text-ink">
+                              <span className="num font-bold text-card-ink">
                                 {settings.bank_account_number || "-"}
                               </span>
                               {settings.bank_account_number && (
@@ -696,7 +670,7 @@ export function OrderDrawer({
                                   onClick={() =>
                                     copyText("rek", settings.bank_account_number)
                                   }
-                                  className="border border-rule bg-paper-2 px-2 py-0.5 text-xs font-semibold text-ink transition-colors duration-200 hover:border-ink cursor-pointer"
+                                  className="rounded-lg border border-[var(--color-card-rule)] bg-white px-2 py-0.5 text-xs font-bold text-card-ink cursor-pointer"
                                 >
                                   {copiedKey === "rek" ? "Disalin" : "Salin"}
                                 </button>
@@ -704,8 +678,8 @@ export function OrderDrawer({
                             </div>
                           </div>
                           <div className="flex justify-between gap-3">
-                            <span className="text-muted">Atas Nama</span>
-                            <span className="font-semibold text-ink">
+                            <span className="text-[var(--color-card-muted)]">Atas Nama</span>
+                            <span className="font-bold text-card-ink">
                               {settings.bank_account_holder || "-"}
                             </span>
                           </div>
@@ -713,12 +687,7 @@ export function OrderDrawer({
                       )}
                     </div>
 
-                    {/* Confirmation Buttons */}
                     <div className="space-y-2.5">
-                      <p className="text-center text-xs font-semibold text-ink-2">
-                        Sudah bayar? Kirim bukti transfer dan atur jadwal sesi di sini:
-                      </p>
-
                       {telegramUrl && (
                         <a
                           href={telegramUrl}
@@ -736,7 +705,7 @@ export function OrderDrawer({
                           href={lineUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="btn-quiet w-full justify-center whitespace-nowrap"
+                          className="btn-dark-ink w-full justify-center whitespace-nowrap"
                         >
                           <MessageCircle className="h-4 w-4" aria-hidden="true" />
                           <span>Konfirmasi via LINE ({settings.admin_line})</span>
@@ -746,11 +715,11 @@ export function OrderDrawer({
                       <button
                         type="button"
                         onClick={() => copyText("msg", formattedMessage)}
-                        className="flex min-h-[44px] w-full items-center justify-center gap-1.5 whitespace-nowrap border border-rule bg-paper-2 px-5 py-2.5 text-xs font-semibold text-ink transition-colors duration-200 hover:border-ink active:translate-y-px cursor-pointer"
+                        className="flex min-h-[44px] w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-2xl border border-[var(--color-card-rule)] bg-white px-5 py-2.5 text-xs font-bold text-card-ink transition-colors duration-200 hover:border-paper active:translate-y-px cursor-pointer"
                       >
                         {copiedKey === "msg" ? (
                           <>
-                            <Check className="h-3.5 w-3.5 text-success" />
+                            <Check className="h-3.5 w-3.5 text-paper" />
                             <span>Format Pesan Tersalin</span>
                           </>
                         ) : (
@@ -763,9 +732,9 @@ export function OrderDrawer({
 
                       <Link
                         href={`/pesanan/${createdOrder.orderCode}`}
-                        className="flex w-full items-center justify-center gap-1.5 py-2 text-xs font-semibold text-ink-2 transition-colors duration-200 hover:text-accent"
+                        className="flex w-full items-center justify-center gap-1.5 py-2 text-xs font-bold text-paper hover:underline"
                       >
-                        <span>Buka Halaman Invoice &amp; Status Pesanan</span>
+                        <span>Buka Halaman Invoice</span>
                         <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
                       </Link>
                     </div>

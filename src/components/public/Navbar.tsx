@@ -32,7 +32,7 @@ export function Navbar({ brandName, onOpenMatcher }: NavbarProps) {
     <header
       className={`sticky top-0 z-[300] border-b transition-colors duration-200 ${
         scrolled
-          ? "border-rule bg-paper-2/95 backdrop-blur-md"
+          ? "border-rule bg-paper-3/95 backdrop-blur-md"
           : "border-rule/70 bg-paper"
       }`}
     >
@@ -46,62 +46,68 @@ export function Navbar({ brandName, onOpenMatcher }: NavbarProps) {
             size={36}
             className="transition-transform duration-200 group-hover:scale-105"
           />
-          <span className="font-display text-lg text-ink">{brandName}</span>
+          <span className="font-display text-xl text-ink">{brandName}</span>
         </Link>
 
         <nav
           aria-label="Navigasi utama"
-          className="hidden items-center gap-7 text-sm font-medium text-ink-2 md:flex"
+          className="hidden items-center gap-6 text-sm font-bold text-ink-2 lg:flex"
         >
+          <a
+            href="#peta-riset"
+            className="whitespace-nowrap py-2 transition-colors duration-200 hover:text-accent"
+          >
+            Bagan Riset
+          </a>
           <a
             href="#layanan"
             className="whitespace-nowrap py-2 transition-colors duration-200 hover:text-accent"
           >
-            Katalog Paket
+            Paket
           </a>
           <a
             href="#eksplorasi"
             className="whitespace-nowrap py-2 transition-colors duration-200 hover:text-accent"
           >
-            Jelajah Bab
+            Metode
           </a>
           <a
             href="#cara-kerja"
             className="whitespace-nowrap py-2 transition-colors duration-200 hover:text-accent"
           >
-            Alur Sesi
+            Alur
           </a>
           <a
             href="#prinsip"
             className="whitespace-nowrap py-2 transition-colors duration-200 hover:text-accent"
           >
-            Etika Akademik
+            Etika
           </a>
           <a
             href="#faq"
             className="whitespace-nowrap py-2 transition-colors duration-200 hover:text-accent"
           >
-            Pertanyaan
+            FAQ
           </a>
         </nav>
 
-        <div className="hidden items-center gap-4 md:flex">
+        <div className="hidden items-center gap-2.5 md:flex">
           <button
             type="button"
             onClick={onOpenMatcher}
-            className="btn-underline whitespace-nowrap"
+            className="btn-quiet min-h-[44px] px-4 text-sm"
           >
-            Bantu Pilih Paket
+            Cocokkan Paket
           </button>
-          <a href="#layanan" className="btn-quiet min-h-[44px] px-5 text-sm">
-            Lihat Tarif
+          <a href="#layanan" className="btn-primary min-h-[44px] px-5 text-sm">
+            Pilih Paket
           </a>
         </div>
 
         <button
           type="button"
           onClick={() => setMobileOpen((v) => !v)}
-          className="flex h-11 w-11 items-center justify-center rounded-full border border-rule bg-paper-2 text-ink transition-colors duration-200 hover:border-ink active:translate-y-px md:hidden cursor-pointer"
+          className="flex h-11 w-11 items-center justify-center rounded-2xl border-2 border-rule bg-paper-2 text-ink transition-colors duration-200 hover:border-accent active:translate-y-px lg:hidden cursor-pointer"
           aria-label="Menu navigasi"
           aria-expanded={mobileOpen}
         >
@@ -109,7 +115,7 @@ export function Navbar({ brandName, onOpenMatcher }: NavbarProps) {
         </button>
       </div>
 
-      {/* Apple-smooth hairline scroll progress */}
+      {/* Apple-smooth scroll progress line */}
       <motion.div
         aria-hidden="true"
         style={{ scaleX }}
@@ -121,63 +127,70 @@ export function Navbar({ brandName, onOpenMatcher }: NavbarProps) {
           initial={{ opacity: 0, y: -6 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ ...APPLE_TRANSITION, duration: 0.24, ease: APPLE_EASE }}
-          className="border-t border-rule bg-paper-2 px-4 py-5 md:hidden"
+          className="border-t border-rule bg-paper-3 px-4 py-5 lg:hidden"
         >
-          <div className="flex flex-col gap-2 text-base font-medium text-ink">
+          <div className="grid grid-cols-2 gap-2 text-sm font-bold text-ink">
+            <a
+              href="#peta-riset"
+              onClick={() => setMobileOpen(false)}
+              className="rounded-xl bg-paper-2 px-3 py-2.5 transition-colors duration-200 hover:bg-paper"
+            >
+              Bagan Riset
+            </a>
             <a
               href="#layanan"
               onClick={() => setMobileOpen(false)}
-              className="rounded-lg px-2 py-2.5 transition-colors duration-200 hover:bg-paper"
+              className="rounded-xl bg-paper-2 px-3 py-2.5 transition-colors duration-200 hover:bg-paper"
             >
-              Katalog Paket
+              Paket &amp; Tarif
             </a>
             <a
               href="#eksplorasi"
               onClick={() => setMobileOpen(false)}
-              className="rounded-lg px-2 py-2.5 transition-colors duration-200 hover:bg-paper"
+              className="rounded-xl bg-paper-2 px-3 py-2.5 transition-colors duration-200 hover:bg-paper"
             >
-              Jelajah Bab
+              Metode Kualitatif
             </a>
             <a
               href="#cara-kerja"
               onClick={() => setMobileOpen(false)}
-              className="rounded-lg px-2 py-2.5 transition-colors duration-200 hover:bg-paper"
+              className="rounded-xl bg-paper-2 px-3 py-2.5 transition-colors duration-200 hover:bg-paper"
             >
               Alur Sesi
             </a>
             <a
               href="#prinsip"
               onClick={() => setMobileOpen(false)}
-              className="rounded-lg px-2 py-2.5 transition-colors duration-200 hover:bg-paper"
+              className="rounded-xl bg-paper-2 px-3 py-2.5 transition-colors duration-200 hover:bg-paper"
             >
               Etika Akademik
             </a>
             <a
               href="#faq"
               onClick={() => setMobileOpen(false)}
-              className="rounded-lg px-2 py-2.5 transition-colors duration-200 hover:bg-paper"
+              className="rounded-xl bg-paper-2 px-3 py-2.5 transition-colors duration-200 hover:bg-paper"
             >
-              Pertanyaan
+              FAQ
             </a>
-            <div className="mt-2 flex flex-col gap-2.5 border-t border-rule pt-4">
-              <button
-                type="button"
-                onClick={() => {
-                  setMobileOpen(false);
-                  onOpenMatcher();
-                }}
-                className="btn-quiet w-full justify-center"
-              >
-                Bingung Pilih Paket?
-              </button>
-              <a
-                href="#layanan"
-                onClick={() => setMobileOpen(false)}
-                className="btn-primary w-full justify-center"
-              >
-                Lihat Paket Layanan
-              </a>
-            </div>
+          </div>
+          <div className="mt-3 flex flex-col gap-2 border-t border-rule pt-3">
+            <button
+              type="button"
+              onClick={() => {
+                setMobileOpen(false);
+                onOpenMatcher();
+              }}
+              className="btn-quiet w-full justify-center"
+            >
+              Cocokkan Paket
+            </button>
+            <a
+              href="#layanan"
+              onClick={() => setMobileOpen(false)}
+              className="btn-primary w-full justify-center"
+            >
+              Pilih Paket Layanan
+            </a>
           </div>
         </motion.div>
       )}
