@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
-  BookOpen,
   LayoutDashboard,
   Inbox,
   Layers,
@@ -11,6 +10,7 @@ import {
   ExternalLink,
   LogOut,
 } from "lucide-react";
+import { BrandLogo } from "@/components/BrandLogo";
 
 const NAV_ITEMS = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
@@ -33,12 +33,10 @@ export function AdminSidebar({ email }: { email: string }) {
     <aside className="flex w-full flex-col border-b border-slate-200 bg-white lg:min-h-screen lg:w-64 lg:border-b-0 lg:border-r">
       <div className="flex h-16 items-center justify-between border-b border-slate-100 px-5">
         <Link href="/admin" className="flex items-center gap-2.5">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#0F172A] text-white">
-            <BookOpen className="h-4 w-4" />
-          </span>
+          <BrandLogo size={32} />
           <div className="leading-none">
             <span className="block text-sm font-semibold text-[#0F172A]">
-              RuangSkripsi
+              TelisikRiset
             </span>
             <span className="block font-mono text-[10px] text-slate-400">
               ADMIN PANEL

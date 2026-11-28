@@ -1,161 +1,175 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { ShieldCheck, BookMarked, Users, MessageSquareText } from "lucide-react";
+import { BookMarked, Users, MessageSquareText } from "lucide-react";
+import { APPLE_EASE, APPLE_SPRING } from "@/lib/motion";
 
 const STEPS = [
   {
-    num: "01",
     title: "Pilih Bab & Paket Sesuai Progres",
     desc: "Cukup pilih bagian yang sedang kamu kerjakan (Bab 1, Bab 2, atau Bab 3) sesuai kondisi awal penelitianmu.",
-    badge: "bg-[#2563EB] text-white",
-    border: "border-t-[#2563EB]",
   },
   {
-    num: "02",
     title: "Isi Detail Singkat Penelitian",
-    desc: "Tulis nama, prodi, pendekatan penelitian, serta topik atau kendala singkat dalam formulir kurang dari 1 menit.",
-    badge: "bg-[#0D9488] text-white",
-    border: "border-t-[#0D9488]",
+    desc: "Tulis nama, prodi, pendekatan kualitatif, serta topik atau kendala singkat dalam formulir kurang dari satu menit.",
   },
   {
-    num: "03",
-    title: "Konfirmasi Terarah via Telegram / LINE",
-    desc: "Sistem otomatis membuat kode pesanan dan format pesan—tinggal klik Telegram atau LINE tanpa perlu nomor HP.",
-    badge: "bg-[#EA580C] text-white",
-    border: "border-t-[#EA580C]",
+    title: "Konfirmasi Terarah via Telegram atau LINE",
+    desc: "Sistem otomatis membuat kode pesanan dan format pesan, tinggal klik Telegram atau LINE tanpa perlu nomor HP.",
   },
   {
-    num: "04",
     title: "Mulai Sesi Pendampingan 1-on-1",
     desc: "Diskusi, brainstorming, evaluasi draft, dan penyusunan rencana tindak lanjut agar kamu siap maju bimbingan.",
-    badge: "bg-[#090E1A] text-white",
-    border: "border-t-[#090E1A]",
+  },
+];
+
+const PRINCIPLES = [
+  {
+    icon: BookMarked,
+    title: "Berbasis Literatur & Logika Riset",
+    desc: "Rekomendasi teori dan metode mengacu pada kaidah metodologi ilmiah.",
+  },
+  {
+    icon: Users,
+    title: "Kolaboratif 1-on-1",
+    desc: "Setiap keputusan judul, kerangka, dan analisis didiskusikan bersama.",
+  },
+  {
+    icon: MessageSquareText,
+    title: "Siap Dipertanggungjawabkan",
+    desc: "Fokus membangun pemahaman agar kamu lancar menjawab pertanyaan penguji.",
   },
 ];
 
 export function HowItWorks() {
+  const [activeStep, setActiveStep] = useState(0);
+
   return (
     <>
       <section
         id="cara-kerja"
-        className="scroll-mt-20 border-t border-slate-200 bg-white py-20 sm:py-24"
+        className="scroll-mt-20 border-t border-rule bg-paper-2 py-20 sm:py-24"
       >
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
-            <span className="inline-block rounded-md bg-[#090E1A] px-2.5 py-1 font-mono text-xs font-bold uppercase tracking-wider text-white">
-              Alur Pendampingan
-            </span>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight text-[#090E1A] sm:text-4xl">
-              Sederhana, rapi, tanpa{" "}
-              <span className="font-serif italic font-normal text-[#2563EB]">
-                prosedur berbelit.
-              </span>
-            </h2>
-          </div>
+        <div className="container">
+          <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
+            <div className="lg:col-span-5">
+              <h2 className="font-display text-ink">
+                Alur pendampingan sederhana, tanpa prosedur berbelit.
+              </h2>
+              <p className="lead mt-4 text-ink-2">
+                Empat langkah ringkas dari memilih bab hingga masuk ruang diskusi 1-on-1.
+              </p>
+            </div>
 
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {STEPS.map((step, i) => (
-              <motion.div
-                key={step.num}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{
-                  delay: i * 0.08,
-                  duration: 0.48,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className={`rounded-2xl border border-slate-200 border-t-4 bg-[#F8FAFC] p-6 transition-all hover:bg-white hover:shadow-md ${step.border}`}
-              >
-                <span
-                  className={`inline-block rounded-lg px-2.5 py-1 font-mono text-xs font-bold ${step.badge}`}
-                >
-                  LANGKAH {step.num}
-                </span>
-                <h3 className="mt-4 text-base font-bold text-[#090E1A]">
-                  {step.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                  {step.desc}
-                </p>
-              </motion.div>
-            ))}
+            <ol className="divide-y divide-rule border-y border-rule lg:col-span-7">
+              {STEPS.map((step, i) => {
+                const isActive = activeStep === i;
+                return (
+                  <li key={step.title}>
+                    <button
+                      type="button"
+                      onClick={() => setActiveStep(i)}
+                      onMouseEnter={() => setActiveStep(i)}
+                      className="group relative flex w-full items-start gap-6 py-6 text-left transition-colors duration-200 cursor-pointer"
+                    >
+                      {isActive && (
+                        <motion.span
+                          layoutId="activeStepRule"
+                          transition={APPLE_SPRING}
+                          className="absolute inset-y-2 left-0 w-[3px] rounded-full bg-accent"
+                        />
+                      )}
+                      <span
+                        className={`num pl-4 font-display text-2xl transition-colors duration-200 ${
+                          isActive ? "text-accent" : "text-muted"
+                        }`}
+                      >
+                        0{i + 1}
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="font-display text-xl text-ink">
+                          {step.title}
+                        </h3>
+                        <p className="mt-1.5 text-sm leading-relaxed text-ink-2">
+                          {step.desc}
+                        </p>
+                      </div>
+                    </button>
+                  </li>
+                );
+              })}
+            </ol>
           </div>
         </div>
       </section>
 
-      {/* Bold High-Contrast Academic Integrity Banner */}
-      <section id="prinsip" className="scroll-mt-20 border-t border-slate-200 bg-[#F8FAFC] py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            className="relative overflow-hidden rounded-3xl bg-[#090E1A] p-8 text-white shadow-2xl sm:p-12 dark-grid"
-          >
-            <div className="grid gap-10 lg:grid-cols-12 lg:items-center">
-              <div className="lg:col-span-7">
-                <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/15 px-3.5 py-1 text-xs font-bold text-emerald-300">
-                  <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
-                  Komitmen Etika Akademik
-                </span>
-                <h2 className="mt-4 text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl">
-                  Kami mendampingi proses berpikir,{" "}
-                  <span className="font-serif italic font-normal text-[#FDBA74]">
-                    bukan menggantikan peranmu.
-                  </span>
-                </h2>
-                <p className="mt-4 text-sm leading-relaxed text-slate-300 sm:text-base">
-                  RuangSkripsi dibangun sebagai ruang diskusi dan mentoring akademik. Tujuan kami
-                  bukan sekadar menghasilkan halaman naskah, melainkan memastikan kamu memahami
-                  logika penelitian, teori, dan metodologimu sendiri—sehingga percaya diri saat
-                  bimbingan maupun sidang.
-                </p>
-              </div>
+      {/* Deep Espresso Ink Band: Academic Integrity + Oval Photo Medallion */}
+      <section
+        id="prinsip"
+        className="band-ink scroll-mt-20 py-20 sm:py-28"
+      >
+        <div className="container">
+          <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-14">
+            {/* Oval medallion photograph contrasting against espresso band */}
+            <motion.div
+              initial={false}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.55, ease: APPLE_EASE }}
+              className="lg:col-span-5"
+            >
+              <figure
+                className="photo-frame frame-oval mx-auto aspect-square max-w-[380px] min-h-[300px] w-full overflow-hidden border border-paper/20 bg-ink"
+                data-slot="integrity"
+                data-alt="Tangan mencatat di buku catatan di meja kerja"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Writing_in_a_notebook_with_a_feather_pen_while_enjoying_coffee_at_a_desk_surrounded_by_flowers.jpg/1280px-Writing_in_a_notebook_with_a_feather_pen_while_enjoying_coffee_at_a_desk_surrounded_by_flowers.jpg"
+                  srcSet="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Writing_in_a_notebook_with_a_feather_pen_while_enjoying_coffee_at_a_desk_surrounded_by_flowers.jpg/960px-Writing_in_a_notebook_with_a_feather_pen_while_enjoying_coffee_at_a_desk_surrounded_by_flowers.jpg 960w, https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Writing_in_a_notebook_with_a_feather_pen_while_enjoying_coffee_at_a_desk_surrounded_by_flowers.jpg/1280px-Writing_in_a_notebook_with_a_feather_pen_while_enjoying_coffee_at_a_desk_surrounded_by_flowers.jpg 1280w, https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Writing_in_a_notebook_with_a_feather_pen_while_enjoying_coffee_at_a_desk_surrounded_by_flowers.jpg/1920px-Writing_in_a_notebook_with_a_feather_pen_while_enjoying_coffee_at_a_desk_surrounded_by_flowers.jpg 1920w"
+                  sizes="(min-width: 60rem) 34vw, 90vw"
+                  width={6016}
+                  height={4016}
+                  alt="Tangan mencatat di buku catatan di meja kerja"
+                  loading="lazy"
+                  style={{ objectPosition: "55% 60%" }}
+                />
+              </figure>
+            </motion.div>
 
-              <div className="grid gap-3.5 lg:col-span-5">
-                {[
-                  {
-                    icon: BookMarked,
-                    color: "bg-[#2563EB] text-white",
-                    title: "Berbasis Literatur & Logika Riset",
-                    desc: "Rekomendasi teori dan metode mengacu pada kaidah metodologi ilmiah.",
-                  },
-                  {
-                    icon: Users,
-                    color: "bg-[#0D9488] text-white",
-                    title: "Kolaboratif 1-on-1",
-                    desc: "Setiap keputusan judul, kerangka, dan analisis didiskusikan bersama.",
-                  },
-                  {
-                    icon: MessageSquareText,
-                    color: "bg-[#F97316] text-white",
-                    title: "Siap Dipertanggungjawabkan",
-                    desc: "Fokus membangun pemahaman agar kamu lancar menjawab pertanyaan penguji.",
-                  },
-                ].map((item) => (
+            <div className="lg:col-span-7">
+              <h2 className="font-display text-paper">
+                Kami mendampingi proses berpikir, bukan menggantikan peranmu.
+              </h2>
+              <p className="lead mt-4 text-paper/85">
+                TelisikRiset dibangun sebagai ruang diskusi akademik agar kamu menguasai
+                logika penelitian, teori, dan metodologimu sendiri saat bimbingan maupun sidang.
+              </p>
+
+              <dl className="mt-8 divide-y divide-paper/15 border-y border-paper/15">
+                {PRINCIPLES.map((item) => (
                   <div
                     key={item.title}
-                    className="flex items-start gap-3.5 rounded-2xl border border-white/15 bg-white/[0.06] p-4"
+                    className="flex items-start gap-4 py-5"
                   >
-                    <span
-                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${item.color}`}
-                    >
-                      <item.icon className="h-4 w-4" />
-                    </span>
+                    <item.icon
+                      className="mt-1 h-5 w-5 shrink-0 text-gold"
+                      strokeWidth={2}
+                      aria-hidden="true"
+                    />
                     <div>
-                      <p className="text-sm font-bold text-white">{item.title}</p>
-                      <p className="mt-0.5 text-xs leading-relaxed text-slate-300">
+                      <dt className="font-display text-lg text-paper">
+                        {item.title}
+                      </dt>
+                      <dd className="mt-1 text-sm leading-relaxed text-paper/80">
                         {item.desc}
-                      </p>
+                      </dd>
                     </div>
                   </div>
                 ))}
-              </div>
+              </dl>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
     </>

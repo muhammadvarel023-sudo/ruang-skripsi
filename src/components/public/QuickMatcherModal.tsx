@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowRight, Compass } from "lucide-react";
 import type { CategoryDTO } from "@/lib/types";
+import { APPLE_EASE } from "@/lib/motion";
 
 interface QuickMatcherModalProps {
   open: boolean;
@@ -14,25 +15,25 @@ interface QuickMatcherModalProps {
 const DIAGNOSTIC_OPTIONS = [
   {
     id: "idea-title",
-    title: "Masih bingung topik/judul & butuh pegangan buat ACC dosen",
+    title: "Masih bingung topik atau judul dan butuh pegangan ACC dosen",
     desc: "Dapat brainstorming, 2 opsi judul kualitatif, rumusan masalah, + Mini Outline 1 halaman.",
     targetSlug: "bab-1-pondasi-judul-rumusan",
   },
   {
     id: "bab1-full",
-    title: "Ingin menyusun Bab 1 secara utuh & runtut sampai siap bimbingan",
+    title: "Ingin menyusun Bab 1 secara utuh dan runtut sampai siap bimbingan",
     desc: "Butuh pendampingan alur latar belakang, arah data, fokus, sampai manfaat + review draft.",
     targetSlug: "bab-1-pendahuluan-terstruktur",
   },
   {
     id: "bab2-review",
-    title: "Sudah punya teori & kerangka, butuh review",
+    title: "Sudah punya teori dan kerangka, butuh review",
     desc: "Ingin mengecek relevansi teori, penelitian terdahulu, dan keterhubungan konsep.",
     targetSlug: "bab-2-basic-research-framework",
   },
   {
     id: "bab2-develop",
-    title: "Sudah punya grand theory, belum ada research gap & kerangka",
+    title: "Sudah punya grand theory, belum ada research gap dan kerangka",
     desc: "Butuh pemetaan penelitian terdahulu dan penyusunan kerangka pemikiran.",
     targetSlug: "bab-2-theory-development",
   },
@@ -45,13 +46,13 @@ const DIAGNOSTIC_OPTIONS = [
   {
     id: "bab3-review",
     title: "Sudah punya rancangan metodologi, ingin diaudit",
-    desc: "Ingin memastikan metode & teknik analisis cocok dengan rumusan masalah.",
+    desc: "Ingin memastikan metode dan teknik analisis cocok dengan rumusan masalah.",
     targetSlug: "bab-3-methodology-review",
   },
   {
     id: "bab3-develop",
-    title: "Masih bingung menentukan metode & analisis data",
-    desc: "Butuh bantuan merancang desain penelitian dari awal (kualitatif/kuantitatif).",
+    title: "Masih bingung menentukan metode dan analisis data",
+    desc: "Butuh bantuan merancang desain penelitian kualitatif dari awal.",
     targetSlug: "bab-3-methodology-development",
   },
 ];
@@ -78,33 +79,34 @@ export function QuickMatcherModal({
   return (
     <AnimatePresence>
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[400] flex items-center justify-center p-4">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: 0.24, ease: APPLE_EASE }}
             onClick={onClose}
-            className="fixed inset-0 bg-[#0F172A]/45 backdrop-blur-[3px]"
+            className="fixed inset-0 bg-ink/50"
           />
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.96, y: 12 }}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="matcher-title"
+            initial={{ opacity: 0, scale: 0.97, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96, y: 10 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="relative z-10 flex max-h-[85vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-slate-200 bg-[#FAF9F6] shadow-2xl"
+            exit={{ opacity: 0, scale: 0.97, y: 8 }}
+            transition={{ duration: 0.34, ease: APPLE_EASE }}
+            className="well-solstice relative z-10 flex max-h-[85vh] w-full max-w-2xl flex-col overflow-hidden"
           >
-            <div className="flex items-start justify-between border-b border-slate-200 bg-white px-6 py-5">
+            <div className="flex items-start justify-between border-b border-rule bg-paper px-6 py-5">
               <div className="flex items-center gap-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F3F1EC] text-[#1E3A5F]">
-                  <Compass className="h-5 w-5" />
-                </span>
+                <Compass className="h-5 w-5 shrink-0 text-accent" aria-hidden="true" />
                 <div>
-                  <h3 className="text-base font-semibold text-[#0F172A]">
+                  <h3 id="matcher-title" className="font-display text-xl text-ink">
                     Bantu Pilih Paket yang Tepat
                   </h3>
-                  <p className="text-xs text-slate-500">
+                  <p className="mt-0.5 text-sm text-ink-2">
                     Pilih satu kondisi yang paling menggambarkan progres skripsimu saat ini.
                   </p>
                 </div>
@@ -112,33 +114,36 @@ export function QuickMatcherModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 cursor-pointer"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-ink-2 transition-colors duration-200 hover:bg-paper-3 hover:text-ink active:translate-y-px cursor-pointer"
                 aria-label="Tutup"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
-            <div className="overflow-y-auto p-5 sm:p-6">
-              <div className="grid gap-2.5 sm:grid-cols-2">
+            <div className="overflow-y-auto bg-paper-2 p-5 sm:p-6">
+              <div className="grid gap-3 sm:grid-cols-2">
                 {DIAGNOSTIC_OPTIONS.map((opt) => (
                   <button
                     key={opt.id}
                     type="button"
                     onClick={() => handlePick(opt.targetSlug)}
-                    className="group flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-4 text-left transition-all duration-200 hover:border-[#1E3A5F] hover:shadow-sm cursor-pointer"
+                    className="group flex flex-col justify-between border border-rule bg-paper p-4 text-left transition-colors duration-200 hover:border-ink active:translate-y-px cursor-pointer"
                   >
                     <div>
-                      <p className="text-sm font-semibold text-[#0F172A] group-hover:text-[#1E3A5F] transition-colors">
+                      <p className="font-display text-base leading-snug text-ink transition-colors duration-200 group-hover:text-accent">
                         {opt.title}
                       </p>
-                      <p className="mt-1 text-xs leading-relaxed text-slate-500">
+                      <p className="mt-1.5 text-xs leading-relaxed text-ink-2">
                         {opt.desc}
                       </p>
                     </div>
-                    <span className="mt-3 inline-flex items-center gap-1 text-[11px] font-semibold text-[#1E3A5F]">
+                    <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-accent">
                       Lihat rekomendasi
-                      <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+                      <ArrowRight
+                        className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5"
+                        aria-hidden="true"
+                      />
                     </span>
                   </button>
                 ))}

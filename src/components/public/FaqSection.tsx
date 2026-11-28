@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { formatRupiah } from "@/lib/format";
+import { APPLE_EASE } from "@/lib/motion";
 
 export function FaqSection({
   nonTelkomSurcharge,
@@ -15,17 +16,17 @@ export function FaqSection({
   const faqs = [
     {
       q: "Bidang ilmu dan metode penelitian apa saja yang bisa didampingi?",
-      a: "Saat ini RuangSkripsi berfokus khusus pada rumpun Ilmu Komunikasi (PR, Marketing Communication, Media, Broadcasting, Komunikasi Digital, dsb.) dan khusus menggunakan metode penelitian Kualitatif (studi kasus, fenomenologi, semiotika, analisis wacana, etnografi/netnografi). Kami tidak menerima penelitian kuantitatif/olah statistik agar pendampingan tetap tajam.",
+      a: "Saat ini TelisikRiset berfokus khusus pada rumpun Ilmu Komunikasi (PR, Marketing Communication, Media, Broadcasting, Komunikasi Digital, dsb.) dan khusus menggunakan metode penelitian Kualitatif (studi kasus, fenomenologi, semiotika, analisis wacana, etnografi/netnografi). Kami tidak menerima penelitian kuantitatif atau olah statistik agar pendampingan tetap tajam.",
     },
     {
       q: "Kampus mana saja yang dilayani dan kenapa ada perbedaan tarif?",
-      a: `Layanan utama kami dirancang khusus untuk mahasiswa Fakultas Komunikasi & Ilmu Sosial (FKS) Telkom University dengan tarif khusus + bonus 1x pertemuan follow-up. Untuk di luar Tel-U, saat ini kami hanya melayani mahasiswa kampus swasta wilayah Bandung yang jurusannya relevan (UNISBA, UNPAS, UNIKOM, Widyatama, UNPAR, Maranatha, USB YPKP, ARS, UM Bandung, dsb.) dengan penyesuaian tarif +${formatRupiah(
+      a: `Layanan utama kami dirancang khusus untuk mahasiswa Fakultas Komunikasi dan Ilmu Sosial (FKS) Telkom University dengan tarif khusus ditambah bonus 1x pertemuan follow-up. Untuk di luar Tel-U, saat ini kami hanya melayani mahasiswa kampus swasta wilayah Bandung yang jurusannya relevan (UNISBA, UNPAS, UNIKOM, Widyatama, UNPAR, Maranatha, USB YPKP, ARS, UM Bandung, dsb.) dengan penyesuaian tarif +${formatRupiah(
         nonTelkomSurcharge
       )} per paket.`,
     },
     {
-      q: "Apakah RuangSkripsi menerima jasa pembuatan skripsi penuh (joki)?",
-      a: "Tidak. RuangSkripsi berfokus pada konsultasi, brainstorming, pemetaan teori komunikasi, evaluasi metodologi kualitatif, dan pendampingan penyusunan agar kamu memahami dan mampu mempertanggungjawabkan penelitianmu sendiri.",
+      q: "Apakah TelisikRiset menerima jasa pembuatan skripsi penuh (joki)?",
+      a: "Tidak. TelisikRiset berfokus pada konsultasi, brainstorming, pemetaan teori komunikasi, evaluasi metodologi kualitatif, dan pendampingan penyusunan agar kamu memahami dan mampu mempertanggungjawabkan penelitianmu sendiri.",
     },
     {
       q: "Apakah saya harus memesan semua bab sekaligus?",
@@ -33,77 +34,75 @@ export function FaqSection({
     },
     {
       q: "Bagaimana ketentuan pembatalan, reschedule, dan pengembalian dana (refund)?",
-      a: "Reschedule jadwal gratis 1x jika diinformasikan minimal H-1 (24 jam sebelumnya). Pembatalan sepihak sebelum sesi dimulai membuat DP 50% hangus sebagai kompensasi slot & persiapan (atau refund maks. 50% jika sudah bayar lunas). Untuk sesi yang sudah berjalan, dana tidak dapat dikembalikan (non-refundable)—namun jika mengambil skema DP 50% dan merasa tidak cocok setelah Sesi 1, kamu bebas tidak melanjutkan Sesi 2 tanpa perlu melunasi sisa 50%. Jika pembatalan berasal dari pihak mentor tanpa jadwal pengganti, dana dikembalikan 100%.",
+      a: "Reschedule jadwal gratis 1x jika diinformasikan minimal H-1 (24 jam sebelumnya). Pembatalan sepihak sebelum sesi dimulai membuat DP 50% hangus sebagai kompensasi slot dan persiapan (atau refund maks. 50% jika sudah bayar lunas). Untuk sesi yang sudah berjalan, dana tidak dapat dikembalikan (non-refundable). Namun jika mengambil skema DP 50% dan merasa tidak cocok setelah Sesi 1, kamu bebas tidak melanjutkan Sesi 2 tanpa perlu melunasi sisa 50%. Jika pembatalan berasal dari pihak mentor tanpa jadwal pengganti, dana dikembalikan 100%.",
     },
     {
       q: "Kapan saya harus melakukan pembayaran?",
-      a: "Tidak ada pembayaran langsung saat mengirim formulir di website. Setelah kamu mengirim permintaan dan melakukan konfirmasi via Telegram atau LINE, admin akan memastikan kecocokan paket dan jadwal sesi terlebih dahulu.",
+      a: "Setelah mengisi formulir dan memilih skema DP 50% atau bayar lunas, kamu langsung menerima kode pesanan dan detail pembayaran (QRIS atau transfer), lalu mengonfirmasi bukti dan jadwal sesi via Telegram atau LINE.",
     },
   ];
 
   return (
-    <section id="faq" className="scroll-mt-20 border-t border-slate-200 bg-white py-20 sm:py-24">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <span className="inline-block rounded-md bg-[#2563EB] px-2.5 py-1 font-mono text-xs font-bold uppercase tracking-wider text-white">
-            Pertanyaan Umum
-          </span>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight text-[#090E1A]">
-            Hal yang sering ditanyakan mahasiswa
-          </h2>
-        </div>
+    <section
+      id="faq"
+      className="scroll-mt-20 border-t border-rule bg-paper py-20 sm:py-24"
+    >
+      <div className="container">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
+          <div className="lg:col-span-4">
+            <h2 className="font-display text-ink">
+              Hal yang sering ditanyakan mahasiswa.
+            </h2>
+            <p className="lead mt-4 text-ink-2">
+              Jawaban singkat soal cakupan bidang, tarif kampus, dan kebijakan jadwal.
+            </p>
+          </div>
 
-        <div className="mt-10 divide-y divide-slate-200 rounded-2xl border-2 border-slate-200 bg-[#F8FAFC]">
-          {faqs.map((item, idx) => {
-            const isOpen = openIndex === idx;
-            return (
-              <div
-                key={idx}
-                className={`px-5 py-4 transition-colors sm:px-6 ${isOpen ? "bg-white" : ""
-                  }`}
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpenIndex(isOpen ? null : idx)}
-                  className="flex w-full items-center justify-between gap-4 text-left cursor-pointer"
-                >
-                  <span
-                    className={`text-sm font-bold sm:text-[15px] ${isOpen ? "text-[#2563EB]" : "text-[#090E1A]"
-                      }`}
+          <div className="divide-y divide-rule border-y border-rule lg:col-span-8">
+            {faqs.map((item, idx) => {
+              const isOpen = openIndex === idx;
+              return (
+                <div key={item.q} className="py-5">
+                  <button
+                    type="button"
+                    aria-expanded={isOpen}
+                    onClick={() => setOpenIndex(isOpen ? null : idx)}
+                    className="flex w-full items-center justify-between gap-4 py-1 text-left transition-colors duration-200 hover:text-accent active:translate-y-px cursor-pointer"
                   >
-                    {item.q}
-                  </span>
-                  <span
-                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-colors ${isOpen
-                      ? "bg-[#2563EB] text-white"
-                      : "bg-slate-200/80 text-slate-600"
+                    <span
+                      className={`font-display text-lg sm:text-xl ${
+                        isOpen ? "text-accent" : "text-ink"
                       }`}
-                  >
-                    <ChevronDown
-                      className={`h-4 w-4 transition-transform duration-300 ${isOpen ? "rotate-180" : ""
-                        }`}
-                    />
-                  </span>
-                </button>
-
-                <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                      className="overflow-hidden"
                     >
-                      <p className="pt-3 text-sm leading-relaxed text-slate-600">
-                        {item.a}
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            );
-          })}
+                      {item.q}
+                    </span>
+                    <ChevronDown
+                      className={`h-5 w-5 shrink-0 text-ink transition-transform duration-300 motion-reduce:transition-none ${
+                        isOpen ? "rotate-180 text-accent" : ""
+                      }`}
+                      aria-hidden="true"
+                    />
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.32, ease: APPLE_EASE }}
+                        className="overflow-hidden"
+                      >
+                        <p className="max-w-[65ch] pt-3 text-base leading-relaxed text-ink-2">
+                          {item.a}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

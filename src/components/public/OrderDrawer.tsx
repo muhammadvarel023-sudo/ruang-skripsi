@@ -34,6 +34,7 @@ import {
   formatPaymentPlanLabel,
   formatRupiah,
 } from "@/lib/format";
+import { APPLE_EASE, APPLE_SPRING } from "@/lib/motion";
 
 interface OrderDrawerProps {
   selected: { pkg: PackageDTO; category: CategoryDTO } | null;
@@ -189,39 +190,42 @@ export function OrderDrawer({
   return (
     <AnimatePresence>
       {selected && (
-        <div className="fixed inset-0 z-50 flex justify-end">
+        <div className="fixed inset-0 z-[400] flex justify-end">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: 0.24, ease: APPLE_EASE }}
             onClick={onClose}
-            className="fixed inset-0 bg-[#090E1A]/55 backdrop-blur-[3px]"
+            className="fixed inset-0 bg-ink/50"
           />
 
           <motion.aside
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="drawer-package-title"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ type: "spring", stiffness: 320, damping: 34 }}
-            className="relative z-10 flex h-full w-full max-w-lg flex-col bg-[#F8FAFC] shadow-2xl border-l border-slate-200"
+            transition={APPLE_SPRING}
+            className="relative z-10 flex h-full w-full max-w-lg flex-col border-l-2 border-ink bg-paper"
           >
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-slate-200 bg-[#090E1A] px-6 py-4 text-white">
+            <div className="flex items-center justify-between border-b border-paper/15 bg-ink px-6 py-4 text-paper">
               <div>
-                <p className="font-mono text-[11px] uppercase tracking-wider text-blue-300">
+                <p className="text-xs font-semibold text-gold-2">
                   {createdOrder
-                    ? "Langkah 2/2 — Pembayaran & Konfirmasi"
-                    : "Langkah 1/2 — Biodata & Skema Bayar"}
+                    ? "Langkah 2 dari 2: Pembayaran & Konfirmasi"
+                    : "Langkah 1 dari 2: Biodata & Skema Bayar"}
                 </p>
-                <h3 className="text-base font-bold text-white">
+                <h3 id="drawer-package-title" className="mt-0.5 font-display text-lg text-paper">
                   {selected.pkg.name}
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={onClose}
-                className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-white/10 hover:text-white cursor-pointer"
+                className="flex h-10 w-10 items-center justify-center rounded-full text-paper/75 transition-colors duration-200 hover:bg-paper/10 hover:text-paper active:translate-y-px cursor-pointer"
                 aria-label="Tutup panel"
               >
                 <X className="h-5 w-5" />
@@ -234,30 +238,30 @@ export function OrderDrawer({
                 {!createdOrder ? (
                   <motion.form
                     key="order-form"
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.25 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.26, ease: APPLE_EASE }}
                     onSubmit={handleSubmit}
                     className="space-y-4"
                   >
                     {/* Package & Total Box */}
-                    <div className="rounded-xl border-2 border-[#090E1A] bg-white p-4">
+                    <div className="well-solstice p-4">
                       <div className="flex items-start justify-between gap-3">
                         <div>
-                          <span className="font-mono text-[11px] font-bold text-[#2563EB]">
+                          <span className="text-xs font-semibold text-accent">
                             {selected.category.name}
                           </span>
-                          <p className="mt-0.5 text-sm font-bold text-[#090E1A]">
+                          <p className="mt-0.5 font-display text-base text-ink">
                             {selected.pkg.name}
                           </p>
                         </div>
                         <div className="text-right">
-                          <span className="font-mono text-lg font-bold text-[#090E1A] tabular-nums">
+                          <span className="num font-display text-xl text-ink">
                             {formatRupiah(totalPrice)}
                           </span>
                           {campusType === "NON_TELKOM" && (
-                            <p className="font-mono text-[10px] text-[#EA580C]">
+                            <p className="num text-xs text-accent">
                               Dasar {formatRupiah(basePrice)} + {formatRupiah(surcharge)}
                             </p>
                           )}
@@ -267,47 +271,53 @@ export function OrderDrawer({
 
                     {/* Campus selector */}
                     <div>
-                      <label className="mb-1.5 block text-xs font-bold text-slate-700">
-                        Asal Kampus <span className="text-rose-500">*</span>
-                      </label>
+                      <span className="mb-1.5 block text-xs font-semibold text-ink">
+                        Asal Kampus <span className="text-error">*</span>
+                      </span>
                       <div className="grid grid-cols-2 gap-2">
                         <button
                           type="button"
                           onClick={() => setCampusType("TELKOM_FKS")}
-                          className={`flex items-center justify-center gap-1.5 rounded-xl border-2 px-3 py-2.5 text-xs font-bold transition-all cursor-pointer ${
+                          className={`flex min-h-[44px] items-center justify-center gap-1.5 border px-3 py-2 text-xs font-semibold transition-colors duration-200 active:translate-y-px cursor-pointer ${
                             campusType === "TELKOM_FKS"
-                              ? "border-[#090E1A] bg-[#090E1A] text-white"
-                              : "border-slate-200 bg-white text-slate-600 hover:border-slate-400"
+                              ? "border-ink bg-ink text-paper"
+                              : "border-rule bg-paper-2 text-ink-2 hover:border-ink"
                           }`}
                         >
-                          <GraduationCap className="h-3.5 w-3.5" />
-                          Telkom Univ (FKS)
+                          <GraduationCap className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                          <span className="whitespace-nowrap">Telkom Univ (FKS)</span>
                         </button>
                         <button
                           type="button"
                           onClick={() => setCampusType("NON_TELKOM")}
-                          className={`flex items-center justify-center gap-1.5 rounded-xl border-2 px-3 py-2.5 text-xs font-bold transition-all cursor-pointer ${
+                          className={`flex min-h-[44px] items-center justify-center gap-1.5 border px-3 py-2 text-xs font-semibold transition-colors duration-200 active:translate-y-px cursor-pointer ${
                             campusType === "NON_TELKOM"
-                              ? "border-[#EA580C] bg-[#EA580C] text-white"
-                              : "border-slate-200 bg-white text-slate-600 hover:border-slate-400"
+                              ? "border-accent bg-accent text-accent-ink"
+                              : "border-rule bg-paper-2 text-ink-2 hover:border-ink"
                           }`}
                         >
-                          <Building2 className="h-3.5 w-3.5" />
-                          PTS Bandung (+{formatRupiah(settings.non_telkom_surcharge)})
+                          <Building2 className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                          <span className="whitespace-nowrap">
+                            PTS Bandung (+{formatRupiah(settings.non_telkom_surcharge)})
+                          </span>
                         </button>
                       </div>
                     </div>
 
                     {campusType === "NON_TELKOM" && (
                       <div>
-                        <label className="mb-1.5 block text-xs font-bold text-slate-700">
-                          Pilih Kampus Swasta Wilayah Bandung <span className="text-rose-500">*</span>
+                        <label
+                          htmlFor="order-campus-name"
+                          className="mb-1.5 block text-xs font-semibold text-ink"
+                        >
+                          Pilih Kampus Swasta Wilayah Bandung <span className="text-error">*</span>
                         </label>
                         <select
+                          id="order-campus-name"
                           required
                           value={campusName}
                           onChange={(e) => setCampusName(e.target.value)}
-                          className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-[#090E1A] outline-none focus:border-[#2563EB]"
+                          className="min-h-[46px] w-full border border-muted bg-paper-2 px-3.5 text-sm text-ink transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-focus"
                         >
                           {BANDUNG_PRIVATE_CAMPUSES.map((campus) => (
                             <option key={campus} value={campus}>
@@ -315,124 +325,144 @@ export function OrderDrawer({
                             </option>
                           ))}
                         </select>
-                        <p className="mt-1 text-[11px] text-slate-500">
-                          Saat ini layanan di luar Telkom University hanya tersedia untuk kampus
-                          swasta wilayah Bandung dengan jurusan relevan (Komunikasi / Sosial).
+                        <p className="mt-1 text-xs text-ink-2">
+                          Saat ini layanan di luar Telkom University tersedia untuk kampus
+                          swasta wilayah Bandung dengan jurusan relevan.
                         </p>
                       </div>
                     )}
 
-                    {/* Payment Plan Selector (DP 50% vs FULL) */}
+                    {/* Payment Plan Selector */}
                     <div>
-                      <label className="mb-1.5 block text-xs font-bold text-slate-700">
-                        Skema Pembayaran <span className="text-rose-500">*</span>
-                      </label>
+                      <span className="mb-1.5 block text-xs font-semibold text-ink">
+                        Skema Pembayaran <span className="text-error">*</span>
+                      </span>
                       <div className="grid grid-cols-2 gap-2">
                         <button
                           type="button"
                           onClick={() => setPaymentPlan("DP_50")}
-                          className={`rounded-xl border-2 p-3 text-left transition-all cursor-pointer ${
+                          className={`whitespace-nowrap border p-3 text-left transition-colors duration-200 active:translate-y-px cursor-pointer ${
                             paymentPlan === "DP_50"
-                              ? "border-[#2563EB] bg-blue-50/70"
-                              : "border-slate-200 bg-white hover:border-slate-300"
+                              ? "border-ink bg-paper-2 ring-1 ring-ink"
+                              : "border-rule bg-paper-2/60 hover:border-ink/50"
                           }`}
                         >
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs font-bold text-[#090E1A]">
+                          <span className="flex items-center justify-between">
+                            <span className="text-xs font-semibold text-ink">
                               DP 50% Dulu
                             </span>
-                            <Wallet className="h-3.5 w-3.5 text-[#2563EB]" />
-                          </div>
-                          <p className="mt-1 font-mono text-sm font-bold text-[#2563EB] tabular-nums">
+                            <Wallet className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
+                          </span>
+                          <span className="num mt-1 block font-display text-base text-accent">
                             {formatRupiah(Math.ceil(totalPrice / 2))}
-                          </p>
-                          <p className="mt-0.5 text-[10px] text-slate-500">
+                          </span>
+                          <span className="mt-0.5 block text-xs text-muted">
                             Lock jadwal sesi 1
-                          </p>
+                          </span>
                         </button>
 
                         <button
                           type="button"
                           onClick={() => setPaymentPlan("FULL")}
-                          className={`rounded-xl border-2 p-3 text-left transition-all cursor-pointer ${
+                          className={`whitespace-nowrap border p-3 text-left transition-colors duration-200 active:translate-y-px cursor-pointer ${
                             paymentPlan === "FULL"
-                              ? "border-[#059669] bg-emerald-50/70"
-                              : "border-slate-200 bg-white hover:border-slate-300"
+                              ? "border-ink bg-paper-2 ring-1 ring-ink"
+                              : "border-rule bg-paper-2/60 hover:border-ink/50"
                           }`}
                         >
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs font-bold text-[#090E1A]">
+                          <span className="flex items-center justify-between">
+                            <span className="text-xs font-semibold text-ink">
                               Bayar Lunas
                             </span>
-                            <CheckCircle2 className="h-3.5 w-3.5 text-[#059669]" />
-                          </div>
-                          <p className="mt-1 font-mono text-sm font-bold text-[#059669] tabular-nums">
+                            <CheckCircle2 className="h-3.5 w-3.5 text-success" aria-hidden="true" />
+                          </span>
+                          <span className="num mt-1 block font-display text-base text-ink">
                             {formatRupiah(totalPrice)}
-                          </p>
-                          <p className="mt-0.5 text-[10px] text-slate-500">
+                          </span>
+                          <span className="mt-0.5 block text-xs text-muted">
                             Sekali bayar beres
-                          </p>
+                          </span>
                         </button>
                       </div>
                     </div>
 
                     {error && (
-                      <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-xs font-semibold text-rose-700">
+                      <div
+                        role="alert"
+                        className="border border-error bg-error/10 px-4 py-3 text-xs font-semibold text-error"
+                      >
                         {error}
                       </div>
                     )}
 
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div>
-                        <label className="mb-1.5 block text-xs font-bold text-slate-700">
-                          Nama Lengkap <span className="text-rose-500">*</span>
+                        <label
+                          htmlFor="order-student-name"
+                          className="mb-1.5 block text-xs font-semibold text-ink"
+                        >
+                          Nama Lengkap <span className="text-error">*</span>
                         </label>
                         <input
+                          id="order-student-name"
                           type="text"
                           required
+                          autoComplete="name"
                           value={studentName}
                           onChange={(e) => setStudentName(e.target.value)}
                           placeholder="Contoh: Nadia Kartika"
-                          className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-[#090E1A] outline-none focus:border-[#2563EB]"
+                          className="min-h-[46px] w-full border border-muted bg-paper-2 px-3.5 text-sm text-ink placeholder:text-muted focus-visible:outline-2 focus-visible:outline-focus"
                         />
                       </div>
                       <div>
-                        <label className="mb-1.5 block text-xs font-bold text-slate-700">
-                          Prodi / Konsentrasi <span className="text-rose-500">*</span>
+                        <label
+                          htmlFor="order-major"
+                          className="mb-1.5 block text-xs font-semibold text-ink"
+                        >
+                          Prodi / Konsentrasi <span className="text-error">*</span>
                         </label>
                         <input
+                          id="order-major"
                           type="text"
                           required
                           value={major}
                           onChange={(e) => setMajor(e.target.value)}
                           placeholder="Cth: Ilmu Komunikasi / Digital PR"
-                          className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-[#090E1A] outline-none focus:border-[#2563EB]"
+                          className="min-h-[46px] w-full border border-muted bg-paper-2 px-3.5 text-sm text-ink placeholder:text-muted focus-visible:outline-2 focus-visible:outline-focus"
                         />
                       </div>
                     </div>
 
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div>
-                        <label className="mb-1.5 block text-xs font-bold text-slate-700">
-                          Username Telegram / ID LINE <span className="text-rose-500">*</span>
+                        <label
+                          htmlFor="order-contact"
+                          className="mb-1.5 block text-xs font-semibold text-ink"
+                        >
+                          Username Telegram / ID LINE <span className="text-error">*</span>
                         </label>
                         <input
+                          id="order-contact"
                           type="text"
                           required
                           value={contactHandle}
                           onChange={(e) => setContactHandle(e.target.value)}
                           placeholder="Cth: @nadiakartika"
-                          className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-[#090E1A] outline-none focus:border-[#2563EB]"
+                          className="min-h-[46px] w-full border border-muted bg-paper-2 px-3.5 text-sm text-ink placeholder:text-muted focus-visible:outline-2 focus-visible:outline-focus"
                         />
                       </div>
                       <div>
-                        <label className="mb-1.5 block text-xs font-bold text-slate-700">
+                        <label
+                          htmlFor="order-research-type"
+                          className="mb-1.5 block text-xs font-semibold text-ink"
+                        >
                           Pendekatan Kualitatif
                         </label>
                         <select
+                          id="order-research-type"
                           value={researchType}
                           onChange={(e) => setResearchType(e.target.value)}
-                          className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-[#090E1A] outline-none focus:border-[#2563EB]"
+                          className="min-h-[46px] w-full border border-muted bg-paper-2 px-3.5 text-sm text-ink focus-visible:outline-2 focus-visible:outline-focus"
                         >
                           {QUALITATIVE_APPROACHES.map((opt) => (
                             <option key={opt} value={opt}>
@@ -444,47 +474,55 @@ export function OrderDrawer({
                     </div>
 
                     <div>
-                      <label className="mb-1.5 block text-xs font-bold text-slate-700">
-                        Topik atau Rancangan Judul Komunikasi <span className="text-rose-500">*</span>
+                      <label
+                        htmlFor="order-topic"
+                        className="mb-1.5 block text-xs font-semibold text-ink"
+                      >
+                        Topik atau Rancangan Judul Komunikasi <span className="text-error">*</span>
                       </label>
                       <input
+                        id="order-topic"
                         type="text"
                         required
                         value={topicOrTitle}
                         onChange={(e) => setTopicOrTitle(e.target.value)}
                         placeholder="Tulis fenomena komunikasi atau judul sementaramu"
-                        className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-[#090E1A] outline-none focus:border-[#2563EB]"
+                        className="min-h-[46px] w-full border border-muted bg-paper-2 px-3.5 text-sm text-ink placeholder:text-muted focus-visible:outline-2 focus-visible:outline-focus"
                       />
                     </div>
 
                     <div>
-                      <label className="mb-1.5 block text-xs font-bold text-slate-700">
+                      <label
+                        htmlFor="order-notes"
+                        className="mb-1.5 block text-xs font-semibold text-ink"
+                      >
                         Kendala atau Catatan Tambahan (Opsional)
                       </label>
                       <textarea
+                        id="order-notes"
                         rows={2}
                         value={notes}
                         onChange={(e) => setNotes(e.target.value)}
-                        placeholder="Ceritakan singkat progres atau revisi dari dosen pembimbing..."
-                        className="w-full resize-none rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-[#090E1A] outline-none focus:border-[#2563EB]"
+                        placeholder="Ceritakan singkat progres atau revisi dari dosen pembimbing…"
+                        className="w-full resize-none border border-muted bg-paper-2 px-3.5 py-2.5 text-sm text-ink placeholder:text-muted focus-visible:outline-2 focus-visible:outline-focus"
                       />
                     </div>
 
                     {/* Mandatory Terms & Refund Policy Checkbox */}
-                    <label className="flex items-start gap-2.5 rounded-xl border border-slate-200 bg-white p-3.5 text-[11px] leading-relaxed text-slate-600 cursor-pointer">
+                    <label className="flex items-start gap-2.5 border border-rule bg-paper-2 p-3.5 text-xs leading-relaxed text-ink-2 cursor-pointer">
                       <input
                         type="checkbox"
                         required
                         checked={agreedTerms}
                         onChange={(e) => setAgreedTerms(e.target.checked)}
-                        className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 accent-[#090E1A]"
+                        className="mt-0.5 h-4 w-4 shrink-0 accent-accent"
                       />
                       <span>
                         Saya memahami bahwa layanan ini adalah{" "}
-                        <strong className="text-[#090E1A]">pendampingan akademik (bukan joki)</strong>,
+                        <strong className="text-ink">pendampingan akademik (bukan joki)</strong>,
                         keputusan ACC berada di tangan dosen pembimbing, reschedule gratis maks. H-1
                         (1x), dan pembayaran untuk sesi yang sudah berjalan bersifat{" "}
-                        <strong className="text-[#090E1A]">non-refundable</strong> (untuk paket DP
+                        <strong className="text-ink">non-refundable</strong> (untuk paket DP
                         50%, kamu bebas tidak melanjutkan sesi berikutnya tanpa melunasi sisa).
                       </span>
                     </label>
@@ -493,17 +531,17 @@ export function OrderDrawer({
                       <button
                         type="submit"
                         disabled={submitting || !agreedTerms}
-                        className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#F97316] px-5 py-3.5 text-sm font-bold text-white shadow-[0_6px_18px_-6px_rgba(249,115,22,0.55)] transition-all hover:bg-[#EA580C] disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
+                        className="btn-primary w-full justify-center whitespace-nowrap"
                       >
                         {submitting ? (
                           <>
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                            Membuat Ringkasan &amp; Pembayaran...
+                            <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                            <span>Menyiapkan Pembayaran…</span>
                           </>
                         ) : (
                           <>
-                            Lanjut ke Pembayaran ({formatRupiah(dueNow)})
-                            <ArrowRight className="h-4 w-4" />
+                            <span>Bayar Sekarang ({formatRupiah(dueNow)})</span>
+                            <ArrowRight className="h-4 w-4" aria-hidden="true" />
                           </>
                         )}
                       </button>
@@ -512,37 +550,37 @@ export function OrderDrawer({
                 ) : (
                   <motion.div
                     key="order-success"
-                    initial={{ opacity: 0, y: 12 }}
+                    initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 0.34, ease: APPLE_EASE }}
                     className="space-y-4"
                   >
                     {/* Order Code & Amount Due Banner */}
-                    <div className="rounded-2xl border-2 border-[#090E1A] bg-[#090E1A] p-5 text-white">
+                    <div className="band-ink border border-ink p-5">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-blue-300">
+                        <span className="text-xs font-semibold text-gold-2">
                           Kode Pesanan
                         </span>
                         <button
                           type="button"
                           onClick={() => copyText("code", createdOrder.orderCode)}
-                          className="inline-flex items-center gap-1 rounded-lg bg-white/10 px-2.5 py-1 font-mono text-xs font-bold text-white hover:bg-white/20 cursor-pointer"
+                          className="inline-flex items-center gap-1.5 rounded-full bg-paper/15 px-3 py-1 text-xs font-semibold text-paper transition-colors duration-200 hover:bg-paper/25 active:translate-y-px cursor-pointer"
                         >
-                          {createdOrder.orderCode}
+                          <span className="num">{createdOrder.orderCode}</span>
                           {copiedKey === "code" ? (
-                            <Check className="h-3.5 w-3.5 text-emerald-400" />
+                            <Check className="h-3.5 w-3.5 text-gold-2" />
                           ) : (
                             <Copy className="h-3.5 w-3.5" />
                           )}
                         </button>
                       </div>
 
-                      <div className="mt-4 border-t border-white/15 pt-4">
-                        <p className="text-xs text-slate-300">
+                      <div className="mt-4 border-t border-paper/15 pt-4">
+                        <p className="text-xs text-paper/80">
                           {formatPaymentPlanLabel(createdOrder.paymentPlan)}
                         </p>
                         <div className="mt-1 flex items-center justify-between gap-3">
-                          <span className="font-mono text-2xl font-bold text-[#FDBA74] tabular-nums">
+                          <span className="num font-display text-2xl text-gold-2">
                             {formatRupiah(createdOrder.amountDueNow)}
                           </span>
                           <button
@@ -550,55 +588,55 @@ export function OrderDrawer({
                             onClick={() =>
                               copyText("amount", String(createdOrder.amountDueNow))
                             }
-                            className="inline-flex items-center gap-1 rounded-lg bg-white/10 px-2.5 py-1.5 text-[11px] font-semibold text-white hover:bg-white/20 cursor-pointer"
+                            className="inline-flex items-center gap-1 rounded-full bg-paper/15 px-3 py-1.5 text-xs font-semibold text-paper transition-colors duration-200 hover:bg-paper/25 active:translate-y-px cursor-pointer"
                           >
                             {copiedKey === "amount" ? (
                               <>
-                                <Check className="h-3 w-3 text-emerald-400" />
-                                Tersalin
+                                <Check className="h-3 w-3 text-gold-2" />
+                                <span>Tersalin</span>
                               </>
                             ) : (
                               <>
                                 <Copy className="h-3 w-3" />
-                                Salin Nominal
+                                <span>Salin Nominal</span>
                               </>
                             )}
                           </button>
                         </div>
                         {createdOrder.paymentPlan === "DP_50" && (
-                          <p className="mt-1 text-[11px] text-slate-400">
-                            Total paket {formatRupiah(createdOrder.priceSnapshot)} — pelunasan
-                            sisa 50% sebelum sesi lanjutan.
+                          <p className="mt-1.5 text-xs text-paper/75">
+                            Total paket {formatRupiah(createdOrder.priceSnapshot)} (pelunasan
+                            sisa 50% sebelum sesi lanjutan).
                           </p>
                         )}
                       </div>
                     </div>
 
                     {/* Payment Method Box: QRIS & Transfer Bank */}
-                    <div className="rounded-2xl border border-slate-200 bg-white p-4">
-                      <div className="grid grid-cols-2 gap-1.5 rounded-xl bg-slate-100 p-1">
+                    <div className="border border-rule bg-paper-2 p-4">
+                      <div className="grid grid-cols-2 gap-1.5 rounded-full bg-paper p-1">
                         <button
                           type="button"
                           onClick={() => setPayMethodTab("QRIS")}
-                          className={`flex items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-bold transition-colors cursor-pointer ${
+                          className={`flex min-h-[40px] items-center justify-center gap-1.5 rounded-full text-xs font-semibold transition-colors duration-200 cursor-pointer ${
                             payMethodTab === "QRIS"
-                              ? "bg-[#090E1A] text-white"
-                              : "text-slate-600 hover:text-[#090E1A]"
+                              ? "bg-ink text-paper"
+                              : "text-ink-2 hover:text-ink"
                           }`}
                         >
-                          <QrCode className="h-3.5 w-3.5" />
+                          <QrCode className="h-3.5 w-3.5" aria-hidden="true" />
                           QRIS
                         </button>
                         <button
                           type="button"
                           onClick={() => setPayMethodTab("TRANSFER")}
-                          className={`flex items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-bold transition-colors cursor-pointer ${
+                          className={`flex min-h-[40px] items-center justify-center gap-1.5 rounded-full text-xs font-semibold transition-colors duration-200 cursor-pointer ${
                             payMethodTab === "TRANSFER"
-                              ? "bg-[#090E1A] text-white"
-                              : "text-slate-600 hover:text-[#090E1A]"
+                              ? "bg-ink text-paper"
+                              : "text-ink-2 hover:text-ink"
                           }`}
                         >
-                          <Landmark className="h-3.5 w-3.5" />
+                          <Landmark className="h-3.5 w-3.5" aria-hidden="true" />
                           Transfer / E-Wallet
                         </button>
                       </div>
@@ -607,47 +645,49 @@ export function OrderDrawer({
                         <div className="mt-4 text-center">
                           {settings.qris_image_url ? (
                             <>
-                              <div className="mx-auto inline-block overflow-hidden rounded-xl border border-slate-200 bg-white p-2">
+                              <div className="mx-auto inline-block border border-rule bg-paper-2 p-2">
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
                                   src={settings.qris_image_url}
-                                  alt="QRIS Pembayaran RuangSkripsi"
-                                  className="mx-auto max-h-64 w-auto rounded-lg object-contain"
+                                  alt="QRIS Pembayaran TelisikRiset"
+                                  width={256}
+                                  height={256}
+                                  className="mx-auto max-h-64 w-auto object-contain"
                                 />
                               </div>
                               {settings.qris_merchant_name && (
-                                <p className="mt-2.5 text-xs font-semibold text-[#090E1A]">
+                                <p className="mt-2.5 text-xs font-semibold text-ink">
                                   QRIS resmi a.n.{" "}
-                                  <span className="text-[#2563EB]">
+                                  <span className="text-accent">
                                     {settings.qris_merchant_name}
                                   </span>
                                 </p>
                               )}
-                              <p className="mt-1 text-[11px] text-slate-500">
-                                Scan via m-Banking / GoPay / DANA / OVO / ShopeePay, lalu kirim
-                                bukti bayar lewat tombol di bawah.
+                              <p className="mt-1 text-xs text-ink-2">
+                                Scan via m-Banking, GoPay, DANA, OVO, atau ShopeePay, lalu
+                                kirim bukti bayar lewat tombol di bawah.
                               </p>
                             </>
                           ) : (
-                            <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-xs text-slate-500">
+                            <div className="border border-dashed border-muted bg-paper px-4 py-6 text-xs text-ink-2">
                               Gambar QRIS belum diunggah admin. Silakan pilih tab{" "}
-                              <strong>Transfer / E-Wallet</strong> atau konfirmasi langsung via
-                              Telegram / LINE di bawah.
+                              <strong>Transfer / E-Wallet</strong> atau konfirmasi langsung
+                              via Telegram / LINE di bawah.
                             </div>
                           )}
                         </div>
                       ) : (
-                        <div className="mt-4 space-y-2.5 rounded-xl bg-[#F8FAFC] p-4 text-xs">
+                        <div className="mt-4 space-y-2.5 bg-paper p-4 text-xs">
                           <div className="flex justify-between gap-3">
-                            <span className="text-slate-500">Bank / E-Wallet</span>
-                            <span className="font-bold text-[#090E1A]">
+                            <span className="text-muted">Bank / E-Wallet</span>
+                            <span className="font-semibold text-ink">
                               {settings.bank_name || "Konfirmasi via Telegram / LINE"}
                             </span>
                           </div>
                           <div className="flex items-center justify-between gap-3">
-                            <span className="text-slate-500">No. Rekening / ID</span>
+                            <span className="text-muted">No. Rekening / ID</span>
                             <div className="flex items-center gap-1.5">
-                              <span className="font-mono font-bold text-[#090E1A]">
+                              <span className="num font-semibold text-ink">
                                 {settings.bank_account_number || "-"}
                               </span>
                               {settings.bank_account_number && (
@@ -656,16 +696,16 @@ export function OrderDrawer({
                                   onClick={() =>
                                     copyText("rek", settings.bank_account_number)
                                   }
-                                  className="rounded-md border border-slate-200 bg-white px-2 py-0.5 text-[10px] font-bold text-slate-700 hover:bg-slate-100 cursor-pointer"
+                                  className="border border-rule bg-paper-2 px-2 py-0.5 text-xs font-semibold text-ink transition-colors duration-200 hover:border-ink cursor-pointer"
                                 >
-                                  {copiedKey === "rek" ? "Disalin!" : "Salin"}
+                                  {copiedKey === "rek" ? "Disalin" : "Salin"}
                                 </button>
                               )}
                             </div>
                           </div>
                           <div className="flex justify-between gap-3">
-                            <span className="text-slate-500">Atas Nama</span>
-                            <span className="font-semibold text-[#090E1A]">
+                            <span className="text-muted">Atas Nama</span>
+                            <span className="font-semibold text-ink">
                               {settings.bank_account_holder || "-"}
                             </span>
                           </div>
@@ -675,8 +715,8 @@ export function OrderDrawer({
 
                     {/* Confirmation Buttons */}
                     <div className="space-y-2.5">
-                      <p className="text-center text-xs font-semibold text-slate-600">
-                        Sudah bayar? Kirim bukti transfer &amp; atur jadwal sesi di sini:
+                      <p className="text-center text-xs font-semibold text-ink-2">
+                        Sudah bayar? Kirim bukti transfer dan atur jadwal sesi di sini:
                       </p>
 
                       {telegramUrl && (
@@ -684,10 +724,10 @@ export function OrderDrawer({
                           href={telegramUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#0284C7] px-5 py-3.5 text-sm font-bold text-white transition-all hover:bg-[#0369A1]"
+                          className="btn-primary w-full justify-center whitespace-nowrap"
                         >
-                          <Send className="h-4 w-4" />
-                          Konfirmasi &amp; Kirim Bukti via Telegram
+                          <Send className="h-4 w-4" aria-hidden="true" />
+                          <span>Konfirmasi via Telegram</span>
                         </a>
                       )}
 
@@ -696,37 +736,37 @@ export function OrderDrawer({
                           href={lineUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#06C755] px-5 py-3.5 text-sm font-bold text-white transition-all hover:bg-[#05B34C]"
+                          className="btn-quiet w-full justify-center whitespace-nowrap"
                         >
-                          <MessageCircle className="h-4 w-4" />
-                          Konfirmasi via LINE ({settings.admin_line})
+                          <MessageCircle className="h-4 w-4" aria-hidden="true" />
+                          <span>Konfirmasi via LINE ({settings.admin_line})</span>
                         </a>
                       )}
 
                       <button
                         type="button"
                         onClick={() => copyText("msg", formattedMessage)}
-                        className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-50 cursor-pointer"
+                        className="flex min-h-[44px] w-full items-center justify-center gap-1.5 whitespace-nowrap border border-rule bg-paper-2 px-5 py-2.5 text-xs font-semibold text-ink transition-colors duration-200 hover:border-ink active:translate-y-px cursor-pointer"
                       >
                         {copiedKey === "msg" ? (
                           <>
-                            <Check className="h-3.5 w-3.5 text-[#10B981]" />
-                            Format Pesan Tersalin! Tinggal Paste di LINE / Telegram
+                            <Check className="h-3.5 w-3.5 text-success" />
+                            <span>Format Pesan Tersalin</span>
                           </>
                         ) : (
                           <>
                             <Copy className="h-3.5 w-3.5" />
-                            Salin Format Pesan Konfirmasi
+                            <span>Salin Format Konfirmasi</span>
                           </>
                         )}
                       </button>
 
                       <Link
                         href={`/pesanan/${createdOrder.orderCode}`}
-                        className="flex w-full items-center justify-center gap-1.5 rounded-xl px-5 py-2 text-xs font-semibold text-slate-500 hover:text-[#090E1A]"
+                        className="flex w-full items-center justify-center gap-1.5 py-2 text-xs font-semibold text-ink-2 transition-colors duration-200 hover:text-accent"
                       >
-                        Buka Halaman Invoice &amp; Status Pesanan
-                        <ExternalLink className="h-3.5 w-3.5" />
+                        <span>Buka Halaman Invoice &amp; Status Pesanan</span>
+                        <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
                       </Link>
                     </div>
                   </motion.div>

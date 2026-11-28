@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { BookOpen, Lock, ArrowRight, Loader2, ArrowLeft } from "lucide-react";
+import { Lock, ArrowRight, Loader2, ArrowLeft } from "lucide-react";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -53,9 +54,9 @@ export default function AdminLoginPage() {
             <ArrowLeft className="h-3.5 w-3.5" />
             Kembali ke Website
           </Link>
-          <span className="flex items-center gap-1.5 text-xs font-semibold text-[#0F172A]">
-            <BookOpen className="h-3.5 w-3.5" />
-            RuangSkripsi
+          <span className="flex items-center gap-2 text-xs font-semibold text-[#0F172A]">
+            <BrandLogo size={24} />
+            TelisikRiset
           </span>
         </div>
 

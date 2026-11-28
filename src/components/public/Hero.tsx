@@ -1,226 +1,205 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowRight, Compass, ShieldCheck, Layers, GraduationCap } from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, Compass, Layers } from "lucide-react";
+import { APPLE_EASE, APPLE_SPRING } from "@/lib/motion";
 
 interface HeroProps {
   totalPackages: number;
   onOpenMatcher: () => void;
+  onSelectChapterFromHero: (chapterIndex: number) => void;
 }
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 18 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.08,
-      duration: 0.55,
-      ease: [0.22, 1, 0.36, 1] as const,
-    },
-  }),
-};
+const CHAPTER_PEEKS = [
+  {
+    id: "bab1",
+    label: "Bab 1",
+    title: "Pendahuluan & Judul",
+    summary: "Fenomena komunikasi, dua opsi judul kualitatif, dan struktur latar belakang.",
+    packagesLabel: "2 paket tersedia",
+  },
+  {
+    id: "bab2",
+    label: "Bab 2",
+    title: "Tinjauan Pustaka",
+    summary: "Teori komunikasi, matriks penelitian terdahulu, research gap, dan kerangka.",
+    packagesLabel: "3 paket tersedia",
+  },
+  {
+    id: "bab3",
+    label: "Bab 3",
+    title: "Metodologi Kualitatif",
+    summary: "Studi kasus, fenomenologi, semiotika, analisis wacana, dan triangulasi.",
+    packagesLabel: "2 paket tersedia",
+  },
+];
 
-export function Hero({ totalPackages, onOpenMatcher }: HeroProps) {
+export function Hero({
+  totalPackages,
+  onOpenMatcher,
+  onSelectChapterFromHero,
+}: HeroProps) {
+  const [peekIndex, setPeekIndex] = useState(0);
+  const currentPeek = CHAPTER_PEEKS[peekIndex];
+
   return (
-    <section className="relative overflow-hidden bg-[#090E1A] text-white dark-grid">
-      <div className="h-1 w-full bg-gradient-to-r from-[#2563EB] via-[#10B981] to-[#F97316]" />
+    <section className="relative overflow-x-clip bg-paper pb-16 pt-10 sm:pb-20 sm:pt-14 lg:pb-24 lg:pt-16">
+      <div className="container">
+        <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
+          {/* Left editorial column */}
+          <motion.div
+            initial={false}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.6, ease: APPLE_EASE }}
+            className="lg:col-span-6"
+          >
+            <h1 className="max-w-[16ch] font-display text-ink">
+              Pendampingan skripsi komunikasi kualitatif.
+            </h1>
 
-      <div className="mx-auto max-w-6xl px-4 pb-20 pt-14 sm:px-6 sm:pt-20 lg:px-8 lg:pb-24 lg:pt-24">
-        <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
-          {/* Left high-contrast column */}
-          <div className="lg:col-span-7">
-            <motion.div
-              custom={0}
-              initial="hidden"
-              animate="visible"
-              variants={fadeUp}
-              className="mb-5 flex flex-wrap items-center gap-2"
-            >
-              <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/15 px-3.5 py-1.5 text-xs font-semibold text-emerald-300">
-                <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                Khusus Ilmu Komunikasi & Metode Kualitatif
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-orange-400/35 bg-orange-500/15 px-3 py-1.5 text-xs font-semibold text-orange-200">
-                <GraduationCap className="h-3.5 w-3.5 text-[#F97316]" />
-                Tarif Khusus Telkom University (FKS)
-              </span>
-            </motion.div>
+            <p className="lead mt-6 max-w-[46ch] text-ink-2">
+              Mentoring 1-on-1 skripsi Ilmu Komunikasi untuk Telkom University FKS dan PTS Bandung.
+            </p>
 
-            <motion.h1
-              custom={1}
-              initial="hidden"
-              animate="visible"
-              variants={fadeUp}
-              className="text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-[56px]"
-            >
-              Pendampingan skripsi{" "}
-              <span className="font-serif italic font-normal text-[#FDBA74]">
-                komunikasi kualitatif
-              </span>{" "}
-              yang terstruktur.
-            </motion.h1>
-
-            <motion.p
-              custom={2}
-              initial="hidden"
-              animate="visible"
-              variants={fadeUp}
-              className="mt-6 max-w-xl text-base leading-relaxed text-slate-300 sm:text-[17px]"
-            >
-              Dirancang khusus untuk mahasiswa{" "}
-              <strong className="text-white">
-                Fakultas Komunikasi &amp; Ilmu Sosial (FKS) Telkom University
-              </strong>{" "}
-              (serta terbuka untuk kampus lain dengan sedikit penyesuaian tarif). Pilih bagian{" "}
-              <span className="font-semibold text-blue-300">Bab 1</span>,{" "}
-              <span className="font-semibold text-emerald-300">Bab 2</span>, atau{" "}
-              <span className="font-semibold text-orange-300">Bab 3</span> sesuai progres
-              penelitian kualitatifmu.
-            </motion.p>
-
-            <motion.div
-              custom={3}
-              initial="hidden"
-              animate="visible"
-              variants={fadeUp}
-              className="mt-8 flex flex-wrap items-center gap-3.5"
-            >
-              <a
-                href="#layanan"
-                className="group inline-flex items-center gap-2 rounded-xl bg-[#F97316] px-6 py-3.5 text-sm font-bold text-white shadow-[0_8px_24px_-6px_rgba(249,115,22,0.55)] transition-all duration-200 hover:bg-[#EA580C] hover:-translate-y-0.5"
-              >
-                Lihat Paket &amp; Tarif
-                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+            <div className="mt-8 flex flex-wrap items-center gap-5">
+              <a href="#layanan" className="btn-primary">
+                Pilih Paket &amp; Tarif
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </a>
+
               <button
                 type="button"
                 onClick={onOpenMatcher}
-                className="inline-flex items-center gap-2 rounded-xl border border-white/25 bg-white/10 px-5 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:border-white/50 hover:bg-white/15 cursor-pointer"
+                className="btn-underline"
               >
-                <Compass className="h-4 w-4 text-[#60A5FA]" />
+                <Compass className="h-4 w-4 text-accent" aria-hidden="true" />
                 Bingung Pilih Paket?
               </button>
-            </motion.div>
+            </div>
 
-            <motion.div
-              custom={4}
-              initial="hidden"
-              animate="visible"
-              variants={fadeUp}
-              className="mt-10 grid grid-cols-3 gap-4 border-t border-white/15 pt-6 sm:max-w-lg"
-            >
-              <div>
-                <p className="font-mono text-xl font-bold text-white tabular-nums">
+            {/* Hairline-parted key facts */}
+            <div className="mt-10 grid grid-cols-3 border-t border-rule pt-6 sm:max-w-lg">
+              <div className="pr-4">
+                <p className="num font-display text-2xl text-ink">
                   {totalPackages} Paket
                 </p>
-                <p className="mt-0.5 text-xs text-slate-400">Komunikasi Kualitatif</p>
+                <p className="mt-1 text-sm text-ink-2">Rumpun Kualitatif</p>
               </div>
-              <div>
-                <p className="font-mono text-xl font-bold text-[#34D399]">FKS Tel-U</p>
-                <p className="mt-0.5 text-xs text-slate-400">Tarif Spesial Kampus</p>
+              <div className="border-l border-rule px-4">
+                <p className="font-display text-2xl text-accent">FKS Tel-U</p>
+                <p className="mt-1 text-sm text-ink-2">Tarif Spesial Kampus</p>
               </div>
-              <div>
-                <p className="font-mono text-xl font-bold text-[#FDBA74]">1-on-1</p>
-                <p className="mt-0.5 text-xs text-slate-400">Bukan Jasa Joki</p>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Right crisp white card contrasting sharply against obsidian hero */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.18, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-5"
-          >
-            <div className="rounded-2xl border-2 border-white/15 bg-white p-6 text-[#090E1A] shadow-[0_24px_60px_-15px_rgba(0,0,0,0.6)]">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                <div>
-                  <p className="font-mono text-[11px] font-bold uppercase tracking-wider text-[#2563EB]">
-                    Cakupan Pendampingan
-                  </p>
-                  <p className="mt-0.5 text-sm font-bold text-[#090E1A]">
-                    Fokus Komunikasi &amp; Riset Kualitatif
-                  </p>
-                </div>
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#2563EB] text-white">
-                  <Layers className="h-5 w-5" />
-                </span>
-              </div>
-
-              <div className="mt-4 space-y-3">
-                {[
-                  {
-                    code: "BAB 01",
-                    title: "Pendahuluan",
-                    desc: "Fenomena komunikasi, 2 opsi judul kualitatif, fokus & struktur Bab 1.",
-                    tag: "2 Paket",
-                    accent: "border-l-[#2563EB] bg-blue-50/70 hover:bg-blue-50",
-                    badge: "bg-[#2563EB] text-white",
-                    codeColor: "text-[#1D4ED8]",
-                  },
-                  {
-                    code: "BAB 02",
-                    title: "Tinjauan Pustaka",
-                    desc: "Teori komunikasi & sosial, matriks penelitian terdahulu, research gap, & kerangka.",
-                    tag: "3 Paket",
-                    accent: "border-l-[#0D9488] bg-teal-50/70 hover:bg-teal-50",
-                    badge: "bg-[#0D9488] text-white",
-                    codeColor: "text-[#0F766E]",
-                  },
-                  {
-                    code: "BAB 03",
-                    title: "Metodologi Kualitatif",
-                    desc: "Paradigma, studi kasus, fenomenologi, semiotika, wacana, informan & triangulasi.",
-                    tag: "2 Paket",
-                    accent: "border-l-[#EA580C] bg-orange-50/70 hover:bg-orange-50",
-                    badge: "bg-[#EA580C] text-white",
-                    codeColor: "text-[#C2410C]",
-                  },
-                ].map((item, idx) => (
-                  <motion.a
-                    key={item.code}
-                    href="#layanan"
-                    initial={{ opacity: 0, x: 14 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{
-                      delay: 0.3 + idx * 0.08,
-                      duration: 0.45,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                    className={`group block rounded-xl border border-slate-200/80 border-l-4 p-3.5 transition-all duration-200 ${item.accent}`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span
-                        className={`font-mono text-[11px] font-bold tracking-wider ${item.codeColor}`}
-                      >
-                        {item.code}
-                      </span>
-                      <span
-                        className={`rounded-md px-2 py-0.5 text-[11px] font-bold ${item.badge}`}
-                      >
-                        {item.tag}
-                      </span>
-                    </div>
-                    <p className="mt-1 text-sm font-bold text-[#090E1A]">
-                      {item.title}
-                    </p>
-                    <p className="mt-0.5 text-xs leading-relaxed text-slate-600">
-                      {item.desc}
-                    </p>
-                  </motion.a>
-                ))}
-              </div>
-
-              <div className="mt-5 flex items-center gap-2.5 rounded-xl bg-[#090E1A] px-4 py-3 text-xs text-slate-200">
-                <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-400" />
-                <span>
-                  Saat ini kami <strong className="text-white">khusus menangani Ilmu Komunikasi (Kualitatif)</strong> agar pendampingan tetap tajam &amp; relevan.
-                </span>
+              <div className="border-l border-rule pl-4">
+                <p className="num font-display text-2xl text-ink">1-on-1</p>
+                <p className="mt-1 text-sm text-ink-2">Mentoring Aktif</p>
               </div>
             </div>
           </motion.div>
+
+          {/* Right Arch-Framed Photography + Interactive Chapter Peek */}
+          <div className="relative lg:col-span-6">
+            <div className="relative mx-auto max-w-[540px] lg:ml-auto lg:mr-0">
+              <figure
+                className="photo-frame frame-arch relative aspect-[4/5] min-h-[440px] w-full overflow-hidden bg-paper-3"
+                data-slot="hero"
+                data-alt="Ruang baca perpustakaan dua tingkat dengan meja diskusi kayu"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Statsbiblioteket_l%C3%A6sesalen-2.jpg/1280px-Statsbiblioteket_l%C3%A6sesalen-2.jpg"
+                  srcSet="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Statsbiblioteket_l%C3%A6sesalen-2.jpg/960px-Statsbiblioteket_l%C3%A6sesalen-2.jpg 960w, https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Statsbiblioteket_l%C3%A6sesalen-2.jpg/1280px-Statsbiblioteket_l%C3%A6sesalen-2.jpg 1280w, https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Statsbiblioteket_l%C3%A6sesalen-2.jpg/1920px-Statsbiblioteket_l%C3%A6sesalen-2.jpg 1920w"
+                  sizes="(min-width: 60rem) 45vw, 100vw"
+                  width={5165}
+                  height={3820}
+                  alt="Ruang baca perpustakaan dua tingkat dengan meja diskusi kayu"
+                  fetchPriority="high"
+                  style={{ objectPosition: "50% 42%" }}
+                />
+              </figure>
+
+              {/* Floating interactive chapter selector plate */}
+              <div className="well-solstice relative z-20 -mt-16 mx-4 p-5 sm:mx-6 sm:p-6">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-rule pb-3">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-ink">
+                    <Layers className="h-4 w-4 text-accent" aria-hidden="true" />
+                    <span>Cakupan per Bab</span>
+                  </div>
+
+                  <div
+                    role="tablist"
+                    aria-label="Pratinjau bab pendampingan"
+                    className="flex items-center gap-1 rounded-full bg-paper p-1"
+                  >
+                    {CHAPTER_PEEKS.map((item, idx) => {
+                      const active = idx === peekIndex;
+                      return (
+                        <button
+                          key={item.id}
+                          type="button"
+                          role="tab"
+                          aria-selected={active}
+                          onClick={() => setPeekIndex(idx)}
+                          className={`relative rounded-full px-3 py-1.5 text-xs font-semibold transition-colors duration-200 cursor-pointer ${
+                            active
+                              ? "text-accent-ink"
+                              : "text-ink-2 hover:text-ink"
+                          }`}
+                        >
+                          {active && (
+                            <motion.span
+                              layoutId="heroChapterPill"
+                              transition={APPLE_SPRING}
+                              className="absolute inset-0 rounded-full bg-ink"
+                            />
+                          )}
+                          <span className="relative z-10 whitespace-nowrap">
+                            {item.label}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentPeek.id}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.24, ease: APPLE_EASE }}
+                    className="pt-3.5"
+                  >
+                    <div className="flex items-baseline justify-between gap-4">
+                      <p className="font-display text-lg text-ink">
+                        {currentPeek.title}
+                      </p>
+                      <span className="small-print text-accent">
+                        {currentPeek.packagesLabel}
+                      </span>
+                    </div>
+                    <p className="mt-1.5 text-sm leading-relaxed text-ink-2">
+                      {currentPeek.summary}
+                    </p>
+                    <div className="mt-3 flex items-center justify-between border-t border-rule pt-3">
+                      <span className="text-xs text-muted">
+                        Fokus Ilmu Komunikasi &amp; Riset Kualitatif
+                      </span>
+                      <a
+                        href="#layanan"
+                        onClick={() => onSelectChapterFromHero(peekIndex)}
+                        className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent transition-colors duration-200 hover:text-ink"
+                      >
+                        Buka paket
+                        <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                      </a>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

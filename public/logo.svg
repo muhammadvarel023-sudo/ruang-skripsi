@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" fill="none" role="img" aria-label="Logo TelisikRiset">
+  <path d="M5 19C5 10.716 11.716 4 20 4C28.284 4 35 10.716 35 19V33C35 34.657 33.657 36 32 36H8C6.343 36 5 34.657 5 33V19Z" fill="#33241B"/>
+  <path d="M7.5 19C7.5 12.096 13.096 6.5 20 6.5C26.904 6.5 32.5 12.096 32.5 19V32.5C32.5 33.052 32.052 33.5 31.5 33.5H8.5C7.948 33.5 7.5 33.052 7.5 32.5V19Z" stroke="#C8A04A" stroke-opacity="0.55" stroke-width="1"/>
+  <path d="M12.5 14H27.5" stroke="#F4EFE3" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M20 14V29.5" stroke="#F4EFE3" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="20" cy="21.5" r="5.2" fill="#33241B" stroke="#C8A04A" stroke-width="1.5"/>
+  <circle cx="20" cy="21.5" r="2.3" fill="#C84028"/>
+</svg>

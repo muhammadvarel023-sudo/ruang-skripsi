@@ -1,33 +1,33 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Instrument_Serif, JetBrains_Mono } from "next/font/google";
+import Script from "next/script";
+import { Archivo, Archivo_Narrow, Yeseva_One } from "next/font/google";
 import "./globals.css";
 
-const jakarta = Plus_Jakarta_Sans({
+const yesevaOne = Yeseva_One({
   subsets: ["latin"],
-  variable: "--font-jakarta",
+  variable: "--font-yeseva",
+  weight: ["400"],
+  display: "swap",
+});
+
+const archivo = Archivo({
+  subsets: ["latin"],
+  variable: "--font-archivo",
   weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
-const instrumentSerif = Instrument_Serif({
+const archivoNarrow = Archivo_Narrow({
   subsets: ["latin"],
-  variable: "--font-serif",
-  weight: ["400"],
-  style: ["normal", "italic"],
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  weight: ["400", "500", "600"],
+  variable: "--font-archivo-narrow",
+  weight: ["500", "600", "700"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "RuangSkripsi — Platform Konsultasi & Brainstorming Skripsi Terstruktur",
+  title: "TelisikRiset: Pendampingan Skripsi Komunikasi Kualitatif",
   description:
-    "Pendampingan akademik, brainstorming topik, pemetaan teori, dan evaluasi metodologi skripsi dengan pilihan paket fleksibel dan harga transparan.",
+    "Pendampingan akademik 1-on-1 untuk mahasiswa Ilmu Komunikasi Telkom University FKS dan PTS Bandung, dari penajaman Bab 1 hingga metodologi Bab 3.",
 };
 
 export default function RootLayout({
@@ -38,10 +38,21 @@ export default function RootLayout({
   return (
     <html
       lang="id"
-      className={`${jakarta.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} scroll-smooth`}
+      className={`${yesevaOne.variable} ${archivo.variable} ${archivoNarrow.variable}`}
     >
-      <body className="bg-[#F8FAFC] text-[#090E1A] font-sans antialiased selection:bg-[#2563EB] selection:text-white">
+      <body className="bg-paper text-ink font-body antialiased">
+        <a
+          href="#main-content"
+          className="fixed left-4 -top-24 z-[500] rounded-full bg-ink px-4 py-2 text-sm font-semibold text-paper transition-transform duration-200 focus:top-4"
+        >
+          Lewati ke konten utama
+        </a>
         {children}
+        <Script id="hallmark-slots" strategy="afterInteractive">
+          {`document.documentElement.classList.add('js');
+window.hallmarkSlots = (m) => { for (const [k, v] of Object.entries(m)) { const s = document.querySelector('[data-slot="' + k + '"]'); if (!s) continue; const im = new Image(); im.src = typeof v === 'string' ? v : v.src; im.alt = (typeof v === 'object' && v.alt) || s.dataset.alt || ''; s.querySelectorAll(':scope > img').forEach((o) => o.remove()); s.prepend(im); } };
+document.querySelectorAll('[data-slot] img').forEach((i) => { if (i.complete && !i.naturalWidth) i.remove(); else i.addEventListener('error', () => i.remove(), { once: true }); });`}
+        </Script>
       </body>
     </html>
   );

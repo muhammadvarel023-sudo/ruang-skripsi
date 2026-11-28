@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 const COOKIE_NAME = "rs_admin_session";
 
 function getSecret(): string {
-  return process.env.SESSION_SECRET || "ruang-skripsi-fallback-secret-2026";
+  return process.env.SESSION_SECRET || "telisik-riset-fallback-secret-2026";
 }
 
 function sign(payload: string): string {
@@ -68,7 +68,7 @@ export async function clearAdminSessionCookie() {
 }
 
 export function verifyAdminCredentials(email: string, password: string): boolean {
-  const validEmail = (process.env.ADMIN_EMAIL || "admin@ruangskripsi.id").trim().toLowerCase();
+  const validEmail = (process.env.ADMIN_EMAIL || "admin@telisikriset.id").trim().toLowerCase();
   const validPassword = process.env.ADMIN_PASSWORD || "admin123";
   return email.trim().toLowerCase() === validEmail && password === validPassword;
 }

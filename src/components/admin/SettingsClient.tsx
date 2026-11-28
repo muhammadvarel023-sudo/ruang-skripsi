@@ -225,7 +225,7 @@ export function SettingsClient({
                 type="text"
                 value={qrisMerchantName}
                 onChange={(e) => setQrisMerchantName(e.target.value)}
-                placeholder="Cth: Toko Varel / RuangSkripsi"
+                placeholder="Cth: Toko Varel / TelisikRiset"
                 className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-xs text-[#090E1A] outline-none focus:border-[#2563EB]"
               />
             </div>
@@ -286,7 +286,7 @@ export function SettingsClient({
                 type="text"
                 value={adminTelegram}
                 onChange={(e) => setAdminTelegram(e.target.value)}
-                placeholder="cth: ruangskripsi"
+                placeholder="cth: telisikriset"
                 className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 font-mono text-sm text-[#090E1A] outline-none focus:border-[#0284C7]"
               />
             </div>
@@ -299,7 +299,7 @@ export function SettingsClient({
                 type="text"
                 value={adminLine}
                 onChange={(e) => setAdminLine(e.target.value)}
-                placeholder="cth: ruangskripsi"
+                placeholder="cth: telisikriset"
                 className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 font-mono text-sm text-[#090E1A] outline-none focus:border-[#06C755]"
               />
             </div>

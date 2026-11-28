@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { BookOpen, ArrowUpRight, Menu, X } from "lucide-react";
+import { motion, useScroll, useSpring } from "framer-motion";
+import { Menu, X } from "lucide-react";
+import { BrandLogo } from "@/components/BrandLogo";
+import { APPLE_EASE, APPLE_TRANSITION } from "@/lib/motion";
 
 interface NavbarProps {
   brandName: string;
@@ -13,6 +15,12 @@ interface NavbarProps {
 export function Navbar({ brandName, onOpenMatcher }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 180,
+    damping: 28,
+    restDelta: 0.001,
+  });
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 18);
@@ -21,148 +29,151 @@ export function Navbar({ brandName, onOpenMatcher }: NavbarProps) {
   }, []);
 
   return (
-    <motion.header
-      initial={{ y: -16, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-      className={`sticky top-0 z-40 transition-all duration-300 ${
+    <header
+      className={`sticky top-0 z-[300] border-b transition-colors duration-200 ${
         scrolled
-          ? "bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm"
-          : "bg-[#090E1A] border-b border-white/10"
+          ? "border-rule bg-paper-2/95 backdrop-blur-md"
+          : "border-rule/70 bg-paper"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="group flex items-center gap-2.5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#2563EB] text-white shadow-[0_4px_14px_rgba(37,99,235,0.4)] transition-transform duration-300 group-hover:scale-105">
-            <BookOpen className="h-4 w-4" strokeWidth={2.2} />
-          </span>
-          <div className="flex flex-col leading-none">
-            <span
-              className={`text-[15px] font-bold tracking-tight transition-colors ${
-                scrolled ? "text-[#090E1A]" : "text-white"
-              }`}
-            >
-              {brandName}
-            </span>
-            <span
-              className={`text-[11px] font-medium transition-colors ${
-                scrolled ? "text-slate-500" : "text-blue-200/80"
-              }`}
-            >
-              Pendampingan Akademik
-            </span>
-          </div>
+      <div className="container flex h-18 items-center justify-between gap-4">
+        <Link
+          href="/"
+          aria-label={`${brandName} beranda`}
+          className="group flex items-center gap-3 whitespace-nowrap"
+        >
+          <BrandLogo
+            size={36}
+            className="transition-transform duration-200 group-hover:scale-105"
+          />
+          <span className="font-display text-lg text-ink">{brandName}</span>
         </Link>
 
         <nav
-          className={`hidden items-center gap-7 text-sm font-medium md:flex transition-colors ${
-            scrolled ? "text-slate-600" : "text-slate-300"
-          }`}
+          aria-label="Navigasi utama"
+          className="hidden items-center gap-7 text-sm font-medium text-ink-2 md:flex"
         >
           <a
             href="#layanan"
-            className={`transition-colors ${
-              scrolled ? "hover:text-[#2563EB]" : "hover:text-white"
-            }`}
+            className="whitespace-nowrap py-2 transition-colors duration-200 hover:text-accent"
           >
             Katalog Paket
           </a>
           <a
-            href="#cara-kerja"
-            className={`transition-colors ${
-              scrolled ? "hover:text-[#2563EB]" : "hover:text-white"
-            }`}
+            href="#eksplorasi"
+            className="whitespace-nowrap py-2 transition-colors duration-200 hover:text-accent"
           >
-            Alur Pendampingan
+            Jelajah Bab
+          </a>
+          <a
+            href="#cara-kerja"
+            className="whitespace-nowrap py-2 transition-colors duration-200 hover:text-accent"
+          >
+            Alur Sesi
           </a>
           <a
             href="#prinsip"
-            className={`transition-colors ${
-              scrolled ? "hover:text-[#2563EB]" : "hover:text-white"
-            }`}
+            className="whitespace-nowrap py-2 transition-colors duration-200 hover:text-accent"
           >
             Etika Akademik
           </a>
           <a
             href="#faq"
-            className={`transition-colors ${
-              scrolled ? "hover:text-[#2563EB]" : "hover:text-white"
-            }`}
+            className="whitespace-nowrap py-2 transition-colors duration-200 hover:text-accent"
           >
-            FAQ
+            Pertanyaan
           </a>
         </nav>
 
-        <div className="hidden items-center gap-2.5 md:flex">
+        <div className="hidden items-center gap-4 md:flex">
           <button
             type="button"
             onClick={onOpenMatcher}
-            className={`rounded-xl border px-3.5 py-2 text-xs font-semibold transition-all cursor-pointer ${
-              scrolled
-                ? "border-slate-300 bg-white text-slate-800 hover:border-[#2563EB] hover:text-[#2563EB]"
-                : "border-white/20 bg-white/10 text-white hover:bg-white/20"
-            }`}
+            className="btn-underline whitespace-nowrap"
           >
             Bantu Pilih Paket
           </button>
-          <a
-            href="#layanan"
-            className="inline-flex items-center gap-1.5 rounded-xl bg-[#F97316] px-4 py-2 text-xs font-bold text-white shadow-[0_4px_14px_rgba(249,115,22,0.35)] transition-all hover:bg-[#EA580C]"
-          >
+          <a href="#layanan" className="btn-quiet min-h-[44px] px-5 text-sm">
             Lihat Tarif
-            <ArrowUpRight className="h-3.5 w-3.5" />
           </a>
         </div>
 
         <button
           type="button"
           onClick={() => setMobileOpen((v) => !v)}
-          className={`flex h-9 w-9 items-center justify-center rounded-lg border md:hidden ${
-            scrolled
-              ? "border-slate-200 bg-white text-slate-800"
-              : "border-white/20 bg-white/10 text-white"
-          }`}
+          className="flex h-11 w-11 items-center justify-center rounded-full border border-rule bg-paper-2 text-ink transition-colors duration-200 hover:border-ink active:translate-y-px md:hidden cursor-pointer"
           aria-label="Menu navigasi"
+          aria-expanded={mobileOpen}
         >
-          {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
 
+      {/* Apple-smooth hairline scroll progress */}
+      <motion.div
+        aria-hidden="true"
+        style={{ scaleX }}
+        className="h-[2px] w-full origin-left bg-accent"
+      />
+
       {mobileOpen && (
         <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: 0 }}
-          className="border-t border-slate-200 bg-white px-4 py-4 md:hidden"
+          initial={{ opacity: 0, y: -6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ ...APPLE_TRANSITION, duration: 0.24, ease: APPLE_EASE }}
+          className="border-t border-rule bg-paper-2 px-4 py-5 md:hidden"
         >
-          <div className="flex flex-col gap-3 text-sm font-semibold text-slate-800">
-            <a href="#layanan" onClick={() => setMobileOpen(false)} className="py-1">
+          <div className="flex flex-col gap-2 text-base font-medium text-ink">
+            <a
+              href="#layanan"
+              onClick={() => setMobileOpen(false)}
+              className="rounded-lg px-2 py-2.5 transition-colors duration-200 hover:bg-paper"
+            >
               Katalog Paket
             </a>
-            <a href="#cara-kerja" onClick={() => setMobileOpen(false)} className="py-1">
-              Alur Pendampingan
+            <a
+              href="#eksplorasi"
+              onClick={() => setMobileOpen(false)}
+              className="rounded-lg px-2 py-2.5 transition-colors duration-200 hover:bg-paper"
+            >
+              Jelajah Bab
             </a>
-            <a href="#prinsip" onClick={() => setMobileOpen(false)} className="py-1">
+            <a
+              href="#cara-kerja"
+              onClick={() => setMobileOpen(false)}
+              className="rounded-lg px-2 py-2.5 transition-colors duration-200 hover:bg-paper"
+            >
+              Alur Sesi
+            </a>
+            <a
+              href="#prinsip"
+              onClick={() => setMobileOpen(false)}
+              className="rounded-lg px-2 py-2.5 transition-colors duration-200 hover:bg-paper"
+            >
               Etika Akademik
             </a>
-            <a href="#faq" onClick={() => setMobileOpen(false)} className="py-1">
-              FAQ
+            <a
+              href="#faq"
+              onClick={() => setMobileOpen(false)}
+              className="rounded-lg px-2 py-2.5 transition-colors duration-200 hover:bg-paper"
+            >
+              Pertanyaan
             </a>
-            <div className="mt-2 flex flex-col gap-2 border-t border-slate-200 pt-3">
+            <div className="mt-2 flex flex-col gap-2.5 border-t border-rule pt-4">
               <button
                 type="button"
                 onClick={() => {
                   setMobileOpen(false);
                   onOpenMatcher();
                 }}
-                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-center text-xs font-semibold text-slate-800"
+                className="btn-quiet w-full justify-center"
               >
                 Bingung Pilih Paket?
               </button>
               <a
                 href="#layanan"
                 onClick={() => setMobileOpen(false)}
-                className="w-full rounded-xl bg-[#F97316] px-4 py-2.5 text-center text-xs font-bold text-white"
+                className="btn-primary w-full justify-center"
               >
                 Lihat Paket Layanan
               </a>
@@ -170,6 +181,6 @@ export function Navbar({ brandName, onOpenMatcher }: NavbarProps) {
           </div>
         </motion.div>
       )}
-    </motion.header>
+    </header>
   );
 }

@@ -50,9 +50,9 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   const parsedSurcharge = Number(map.non_telkom_surcharge);
   const parsedAddon = Number(map.addon_session_price);
   return {
-    brand_name: map.brand_name || "RuangSkripsi",
-    admin_telegram: map.admin_telegram ?? "ruangskripsi",
-    admin_line: map.admin_line ?? "ruangskripsi",
+    brand_name: map.brand_name || "TelisikRiset",
+    admin_telegram: map.admin_telegram ?? "telisikriset",
+    admin_line: map.admin_line ?? "telisikriset",
     non_telkom_surcharge: Number.isNaN(parsedSurcharge) ? 50000 : parsedSurcharge,
     addon_session_price: Number.isNaN(parsedAddon) ? 60000 : parsedAddon,
     qris_image_url: map.qris_image_url || "",
@@ -63,6 +63,6 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     google_sheet_webhook_url: map.google_sheet_webhook_url || "",
     wa_template:
       map.wa_template ||
-      "Halo Admin RuangSkripsi, saya ingin konfirmasi & kirim bukti pembayaran:\nKode: {{orderCode}}\nNama: {{studentName}}\nKampus: {{campusName}}\nPaket: {{packageName}}\nSkema Bayar: {{paymentPlan}} ({{amountDueNow}})",
+      "Halo Admin TelisikRiset, saya ingin konfirmasi & kirim bukti pembayaran:\nKode: {{orderCode}}\nNama: {{studentName}}\nKampus: {{campusName}}\nPaket: {{packageName}}\nSkema Bayar: {{paymentPlan}} ({{amountDueNow}})",
   };
 }
